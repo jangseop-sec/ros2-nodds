@@ -18,6 +18,7 @@
 #define RCL__TYPES_H_
 
 #include <rmw/types.h>
+#include <rmw/ret_types.h>
 
 /// The type that holds an rcl return code.
 typedef rmw_ret_t rcl_ret_t;
