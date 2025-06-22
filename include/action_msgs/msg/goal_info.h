@@ -7,6 +7,7 @@ extern "C"
 #endif
 
 #include "unique_identifier_msgs/msg/UUID.h"
+#include "builtin_interfaces/msg/time.h"
 
 typedef unique_identifier_msgs__msg__UUID UUID;
 typedef builtin_interfaces__msgs__Time Time;
