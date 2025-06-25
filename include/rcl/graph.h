@@ -29,8 +29,6 @@ extern "C"
 #include "rcutils/time.h"
 #include "rcutils/types.h"
 
-#include "rosidl_runtime_c/service_type_support_struct.h"
-
 #include "rcl/macros.h"
 #include "rcl/client.h"
 #include "rcl/node.h"

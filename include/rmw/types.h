@@ -6,10 +6,15 @@ extern "C"
 {
 #endif
 
+#define RMW_GID_STORAGE_SIZE 24u
+
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdint.h>
 
-#include <rmw/time.h>
+#include "rmw/time.h"
+#include "rmw/serialized_message.h"
+
 #define RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE_DEPRECATED_MSG \
   "RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE is deprecated. " \
   "Use RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC if manually asserted liveliness is needed."
@@ -19,6 +24,13 @@ extern "C"
 #else
 # define RMW_DECLARE_DEPRECATED(name, msg) name __pragma(deprecated(name))
 #endif
+
+#define RMW_QOS_DEADLINE_DEFAULT RMW_DURATION_UNSPECIFIED
+#define RMW_QOS_LIFESPAN_DEFAULT RMW_DURATION_UNSPECIFIED
+#define RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT RMW_DURATION_UNSPECIFIED
+
+typedef rcutils_time_point_value_t rmw_time_point_value_t;
+typedef rcutils_duration_value_t rmw_duration_t;
 
 typedef enum rmw_qos_durability_policy_e
 {
@@ -136,6 +148,224 @@ typedef struct rmw_qos_profile_s
    */
   bool avoid_ros_namespace_conventions;
 } rmw_qos_profile_t;
+
+typedef enum rmw_endpoint_type_e
+{
+  /// Endpoint type has not yet been set
+  RMW_ENDPOINT_INVALID = 0,
+
+  /// Creates and publishes messages to the ROS topic
+  RMW_ENDPOINT_PUBLISHER,
+
+  /// Listens for and receives messages from a topic
+  RMW_ENDPOINT_SUBSCRIPTION
+} rmw_endpoint_type_t;
+
+/// An rmw service request identifier
+typedef struct rmw_request_id_s
+{
+  /// The guid of the writer associated with this request
+  int8_t writer_guid[16];
+
+  /// Sequence number of this service
+  int64_t sequence_number;
+} rmw_request_id_t;
+
+/// ROS graph ID of the topic
+typedef struct rmw_gid_s
+{
+  /// Name of the rmw implementation
+  const char * implementation_identifier;
+
+  /// Bype data Gid value
+  uint8_t data[RMW_GID_STORAGE_SIZE];
+} rmw_gid_t;
+
+/// Information describing an rmw message
+typedef struct rmw_message_info_s
+{
+  /// Time when the message was published by the publisher.
+  /**
+   * The exact point at which the timestamp is taken is not specified, but
+   * it should be taken consistently at the same point in the
+   * publishing process each time.
+   */
+  rmw_time_point_value_t source_timestamp;
+  /// Time when the message was received by the subscription.
+  /**
+   * The exact point at which the timestamp is taken is not specified, but
+   * it should be taken consistently at the same point in the
+   * process of receiving a message each time.
+   */
+  rmw_time_point_value_t received_timestamp;
+  /// Sequence number of the received message set by the publisher.
+  /**
+   * This sequence number is set by the publisher and therefore uniquely identifies
+   * a message when combined with the publisher GID.
+   * For long running applications, the sequence number might wrap around at some point.
+   *
+   * If the rmw implementation doesn't support sequence numbers, its value will be
+   * RMW_MESSAGE_INFO_SEQUENCE_NUMBER_UNSUPPORTED.
+   *
+   * Requirements:
+   *
+   * If `psn1` and `psn2` are the publication sequence numbers obtained by
+   * calls to `rmw_take*()`, where `psn1` was obtained in a call that happened before `psn2` and both
+   * sequence numbers are from the same publisher (i.e. also same publisher gid), then:
+   *
+   * - psn2 > psn1 (except in the case of a wrap around)
+   * - `psn2 - psn1 - 1` is the number of messages the publisher sent in the middle of both
+   *   received messages.
+   *   Those might have already been taken by other `rmw_take*()` calls that happened in between or lost.
+   *   `psn2 - psn1 - 1 = 0` if and only if the messages were sent by the publisher consecutively.
+   */
+  uint64_t publication_sequence_number;
+  /// Sequence number of the received message set by the subscription.
+  /**
+   * This sequence number is set by the subscription regardless of which
+   * publisher sent the message.
+   * For long running applications, the sequence number might wrap around at some point.
+   *
+   * If the rmw implementation doesn't support sequence numbers, its value will be
+   * RMW_MESSAGE_INFO_SEQUENCE_NUMBER_UNSUPPORTED.
+   *
+   * Requirements:
+   *
+   * If `rsn1` and `rsn2` are the reception sequence numbers obtained by
+   * calls to `rmw_take*()`, where `rsn1` was obtained in a call that happened before `rsn2`, then:
+   *
+   * - rsn2 > rsn1 (except in the case of a wrap around)
+   * - `rsn2 = rsn1 + 1` if and only if both `rmw_take*()` calls happened consecutively.
+   */
+  uint64_t reception_sequence_number;
+  /// Global unique identifier of the publisher that sent the message.
+  /**
+   * The identifier uniquely identifies the publisher for the local context, but
+   * it will not necessarily be the same identifier given in other contexts or processes
+   * for the same publisher.
+   * Therefore the identifier will uniquely identify the publisher within your application
+   * but may disagree about the identifier for that publisher when compared to another
+   * application.
+   * Even with this limitation, when combined with the publisher sequence number it can
+   * uniquely identify a message within your local context.
+   * Publisher GIDs generated by the rmw implementation could collide at some point, in which
+   * case it is not possible to distinguish which publisher sent the message.
+   * The details of how GIDs are generated are rmw implementation dependent.
+   *
+   * It is possible the the rmw implementation needs to reuse a publisher GID,
+   * due to running out of unique identifiers or some other constraint, in which case
+   * the rmw implementation may document what happens in that case, but that
+   * behavior is not defined here.
+   * However, this should be avoided, if at all possible, by the rmw implementation,
+   * and should be unlikely to happen in practice.
+   *
+   * \todo In the future we want this to uniquely identify the publisher globally across
+   *   contexts, processes, and machines.
+   */
+  rmw_gid_t publisher_gid;
+
+  /// Whether this message is from intra_process communication or not
+  bool from_intra_process;
+} rmw_message_info_t;
+
+/// Unique network flow endpoints requirement enumeration
+typedef enum rmw_unique_network_flow_endpoints_requirement_e
+{
+  /// Unique network flow endpoints not required
+  RMW_UNIQUE_NETWORK_FLOW_ENDPOINTS_NOT_REQUIRED = 0,
+
+  /// Unique network flow endpoins strictly required.
+  /// Error if not provided by RMW implementation.
+  RMW_UNIQUE_NETWORK_FLOW_ENDPOINTS_STRICTLY_REQUIRED,
+
+  /// Unique network flow endpoints optionally required.
+  /// No error if not provided RMW implementation.
+  RMW_UNIQUE_NETWORK_FLOW_ENDPOINTS_OPTIONALLY_REQUIRED,
+
+  /// Unique network flow endpoints requirement decided by system.
+  RMW_UNIQUE_NETWORK_FLOW_ENDPOINTS_SYSTEM_DEFAULT
+} rmw_unique_network_flow_endpoints_requirement_t;
+
+/// Options that can be used to configure the creation of a publisher in rmw.
+typedef struct rmw_publisher_options_s
+{
+  /// Used to pass rmw implementation specific resources during publisher creation.
+  /**
+   * This field is type erased (rather than forward declared) because it will
+   * usually be a non-owned reference to an language specific object, e.g.
+   * C++ it may be a polymorphic class that only the rmw implementation can use.
+   *
+   * The resource pointed to here needs to outlive this options structure, and
+   * any rmw_publisher objects that are created using it, as they copy this
+   * structure and may use this payload throughout their lifetime.
+   */
+  void * rmw_specific_publisher_payload;
+
+  /// Require middleware to generate unique network flow endpoints.
+  /**
+   * Unique network flow endpoints are required to differentiate the QoS provided by
+   * networks for flows between publishers and subscribers in communicating
+   * nodes.
+   * Default value is RMW_UNIQUE_NETWORK_FLOW_ENDPOINTS_NOT_REQUIRED.
+   */
+  rmw_unique_network_flow_endpoints_requirement_t require_unique_network_flow_endpoints;
+} rmw_publisher_options_t;
+
+/// Allocation of memory for an rmw publisher
+typedef struct rmw_publisher_allocation_s
+{
+  /// The name of the rmw implementation
+  const char * implementation_identifier;
+
+  /// Type erased pointer to this allocation
+  void * data;
+} rmw_publisher_allocation_t;
+
+/// Structure which encapsulates an rmw publisher
+typedef struct rmw_publisher_s
+{
+  /// Name of the rmw implementation
+  const char * implementation_identifier;
+
+  /// Type erased pointer to this publisher's data
+  void * data;
+
+  /// The name of the ROS topic this publisher publishes to
+  const char * topic_name;
+
+  /// Publisher options.
+  /**
+   * The options structure passed to rmw_create_publisher() should be
+   * assigned to this field by the rmw implementation.
+   * The fields should not be modified after creation, but
+   * the contents of the options structure may or may not be const, i.e.
+   * shallow const-ness.
+   * This field is not marked const to avoid any const casting during setup.
+   */
+  rmw_publisher_options_t options;
+
+  /// Indicate whether this publisher supports loaning messages
+  bool can_loan_messages;
+} rmw_publisher_t;
+
+/// Structure which encapsulates an rmw node
+typedef struct rmw_node_s
+{
+  /// Name of the rmw implementation
+  const char * implementation_identifier;
+
+  /// Type erased pointer to this node's data
+  void * data;
+
+  /// A concise name of this rmw node for identification
+  const char * name;
+
+  /// The namespace of this rmw node
+  const char * namespace_;
+
+  /// Context information about node's init specific information
+  rmw_context_t * context;
+} rmw_node_t;
 
 #ifdef __cplusplus
 }

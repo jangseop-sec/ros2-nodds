@@ -17,6 +17,9 @@ extern "C"
 {
 #endif
 
+// FIXME set temporal ros package name, in real, set real package name to build camke
+#define ROS_PACKAGE_NAME "test_package"
+
 #include "rcl/publisher.h"
 
 #include <stdio.h>
@@ -25,12 +28,14 @@ extern "C"
 #include "rcl/allocator.h"
 #include "rcl/error_handling.h"
 #include "rcl/node.h"
-#include "rcutils/logging_macros.h"
 #include "rcutils/macros.h"
 #include "rcl/time.h"
 #include "rmw/time.h"
+#include "rcl/types.h"
 #include "rmw/error_handling.h"
-#include "tracetools/tracetools.h"
+
+// FIXME delete if find dependency in include headers
+#include "rmw/qos_profiles.h"
 
 #include "./common.h"
 #include "./publisher_impl.h"
@@ -202,7 +207,7 @@ rcl_publisher_get_default_options()
   // Must set the allocator and qos after because they are not a compile time constant.
   default_options.qos = rmw_qos_profile_default;
   default_options.allocator = rcl_get_default_allocator();
-  default_options.rmw_publisher_options = rmw_get_default_publisher_options();
+  // default_options.rmw_publisher_options = rmw_get_default_publisher_options();
   return default_options;
 }
 

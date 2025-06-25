@@ -8,6 +8,9 @@ extern "C"
 
 #include <stdint.h>
 
+#define RMW_DURATION_INFINITE {9223372036LL, 854775807LL}
+#define RMW_DURATION_UNSPECIFIED {0LL, 0LL}
+
 typedef struct rmw_time_s
 {
   /// Seconds component
