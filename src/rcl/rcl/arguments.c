@@ -14,6 +14,9 @@
 
 /// \cond INTERNAL  // Internal Doxygen documentation
 
+// FIXME reals ros package name to build cmake
+#define ROS_PACKAGE_NAME "test_rclcpp"
+
 #include "rcl/arguments.h"
 
 #include <assert.h>
@@ -30,10 +33,10 @@
 #include "rcutils/error_handling.h"
 #include "rcutils/format_string.h"
 #include "rcutils/logging.h"
-#include "rcutils/logging_macros.h"
+// #include "rcutils/logging_macros.h"
 #include "rcutils/strdup.h"
-#include "rmw/validate_namespace.h"
-#include "rmw/validate_node_name.h"
+// #include "rmw/validate_namespace.h"
+// #include "rmw/validate_node_name.h"
 
 #ifdef __cplusplus
 extern "C"
