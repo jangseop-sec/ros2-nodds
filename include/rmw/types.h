@@ -367,6 +367,19 @@ typedef struct rmw_node_s
   rmw_context_t * context;
 } rmw_node_t;
 
+/// Handle for an rmw guard condition
+typedef struct rmw_guard_condition_s
+{
+  /// The name of the rmw implementation
+  const char * implementation_identifier;
+
+  /// Type erased pointer to this guard condition
+  void * data;
+
+  /// rmw context associated with this guard condition
+  rmw_context_t * context;
+} rmw_guard_condition_t;
+
 #ifdef __cplusplus
 }
 #endif  // __cplusplus
