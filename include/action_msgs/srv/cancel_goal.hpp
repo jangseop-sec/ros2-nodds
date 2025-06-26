@@ -4,6 +4,8 @@
 #include <memory>
 #include <vector>
 
+#include "action_msgs/msg/goal_info.hpp"
+
 namespace action_msgs
 {
 
@@ -13,18 +15,24 @@ namespace srv
 using namespace action_msgs::msg;
 
 template<class ContainerAllocator>
-struct CancelGoal_
+struct CancelGoal_Request_
 {
-  int8_t ERROR_NONE=0;
-  int8_t ERROR_REJECTED=1;
-  int8_t ERROR_UNKNOWN_GOAL_ID=2;
-  int8_t ERROR_GOAL_TERMINATED=3;
+  GoalInfo goal_info;  // The goal to cancel
+};
+
+template<class ContainerAllocator>
+struct CancelGoal_Response_
+{
+  static constexpr int8_t ERROR_NONE=0;
+  static constexpr int8_t ERROR_REJECTED=1;
+  static constexpr int8_t ERROR_UNKNOWN_GOAL_ID=2;
+  static constexpr int8_t ERROR_GOAL_TERMINATED=3;
 
   int8_t return_code;
   std::vector<GoalInfo> goals_canceling;
 };
 
-using CancelGoal = CancelGoal_<std::allocator<void>>;
+using CancelGoal_Response = CancelGoal_<std::allocator<void>>;
 
 }
 

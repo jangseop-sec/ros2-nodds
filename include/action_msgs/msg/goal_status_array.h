@@ -6,12 +6,18 @@ extern "C"
 {
 #endif
 
+#include <stddef.h>
+
 #include <action_msgs/msg/goal_status.h>
 
 typedef action_msgs__msg__GoalStatus GoalStatus;
 
+struct GoalStatusList {
+  GoalStatus * data;
+  size_t size;
+};
 typedef struct GoalStatusArray {
-  GoalStatus* status_list;    // TODO how to declare no-fixed-size array? (in C99, 'arr[]' is supported)
+  struct GoalStatusList status_list;  // Array of goal statuses
 } action_msgs__msg__GoalStatusArray;
 
 #ifdef __cplusplus

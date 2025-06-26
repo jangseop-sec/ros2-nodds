@@ -7,6 +7,7 @@ extern "C"
 #endif
 
 #include <rmw/types.h>
+#include <rmw/qos_profiles.h>
 
 
 

@@ -17,6 +17,8 @@ extern "C"
 {
 #endif
 
+#define ROS_PACKAGE_NAME "test"
+
 #include "rcl_action/action_client.h"
 #include "./action_client_impl.h"
 
@@ -32,7 +34,7 @@ extern "C"
 #include "rcl/types.h"
 #include "rcl/wait.h"
 
-#include "rcutils/logging_macros.h"
+// #include "rcutils/logging_macros.h"
 #include "rcutils/strdup.h"
 
 #include "rmw/qos_profiles.h"
