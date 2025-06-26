@@ -29,6 +29,7 @@ extern "C"
 #include "rcl/node.h"
 #include "rcl/visibility_control.h"
 
+#include "rmw/types.h"
 #include "rmw/message_sequence.h"
 
 /// Internal rcl implementation struct.

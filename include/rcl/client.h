@@ -22,7 +22,7 @@ extern "C"
 {
 #endif
 
-// #include "rosidl_runtime_c/service_type_support_struct.h"
+#include "rosidl_runtime_c/service_type_support_struct.h"
 
 #include "rcl/event_callback.h"
 #include "rcl/macros.h"

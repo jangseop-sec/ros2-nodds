@@ -13,7 +13,11 @@ extern "C"
 #include <stdint.h>
 
 #include "rmw/time.h"
+#include "rmw/init.h"
 #include "rmw/serialized_message.h"
+#include "rmw/subscription_content_filter_options.h"
+
+#include "rcutils/time.h"
 
 #define RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE_DEPRECATED_MSG \
   "RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE is deprecated. " \
@@ -379,6 +383,200 @@ typedef struct rmw_guard_condition_s
   /// rmw context associated with this guard condition
   rmw_context_t * context;
 } rmw_guard_condition_t;
+
+/// Options that can be used to configure the creation of a subscription in rmw.
+typedef struct rmw_subscription_options_s
+{
+  /// Used to pass rmw implementation specific resources during subscription creation.
+  /**
+   * All the same details and restrictions of this field in
+   * rmw_publisher_options_t apply to this struct as well.
+   *
+   * \sa rmw_publisher_options_t.rmw_specific_publisher_payload
+   */
+  void * rmw_specific_subscription_payload;
+
+  /// If true then the middleware should not deliver data from local publishers.
+  /**
+   * This setting is most often used when data should only be received from
+   * remote nodes, especially to avoid "double delivery" when both intra- and
+   * inter- process communication is taking place.
+   *
+   * \todo(wjwwood): nail this down when participant mapping is sorted out.
+   *   See: https://github.com/ros2/design/pull/250
+   *
+   * The definition of local is somewhat vague at the moment.
+   * Right now it means local to the node, and that definition works best, but
+   * may become more complicated when/if participants map to a context instead.
+   */
+  bool ignore_local_publications;
+
+  /// Require middleware to generate unique network flow endpoints.
+  /**
+   * Unique network flow endpoints are required to differentiate the QoS provided by
+   * networks for flows between publishers and subscribers in communicating
+   * nodes.
+   * Default value is RMW_UNIQUE_NETWORK_FLOW_ENDPOINTS_NOT_REQUIRED.
+   */
+  rmw_unique_network_flow_endpoints_requirement_t require_unique_network_flow_endpoints;
+
+  /// Used to create a content filter options during subscription creation.
+  rmw_subscription_content_filter_options_t * content_filter_options;
+} rmw_subscription_options_t;
+
+/// Allocation of memory for an rmw subscription
+typedef struct rmw_subscription_allocation_s
+{
+  /// The name of the rmw implementation
+  const char * implementation_identifier;
+
+  /// Type erased pointer to this allocation
+  void * data;
+} rmw_subscription_allocation_t;
+
+typedef struct rmw_subscription_s
+{
+  /// Name of the rmw implementation
+  const char * implementation_identifier;
+
+  /// Type erased pointer to this subscription
+  void * data;
+
+  /// Name of the ros topic this subscription listens to
+  const char * topic_name;
+
+  /// Subscription options.
+  /**
+   * The options structure passed to rmw_create_subscription() should be
+   * assigned to this field by the rmw implementation.
+   * The fields should not be modified after creation, but
+   * the contents of the options structure may or may not be const, i.e.
+   * shallow const-ness.
+   * This field is not marked const to avoid any const casting during setup.
+   */
+  rmw_subscription_options_t options;
+
+  /// Indicates whether this subscription can loan messages
+  bool can_loan_messages;
+
+  /// Indicates whether content filtered topic of this subscription is enabled
+  bool is_cft_enabled;
+} rmw_subscription_t;
+
+/// Meta-data for a service-related take.
+typedef struct rmw_service_info_s
+{
+  rmw_time_point_value_t source_timestamp;
+  rmw_time_point_value_t received_timestamp;
+  rmw_request_id_t request_id;
+} rmw_service_info_t;
+
+/// A handle to an rmw service
+typedef struct rmw_service_s
+{
+  /// The name of the rmw implementation
+  const char * implementation_identifier;
+
+  /// Type erased pointer to this service
+  void * data;
+
+  /// The name of this service as exposed to the ros graph
+  const char * service_name;
+} rmw_service_t;
+
+/// A handle to an rmw service client
+typedef struct rmw_client_s
+{
+  /// The name of the rmw implementation
+  const char * implementation_identifier;
+
+  /// Type erased pointer to this service client
+  void * data;
+
+  /// The name of this service as exposed to the ros graph
+  const char * service_name;
+} rmw_client_t;
+
+/// Array of subscriber handles.
+/**
+ * An array of void * pointers representing type-erased middleware-specific subscriptions.
+ * The number of non-null entries may be smaller than the allocated size of the array.
+ * The number of subscriptions represented may be smaller than the allocated size of the array.
+ * The creator of this struct is responsible for allocating and deallocating the array.
+ */
+typedef struct rmw_subscriptions_s
+{
+  /// The number of subscribers represented by the array.
+  size_t subscriber_count;
+  /// Pointer to an array of void * pointers of subscriptions.
+  void ** subscribers;
+} rmw_subscriptions_t;
+
+/// Array of guard condition handles.
+/**
+ * An array of void * pointers representing type-erased middleware-specific guard conditions.
+ * The number of non-null entries may be smaller than the allocated size of the array.
+ * The number of guard conditions represented may be smaller than the allocated size of the array.
+ * The creator of this struct is responsible for allocating and deallocating the array.
+ */
+typedef struct rmw_guard_conditions_s
+{
+  /// The number of guard conditions represented by the array.
+  size_t guard_condition_count;
+  /// Pointer to an array of void * pointers of guard conditions.
+  void ** guard_conditions;
+} rmw_guard_conditions_t;
+
+/// Array of client handles.
+/**
+ * An array of void * pointers representing type-erased middleware-specific clients.
+ * The number of non-null entries may be smaller than the allocated size of the array.
+ * The number of clients represented may be smaller than the allocated size of the array.
+ * The creator of this struct is responsible for allocating and deallocating the array.
+ */
+typedef struct rmw_clients_s
+{
+  /// The number of clients represented by the array.
+  size_t client_count;
+  /// Pointer to an array of void * pointers of clients.
+  void ** clients;
+} rmw_clients_t;
+
+/// Array of service handles.
+/**
+ * An array of void * pointers representing type-erased middleware-specific services.
+ * The number of non-null entries may be smaller than the allocated size of the array.
+ * The number of services represented may be smaller than the allocated size of the array.
+ * The creator of this struct is responsible for allocating and deallocating the array.
+ */
+typedef struct rmw_services_s
+{
+  /// The number of services represented by the array.
+  size_t service_count;
+  /// Pointer to an array of void * pointers of services.
+  void ** services;
+} rmw_services_t;
+
+typedef struct rmw_events_s
+{
+  /// The number of events represented by the array.
+  size_t event_count;
+  /// Pointer to an array of void * pointers of events.
+  void ** events;
+} rmw_events_t;
+
+/// Container for guard conditions to be waited on
+typedef struct rmw_wait_set_s
+{
+  /// The name of the rmw implementation
+  const char * implementation_identifier;
+
+  /// The guard condition to be waited on
+  rmw_guard_conditions_t * guard_conditions;
+
+  /// Type erased pointer to this wait set's data
+  void * data;
+} rmw_wait_set_t;
 
 #ifdef __cplusplus
 }

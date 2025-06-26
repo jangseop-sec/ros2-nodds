@@ -8,6 +8,8 @@ extern "C" {
 #include <stdint.h>
 #include <stddef.h>
 
+#include "rcutils/allocator.h"
+
 #include "rmw/allocator.h"
 #include "rmw/localhost.h"
 #include "rmw/security_options.h"

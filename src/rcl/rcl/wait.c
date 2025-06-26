@@ -17,6 +17,8 @@ extern "C"
 {
 #endif
 
+#define ROS_PACKAGE_NAME "test"
+
 #include "rcl/wait.h"
 
 #include <assert.h>
@@ -30,6 +32,7 @@ extern "C"
 #include "rmw/error_handling.h"
 #include "rmw/rmw.h"
 #include "rmw/event.h"
+#include "rmw/types.h"
 
 #include "./context_impl.h"
 

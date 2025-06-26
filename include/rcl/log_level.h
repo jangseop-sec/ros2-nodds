@@ -21,7 +21,8 @@
 #include "rcl/macros.h"
 #include "rcl/types.h"
 #include "rcl/visibility_control.h"
-#include "rcl/logging.h"
+// #include "rcl/logging.h"
+#include "rcutils/logging.h"
 
 #ifdef __cplusplus
 extern "C"

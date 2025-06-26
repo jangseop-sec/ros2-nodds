@@ -12,7 +12,7 @@ typedef struct Time
 {
   int32_t sec;
   uint32_t nanosec;
-} builtin_interfaces__msg__Time;
+} builtin_interfaces__msgs__Time;
 
 #ifdef __cplusplus
 }

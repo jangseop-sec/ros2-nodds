@@ -33,10 +33,10 @@
 #include "rcutils/error_handling.h"
 #include "rcutils/format_string.h"
 #include "rcutils/logging.h"
-// #include "rcutils/logging_macros.h"
+#include "rcutils/logging_macros.h"
 #include "rcutils/strdup.h"
-// #include "rmw/validate_namespace.h"
-// #include "rmw/validate_node_name.h"
+#include "rmw/validate_namespace.h"
+#include "rmw/validate_node_name.h"
 
 #ifdef __cplusplus
 extern "C"
