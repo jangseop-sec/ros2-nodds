@@ -29,6 +29,7 @@ extern "C"
 #include "rcl/error_handling.h"
 #include "rcl/node.h"
 #include "rcutils/macros.h"
+#include "rcutils/logging_macros.h"
 #include "rcl/time.h"
 #include "rmw/time.h"
 #include "rcl/types.h"
@@ -112,42 +113,47 @@ rcl_publisher_init(
   // Fill out implementation struct.
   // rmw handle (create rmw publisher)
   // TODO(wjwwood): pass along the allocator to rmw when it supports it
-  publisher->impl->rmw_handle = rmw_create_publisher(
-    rcl_node_get_rmw_handle(node),
-    type_support,
-    remapped_topic_name,
-    &(options->qos),
-    &(options->rmw_publisher_options));
-  RCL_CHECK_FOR_NULL_WITH_MSG(
-    publisher->impl->rmw_handle, rmw_get_error_string().str, goto fail);
+  // DUMMY 'rmw_create_publisher'
+  // publisher->impl->rmw_handle = rmw_create_publisher(
+  //   rcl_node_get_rmw_handle(node),
+  //   type_support,
+  //   remapped_topic_name,
+  //   &(options->qos),
+  //   &(options->rmw_publisher_options));
+  // RCL_CHECK_FOR_NULL_WITH_MSG(
+  //   publisher->impl->rmw_handle, rmw_get_error_string().str, goto fail);
   // get actual qos, and store it
-  rmw_ret_t rmw_ret = rmw_publisher_get_actual_qos(
-    publisher->impl->rmw_handle,
-    &publisher->impl->actual_qos);
-  if (RMW_RET_OK != rmw_ret) {
-    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-    goto fail;
-  }
-  publisher->impl->actual_qos.avoid_ros_namespace_conventions =
-    options->qos.avoid_ros_namespace_conventions;
+  // DUMMY 'rmw_publisher_get_actual_qos'
+  // rmw_ret_t rmw_ret = rmw_publisher_get_actual_qos(
+  //   publisher->impl->rmw_handle,
+  //   &publisher->impl->actual_qos);
+  // if (RMW_RET_OK != rmw_ret) {
+  //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+  //   goto fail;
+  // }
+  // publisher->impl->actual_qos.avoid_ros_namespace_conventions =
+  //   options->qos.avoid_ros_namespace_conventions;
   // options
   publisher->impl->options = *options;
   RCUTILS_LOG_DEBUG_NAMED(ROS_PACKAGE_NAME, "Publisher initialized");
   // context
   publisher->impl->context = node->context;
-  TRACEPOINT(
-    rcl_publisher_init,
-    (const void *)publisher,
-    (const void *)node,
-    (const void *)publisher->impl->rmw_handle,
-    remapped_topic_name,
-    options->qos.depth);
+  // DUMMY 'TRACEPOINT'
+  // TRACEPOINT(
+  //   rcl_publisher_init,
+  //   (const void *)publisher,
+  //   (const void *)node,
+  //   (const void *)publisher->impl->rmw_handle,
+  //   remapped_topic_name,
+  //   options->qos.depth);
   goto cleanup;
 fail:
   if (publisher->impl) {
     if (publisher->impl->rmw_handle) {
-      rmw_ret_t rmw_fail_ret = rmw_destroy_publisher(
-        rcl_node_get_rmw_handle(node), publisher->impl->rmw_handle);
+      // DUMMY 'rmw_destroy_publisher', return default 'rmw_ret_t'(RMW_RET_OK)
+      rmw_ret_t rmw_fail_ret = RMW_RET_OK;
+      // rmw_ret_t rmw_fail_ret = rmw_destroy_publisher(
+      //   rcl_node_get_rmw_handle(node), publisher->impl->rmw_handle);
       if (RMW_RET_OK != rmw_fail_ret) {
         RCUTILS_SAFE_FWRITE_TO_STDERR(rmw_get_error_string().str);
         RCUTILS_SAFE_FWRITE_TO_STDERR("\n");
@@ -186,8 +192,10 @@ rcl_publisher_fini(rcl_publisher_t * publisher, rcl_node_t * node)
     if (!rmw_node) {
       return RCL_RET_INVALID_ARGUMENT;
     }
-    rmw_ret_t ret =
-      rmw_destroy_publisher(rmw_node, publisher->impl->rmw_handle);
+    // DUMMY 'rmw_destroy_publisher', return default 'rmw_ret_t'(RMW_RET_OK)
+    rmw_ret_t ret = RMW_RET_OK;
+    // rmw_ret_t ret =
+    //   rmw_destroy_publisher(rmw_node, publisher->impl->rmw_handle);
     if (ret != RMW_RET_OK) {
       RCL_SET_ERROR_MSG(rmw_get_error_string().str);
       result = RCL_RET_ERROR;
@@ -220,8 +228,10 @@ rcl_borrow_loaned_message(
   if (!rcl_publisher_is_valid(publisher)) {
     return RCL_RET_PUBLISHER_INVALID;  // error already set
   }
-  return rcl_convert_rmw_ret_to_rcl_ret(
-    rmw_borrow_loaned_message(publisher->impl->rmw_handle, type_support, ros_message));
+  return RCL_RET_OK;
+  // DUMMY 'rmw_borrow_loaned_message', return default 'rcl_ret_t'(RCL_RET_OK)
+  // return rcl_convert_rmw_ret_to_rcl_ret(
+  //   rmw_borrow_loaned_message(publisher->impl->rmw_handle, type_support, ros_message));
 }
 
 rcl_ret_t
@@ -233,8 +243,11 @@ rcl_return_loaned_message_from_publisher(
     return RCL_RET_PUBLISHER_INVALID;  // error already set
   }
   RCL_CHECK_ARGUMENT_FOR_NULL(loaned_message, RCL_RET_INVALID_ARGUMENT);
-  return rcl_convert_rmw_ret_to_rcl_ret(
-    rmw_return_loaned_message_from_publisher(publisher->impl->rmw_handle, loaned_message));
+
+  // DUMMY 'rmw_return_loaned_message_from_publisher', return default 'rcl_ret_t'(RCL_RET_OK)
+  return RCL_RET_OK;
+  // return rcl_convert_rmw_ret_to_rcl_ret(
+  //   rmw_return_loaned_message_from_publisher(publisher->impl->rmw_handle, loaned_message));
 }
 
 rcl_ret_t
@@ -250,11 +263,14 @@ rcl_publish(
     return RCL_RET_PUBLISHER_INVALID;  // error already set
   }
   RCL_CHECK_ARGUMENT_FOR_NULL(ros_message, RCL_RET_INVALID_ARGUMENT);
-  TRACEPOINT(rcl_publish, (const void *)publisher, (const void *)ros_message);
-  if (rmw_publish(publisher->impl->rmw_handle, ros_message, allocation) != RMW_RET_OK) {
-    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-    return RCL_RET_ERROR;
-  }
+  // DUMMY 'TRACEPOINT'
+  // TRACEPOINT(rcl_publish, (const void *)publisher, (const void *)ros_message);
+
+  // DUMMY 'rmw_publish'
+  // if (rmw_publish(publisher->impl->rmw_handle, ros_message, allocation) != RMW_RET_OK) {
+  //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+  //   return RCL_RET_ERROR;
+  // }
   return RCL_RET_OK;
 }
 
@@ -268,8 +284,11 @@ rcl_publish_serialized_message(
     return RCL_RET_PUBLISHER_INVALID;  // error already set
   }
   RCL_CHECK_ARGUMENT_FOR_NULL(serialized_message, RCL_RET_INVALID_ARGUMENT);
-  rmw_ret_t ret = rmw_publish_serialized_message(
-    publisher->impl->rmw_handle, serialized_message, allocation);
+
+  // DUMMY 'rmw_publish_serialized_message', return default 'rmw_ret_t'(RMW_RET_OK)
+  rmw_ret_t ret = RMW_RET_OK;
+  // rmw_ret_t ret = rmw_publish_serialized_message(
+  //   publisher->impl->rmw_handle, serialized_message, allocation);
   if (ret != RMW_RET_OK) {
     RCL_SET_ERROR_MSG(rmw_get_error_string().str);
     if (ret == RMW_RET_BAD_ALLOC) {
@@ -290,7 +309,10 @@ rcl_publish_loaned_message(
     return RCL_RET_PUBLISHER_INVALID;  // error already set
   }
   RCL_CHECK_ARGUMENT_FOR_NULL(ros_message, RCL_RET_INVALID_ARGUMENT);
-  rmw_ret_t ret = rmw_publish_loaned_message(publisher->impl->rmw_handle, ros_message, allocation);
+
+  // DUMMY 'rmw_publish_loaned_message', return default 'rmw_ret_t'(RMW_RET_OK)
+  rmw_ret_t ret = RMW_RET_OK;
+  // rmw_ret_t ret = rmw_publish_loaned_message(publisher->impl->rmw_handle, ros_message, allocation);
   if (ret != RMW_RET_OK) {
     RCL_SET_ERROR_MSG(rmw_get_error_string().str);
     return RCL_RET_ERROR;
@@ -304,10 +326,11 @@ rcl_publisher_assert_liveliness(const rcl_publisher_t * publisher)
   if (!rcl_publisher_is_valid(publisher)) {
     return RCL_RET_PUBLISHER_INVALID;  // error already set
   }
-  if (rmw_publisher_assert_liveliness(publisher->impl->rmw_handle) != RMW_RET_OK) {
-    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-    return RCL_RET_ERROR;
-  }
+  // DUMMY 'rmw_publisher_assert_liveliness'
+  // if (rmw_publisher_assert_liveliness(publisher->impl->rmw_handle) != RMW_RET_OK) {
+  //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+  //   return RCL_RET_ERROR;
+  // }
   return RCL_RET_OK;
 }
 
@@ -330,7 +353,9 @@ rcl_publisher_wait_for_all_acked(const rcl_publisher_t * publisher, rcl_duration
     rmw_timeout = zero;
   }
 
-  rmw_ret_t ret = rmw_publisher_wait_for_all_acked(publisher->impl->rmw_handle, rmw_timeout);
+  // DUMMY 'rmw_publisher_wait_for_all_acked', return default 'rmw_ret_t'(RMW_RET_OK)
+  rmw_ret_t ret = RMW_RET_OK;
+  // rmw_ret_t ret = rmw_publisher_wait_for_all_acked(publisher->impl->rmw_handle, rmw_timeout);
   if (ret != RMW_RET_OK) {
     if (ret == RMW_RET_TIMEOUT) {
       return RCL_RET_TIMEOUT;
@@ -420,8 +445,10 @@ rcl_publisher_get_subscription_count(
   }
   RCL_CHECK_ARGUMENT_FOR_NULL(subscription_count, RCL_RET_INVALID_ARGUMENT);
 
-  rmw_ret_t ret = rmw_publisher_count_matched_subscriptions(
-    publisher->impl->rmw_handle, subscription_count);
+  // DUMMY 'rmw_publisher_count_matched_subscriptions', return default 'rmw_ret_t'(RMW_RET_OK)
+  rmw_ret_t ret = RMW_RET_OK;
+  // rmw_ret_t ret = rmw_publisher_count_matched_subscriptions(
+  //   publisher->impl->rmw_handle, subscription_count);
 
   if (ret != RMW_RET_OK) {
     RCL_SET_ERROR_MSG(rmw_get_error_string().str);
