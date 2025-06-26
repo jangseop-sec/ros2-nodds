@@ -17,6 +17,8 @@ extern "C"
 {
 #endif
 
+#define ROS_PACKAGE_NAME "test"
+
 #include "rcl/subscription.h"
 
 #include <stdio.h>
@@ -28,9 +30,10 @@ extern "C"
 #include "rcutils/strdup.h"
 #include "rcutils/types/string_array.h"
 #include "rmw/error_handling.h"
+#include "rmw/subscription_options.h"
 #include "rmw/subscription_content_filter_options.h"
 #include "rmw/validate_full_topic_name.h"
-#include "tracetools/tracetools.h"
+// #include "tracetools/tracetools.h"
 
 #include "./common.h"
 #include "./subscription_impl.h"
@@ -99,43 +102,48 @@ rcl_subscription_init(
   // Fill out the implemenation struct.
   // rmw_handle
   // TODO(wjwwood): pass allocator once supported in rmw api.
-  subscription->impl->rmw_handle = rmw_create_subscription(
-    rcl_node_get_rmw_handle(node),
-    type_support,
-    remapped_topic_name,
-    &(options->qos),
-    &(options->rmw_subscription_options));
-  if (!subscription->impl->rmw_handle) {
-    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-    goto fail;
-  }
+  // DUMMY 'rmw_create_subscription'
+  // subscription->impl->rmw_handle = rmw_create_subscription(
+  //   rcl_node_get_rmw_handle(node),
+  //   type_support,
+  //   remapped_topic_name,
+  //   &(options->qos),
+  //   &(options->rmw_subscription_options));
+  // if (!subscription->impl->rmw_handle) {
+  //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+  //   goto fail;
+  // }
   // get actual qos, and store it
-  rmw_ret_t rmw_ret = rmw_subscription_get_actual_qos(
-    subscription->impl->rmw_handle,
-    &subscription->impl->actual_qos);
-  if (RMW_RET_OK != rmw_ret) {
-    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-    goto fail;
-  }
-  subscription->impl->actual_qos.avoid_ros_namespace_conventions =
-    options->qos.avoid_ros_namespace_conventions;
+  // DUMMY 'rmw_subscription_get_actual_qos'
+  // rmw_ret_t rmw_ret = rmw_subscription_get_actual_qos(
+  //   subscription->impl->rmw_handle,
+  //   &subscription->impl->actual_qos);
+  // if (RMW_RET_OK != rmw_ret) {
+  //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+  //   goto fail;
+  // }
+  // subscription->impl->actual_qos.avoid_ros_namespace_conventions =
+  //   options->qos.avoid_ros_namespace_conventions;
   // options
   subscription->impl->options = *options;
   RCUTILS_LOG_DEBUG_NAMED(ROS_PACKAGE_NAME, "Subscription initialized");
   ret = RCL_RET_OK;
-  TRACEPOINT(
-    rcl_subscription_init,
-    (const void *)subscription,
-    (const void *)node,
-    (const void *)subscription->impl->rmw_handle,
-    remapped_topic_name,
-    options->qos.depth);
+  // DUMMY 'TRACEPOINT'
+  // TRACEPOINT(
+  //   rcl_subscription_init,
+  //   (const void *)subscription,
+  //   (const void *)node,
+  //   (const void *)subscription->impl->rmw_handle,
+  //   remapped_topic_name,
+  //   options->qos.depth);
   goto cleanup;
 fail:
   if (subscription->impl) {
     if (subscription->impl->rmw_handle) {
-      rmw_ret_t rmw_fail_ret = rmw_destroy_subscription(
-        rcl_node_get_rmw_handle(node), subscription->impl->rmw_handle);
+      // DUMMY 'rwm_destroy_subscription', return default rmw_ret_t(RMW_RET_OK)
+      rmw_ret_t rmw_fail_ret = RMW_RET_OK;
+      // rmw_ret_t rmw_fail_ret = rmw_destroy_subscription(
+      //   rcl_node_get_rmw_handle(node), subscription->impl->rmw_handle);
       if (RMW_RET_OK != rmw_fail_ret) {
         RCUTILS_SAFE_FWRITE_TO_STDERR(rmw_get_error_string().str);
         RCUTILS_SAFE_FWRITE_TO_STDERR("\n");
@@ -178,8 +186,10 @@ rcl_subscription_fini(rcl_subscription_t * subscription, rcl_node_t * node)
     if (!rmw_node) {
       return RCL_RET_INVALID_ARGUMENT;
     }
-    rmw_ret_t ret =
-      rmw_destroy_subscription(rmw_node, subscription->impl->rmw_handle);
+    // DUMMY 'rmw_destroy_subscription', return default rmw_ret_t(RMW_RET_OK)
+    rmw_ret_t ret = RMW_RET_OK;
+    // rmw_ret_t ret =
+    //   rmw_destroy_subscription(rmw_node, subscription->impl->rmw_handle);
     if (ret != RMW_RET_OK) {
       RCL_SET_ERROR_MSG(rmw_get_error_string().str);
       result = RCL_RET_ERROR;
@@ -450,9 +460,12 @@ rcl_subscription_set_content_filter(
   }
 
   RCL_CHECK_ARGUMENT_FOR_NULL(options, RCL_RET_INVALID_ARGUMENT);
-  rmw_ret_t ret = rmw_subscription_set_content_filter(
-    subscription->impl->rmw_handle,
-    &options->rmw_subscription_content_filter_options);
+
+  // DUMMY 'rmw_subscription_set_content_filter', return default rmw_ret_t(RMW_RET_OK)
+  rmw_ret_t ret = RMW_RET_OK;
+  // rmw_ret_t ret = rmw_subscription_set_content_filter(
+  //   subscription->impl->rmw_handle,
+  //   &options->rmw_subscription_content_filter_options);
 
   if (ret != RMW_RET_OK) {
     RCL_SET_ERROR_MSG(rmw_get_error_string().str);
@@ -486,10 +499,12 @@ rcl_subscription_get_content_filter(
   rcl_allocator_t * allocator = &subscription->impl->options.allocator;
   RCL_CHECK_ALLOCATOR_WITH_MSG(allocator, "invalid allocator", return RCL_RET_INVALID_ARGUMENT);
 
-  rmw_ret_t rmw_ret = rmw_subscription_get_content_filter(
-    subscription->impl->rmw_handle,
-    allocator,
-    &options->rmw_subscription_content_filter_options);
+  // DUMMY 'rmw_subscription_get_content_filter', return default rmw_ret_t(RMW_RET_OK)
+  rmw_ret_t rmw_ret = RMW_RET_OK;
+  // rmw_ret_t rmw_ret = rmw_subscription_get_content_filter(
+  //   subscription->impl->rmw_handle,
+  //   allocator,
+  //   &options->rmw_subscription_content_filter_options);
 
   return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
 }
@@ -514,18 +529,20 @@ rcl_take(
   *message_info_local = rmw_get_zero_initialized_message_info();
   // Call rmw_take_with_info.
   bool taken = false;
-  rmw_ret_t ret = rmw_take_with_info(
-    subscription->impl->rmw_handle, ros_message, &taken, message_info_local, allocation);
+  // DUMMY 'rmw_take_with_info', return default rmw_ret_t(RMW_RET_OK)
+  rmw_ret_t ret = RMW_RET_OK;
+  // rmw_ret_t ret = rmw_take_with_info(
+  //   subscription->impl->rmw_handle, ros_message, &taken, message_info_local, allocation);
   if (ret != RMW_RET_OK) {
     RCL_SET_ERROR_MSG(rmw_get_error_string().str);
     return rcl_convert_rmw_ret_to_rcl_ret(ret);
   }
   RCUTILS_LOG_DEBUG_NAMED(
     ROS_PACKAGE_NAME, "Subscription take succeeded: %s", taken ? "true" : "false");
-  TRACEPOINT(rcl_take, (const void *)ros_message);
-  if (!taken) {
-    return RCL_RET_SUBSCRIPTION_TAKE_FAILED;
-  }
+  // TRACEPOINT(rcl_take, (const void *)ros_message);
+  // if (!taken) {
+  //   return RCL_RET_SUBSCRIPTION_TAKE_FAILED;
+  // }
   return RCL_RET_OK;
 }
 
@@ -560,18 +577,19 @@ rcl_take_sequence(
   message_info_sequence->size = 0u;
 
   size_t taken = 0u;
-  rmw_ret_t ret = rmw_take_sequence(
-    subscription->impl->rmw_handle, count, message_sequence, message_info_sequence, &taken,
-    allocation);
-  if (ret != RMW_RET_OK) {
-    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-    return rcl_convert_rmw_ret_to_rcl_ret(ret);
-  }
+  // DUMMY 'rmw_take_sequence'
+  // rmw_ret_t ret = rmw_take_sequence(
+  //   subscription->impl->rmw_handle, count, message_sequence, message_info_sequence, &taken,
+  //   allocation);
+  // if (ret != RMW_RET_OK) {
+  //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+  //   return rcl_convert_rmw_ret_to_rcl_ret(ret);
+  // }
   RCUTILS_LOG_DEBUG_NAMED(
     ROS_PACKAGE_NAME, "Subscription took %zu messages", taken);
-  if (0u == taken) {
-    return RCL_RET_SUBSCRIPTION_TAKE_FAILED;
-  }
+  // if (0u == taken) {
+  //   return RCL_RET_SUBSCRIPTION_TAKE_FAILED;
+  // }
   return RCL_RET_OK;
 }
 
@@ -593,18 +611,21 @@ rcl_take_serialized_message(
   rmw_message_info_t * message_info_local = message_info ? message_info : &dummy_message_info;
   *message_info_local = rmw_get_zero_initialized_message_info();
   // Call rmw_take_with_info.
-  bool taken = false;
-  rmw_ret_t ret = rmw_take_serialized_message_with_info(
-    subscription->impl->rmw_handle, serialized_message, &taken, message_info_local, allocation);
-  if (ret != RMW_RET_OK) {
-    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-    return rcl_convert_rmw_ret_to_rcl_ret(ret);
-  }
+  // bool taken = false;
+  bool taken = true;
+
+  // DUMMY 'rmw_take_serialized_message_with_info', return default rmw_ret_t(RMW_RET_OK)
+  // rmw_ret_t ret = rmw_take_serialized_message_with_info(
+  //   subscription->impl->rmw_handle, serialized_message, &taken, message_info_local, allocation);
+  // if (ret != RMW_RET_OK) {
+  //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+  //   return rcl_convert_rmw_ret_to_rcl_ret(ret);
+  // }
   RCUTILS_LOG_DEBUG_NAMED(
     ROS_PACKAGE_NAME, "Subscription serialized take succeeded: %s", taken ? "true" : "false");
-  if (!taken) {
-    return RCL_RET_SUBSCRIPTION_TAKE_FAILED;
-  }
+  // if (!taken) {
+  //   return RCL_RET_SUBSCRIPTION_TAKE_FAILED;
+  // }
   return RCL_RET_OK;
 }
 
@@ -629,18 +650,21 @@ rcl_take_loaned_message(
   rmw_message_info_t * message_info_local = message_info ? message_info : &dummy_message_info;
   *message_info_local = rmw_get_zero_initialized_message_info();
   // Call rmw_take_with_info.
-  bool taken = false;
-  rmw_ret_t ret = rmw_take_loaned_message_with_info(
-    subscription->impl->rmw_handle, loaned_message, &taken, message_info_local, allocation);
-  if (ret != RMW_RET_OK) {
-    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-    return rcl_convert_rmw_ret_to_rcl_ret(ret);
-  }
+  // bool taken = false;
+  bool taken = true;
+
+  // DUMMY 'rmw_take_loaned_message_with_info'
+  // rmw_ret_t ret = rmw_take_loaned_message_with_info(
+  //   subscription->impl->rmw_handle, loaned_message, &taken, message_info_local, allocation);
+  // if (ret != RMW_RET_OK) {
+  //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+  //   return rcl_convert_rmw_ret_to_rcl_ret(ret);
+  // }
   RCUTILS_LOG_DEBUG_NAMED(
     ROS_PACKAGE_NAME, "Subscription loaned take succeeded: %s", taken ? "true" : "false");
-  if (!taken) {
-    return RCL_RET_SUBSCRIPTION_TAKE_FAILED;
-  }
+  // if (!taken) {
+  //   return RCL_RET_SUBSCRIPTION_TAKE_FAILED;
+  // }
   return RCL_RET_OK;
 }
 
@@ -654,9 +678,12 @@ rcl_return_loaned_message_from_subscription(
     return RCL_RET_SUBSCRIPTION_INVALID;  // error already set
   }
   RCL_CHECK_ARGUMENT_FOR_NULL(loaned_message, RCL_RET_INVALID_ARGUMENT);
-  return rcl_convert_rmw_ret_to_rcl_ret(
-    rmw_return_loaned_message_from_subscription(
-      subscription->impl->rmw_handle, loaned_message));
+  
+  // DUMMY 'rmw_return_loaned_message_from_subscription', return default rcl_ret_t(RCL_RET_OK)
+  return RCL_RET_OK;
+  // return rcl_convert_rmw_ret_to_rcl_ret(
+  //   rmw_return_loaned_message_from_subscription(
+  //     subscription->impl->rmw_handle, loaned_message));
 }
 
 const char *
@@ -711,13 +738,15 @@ rcl_subscription_get_publisher_count(
     return RCL_RET_SUBSCRIPTION_INVALID;
   }
   RCL_CHECK_ARGUMENT_FOR_NULL(publisher_count, RCL_RET_INVALID_ARGUMENT);
-  rmw_ret_t ret = rmw_subscription_count_matched_publishers(
-    subscription->impl->rmw_handle, publisher_count);
+  
+  // DUMMY 'rmw_subscription_count_matched_publishers'
+  // rmw_ret_t ret = rmw_subscription_count_matched_publishers(
+  //   subscription->impl->rmw_handle, publisher_count);
 
-  if (ret != RMW_RET_OK) {
-    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-    return rcl_convert_rmw_ret_to_rcl_ret(ret);
-  }
+  // if (ret != RMW_RET_OK) {
+  //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+  //   return rcl_convert_rmw_ret_to_rcl_ret(ret);
+  // }
   return RCL_RET_OK;
 }
 
@@ -772,10 +801,12 @@ rcl_subscription_set_on_new_message_callback(
     return RCL_RET_INVALID_ARGUMENT;
   }
 
-  return rmw_subscription_set_on_new_message_callback(
-    subscription->impl->rmw_handle,
-    callback,
-    user_data);
+  // DUMMY 'rmw_subscription_set_on_new_message_callback', return default rcl_ret_t(RCL_RET_OK)
+  return RCL_RET_OK;
+  // return rmw_subscription_set_on_new_message_callback(
+  //   subscription->impl->rmw_handle,
+  //   callback,
+  //   user_data);
 }
 
 #ifdef __cplusplus
