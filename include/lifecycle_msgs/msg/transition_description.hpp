@@ -1,11 +1,11 @@
-#ifndef LIFECYCLES_MSGS__MSG__TRANSITION_DESCRIPTION_HPP_
-#define LIFECYCLES_MSGS__MSG__TRANSITION_DESCRIPTION_HPP_
+#ifndef LIFECYCLE_MSGS__MSG__TRANSITION_DESCRIPTION_HPP_
+#define LIFECYCLE_MSGS__MSG__TRANSITION_DESCRIPTION_HPP_
 
 // Add your includes and code here
-#include "lifecycles_msgs/msg/transition.hpp"
-#include "lifecycles_msgs/msg/state.hpp"
+#include "lifecycle_msgs/msg/transition.hpp"
+#include "lifecycle_msgs/msg/state.hpp"
 
-namespace lifecycles_msgs
+namespace lifecycle_msgs
 {
 namespace msg
 {
@@ -24,4 +24,4 @@ using TransitionDescription = TransitionDescription_<std::allocator<void>>;
 
 }  // namespace lifecycles_msgs
 
-#endif  // LIFECYCLES_MSGS__MSG__TRANSITION_DESCRIPTION_HPP_
+#endif  // LIFECYCLE_MSGS__MSG__TRANSITION_DESCRIPTION_HPP_

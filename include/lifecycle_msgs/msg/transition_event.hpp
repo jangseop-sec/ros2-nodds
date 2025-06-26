@@ -1,12 +1,12 @@
-#ifndef LIFECYCLES_MSGS__MSG__TRANSITION_EVENT_HPP_
-#define LIFECYCLES_MSGS__MSG__TRANSITION_EVENT_HPP_
+#ifndef LIFECYCLE_MSGS__MSG__TRANSITION_EVENT_HPP_
+#define LIFECYCLE_MSGS__MSG__TRANSITION_EVENT_HPP_
 
 #include <memory>
 
-#include "lifecycles_msgs/msg/state.hpp";
-#include "lifecycles_msgs/msg/transition.hpp"
+#include "lifecycle_msgs/msg/state.hpp";
+#include "lifecycle_msgs/msg/transition.hpp"
 
-namespace lifecycles_msgs
+namespace lifecycle_msgs
 {
 namespace msg
 {
@@ -27,4 +27,4 @@ using TransitionEvent = TransitionEvent_<std::allocator<void>>;
 }
 
 
-#endif  // LIFECYCLES_MSGS__MSG__TRANSITION_EVENT_HPP_
+#endif  // LIFECYCLES_MSG__MSG__TRANSITION_EVENT_HPP_
