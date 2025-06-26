@@ -30,7 +30,35 @@ typedef struct rmw_subscription_content_filter_options_s
 } rmw_subscription_content_filter_options_t;
 
 
+rmw_subscription_content_filter_options_t
+rmw_get_zero_initialized_content_filter_options();
 
+rmw_ret_t
+rmw_subscription_content_filter_options_init(
+  const char * filter_expression,
+  size_t expression_parameters_argc,
+  const char * expression_parameter_argv[],
+  const rcutils_allocator_t * allocator,
+  rmw_subscription_content_filter_options_t * options);
+
+rmw_ret_t
+rmw_subscription_content_filter_options_set(
+  const char * filter_expression,
+  size_t expression_parameters_argc,
+  const char * expression_parameter_argv[],
+  const rcutils_allocator_t * allocator,
+  rmw_subscription_content_filter_options_t * options);
+
+rmw_ret_t
+rmw_subscription_content_filter_options_copy(
+  const rmw_subscription_content_filter_options_t * src,
+  const rcutils_allocator_t * allocator,
+  rmw_subscription_content_filter_options_t * dst);
+
+rmw_ret_t
+rmw_subscription_content_filter_options_fini(
+  rmw_subscription_content_filter_options_t * options,
+  const rcutils_allocator_t * allocator);
 
 #ifdef __cplusplus
 }

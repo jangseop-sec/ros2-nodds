@@ -9,9 +9,10 @@ extern "C" {
 #include <stddef.h>
 
 #include "rcutils/allocator.h"
-
-#include "rmw/allocator.h"
+#include "rmw/domain_id.h"
 #include "rmw/localhost.h"
+#include "rmw/macros.h"
+#include "rmw/ret_types.h"
 #include "rmw/security_options.h"
 
 typedef struct rmw_init_options_impl_s rmw_init_options_impl_t;
@@ -44,6 +45,9 @@ typedef struct rmw_init_options_s
   /** May be NULL if there are no implementation defined options. */
   rmw_init_options_impl_t * impl;
 } rmw_init_options_t;
+
+rmw_init_options_t
+rmw_get_zero_initialized_init_options(void);
 
 #ifdef __cplusplus
 }

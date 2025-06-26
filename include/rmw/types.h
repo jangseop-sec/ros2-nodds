@@ -12,10 +12,13 @@ extern "C"
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "rmw/time.h"
 #include "rmw/init.h"
+#include "rmw/init_options.h"
+#include "rmw/ret_types.h"
+#include "rmw/security_options.h"
 #include "rmw/serialized_message.h"
 #include "rmw/subscription_content_filter_options.h"
+#include "rmw/time.h"
 
 #include "rcutils/time.h"
 
@@ -32,9 +35,6 @@ extern "C"
 #define RMW_QOS_DEADLINE_DEFAULT RMW_DURATION_UNSPECIFIED
 #define RMW_QOS_LIFESPAN_DEFAULT RMW_DURATION_UNSPECIFIED
 #define RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT RMW_DURATION_UNSPECIFIED
-
-typedef rcutils_time_point_value_t rmw_time_point_value_t;
-typedef rcutils_duration_value_t rmw_duration_t;
 
 typedef enum rmw_qos_durability_policy_e
 {
@@ -577,6 +577,10 @@ typedef struct rmw_wait_set_s
   /// Type erased pointer to this wait set's data
   void * data;
 } rmw_wait_set_t;
+
+
+rmw_message_info_t
+rmw_get_zero_initialized_message_info(void);
 
 #ifdef __cplusplus
 }

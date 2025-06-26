@@ -6,6 +6,8 @@ extern "C"
 {
 #endif
 
+#include "rmw/ret_types.h"
+
 typedef enum rmw_event_type_e
 {
   // subscription events
@@ -32,6 +34,12 @@ typedef struct rmw_event_s
   /// The event type that occurred.
   rmw_event_type_t event_type;
 } rmw_event_t;
+
+rmw_event_t
+rmw_get_zero_initialized_event(void);
+
+rmw_ret_t
+rmw_event_fini(rmw_event_t * rmw_event);
 
 #ifdef __cplusplus
 }

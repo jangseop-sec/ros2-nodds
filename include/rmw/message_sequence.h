@@ -35,6 +35,30 @@ typedef struct rmw_message_info_sequence_s
   rcutils_allocator_t * allocator;
 } rmw_message_info_sequence_t;
 
+rmw_message_sequence_t
+rmw_get_zero_initialized_message_sequence(void);
+
+rmw_ret_t
+rmw_message_sequence_init(
+  rmw_message_sequence_t * sequence,
+  size_t size,
+  rcutils_allocator_t * allocator);
+
+rmw_ret_t
+rmw_message_sequence_fini(rmw_message_sequence_t * sequence);
+
+rmw_message_info_sequence_t
+rmw_get_zero_initialized_message_info_sequence(void);
+
+rmw_ret_t
+rmw_message_info_sequence_init(
+  rmw_message_info_sequence_t * sequence,
+  size_t size,
+  rcutils_allocator_t * allocator);
+
+rmw_ret_t
+rmw_message_info_sequence_fini(rmw_message_info_sequence_t * sequence);
+
 #ifdef __cplusplus
 }
 #endif

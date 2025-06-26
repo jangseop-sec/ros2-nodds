@@ -10,6 +10,8 @@ extern "C"
 #include <stddef.h>
 
 #include "rmw/init_options.h"
+#include "rmw/macros.h"
+#include "rmw/ret_types.h"
 
 // FIXME 'rmw_context_impl_s'가 구현 안되어 있어도 문제 없나? -> 실제로는 DDS layer에서 구현
 typedef struct rmw_context_impl_s rmw_context_impl_t;
@@ -28,6 +30,9 @@ typedef struct rmw_context_s
   /** May be NULL if there is no implementation defined context information. */
   rmw_context_impl_t * impl;
 } rmw_context_t;
+
+rmw_context_t
+rmw_get_zero_initialized_context(void);
 
 #ifdef __cplusplus
 }
