@@ -28,7 +28,9 @@ extern "C"
 #include "rcutils/macros.h"
 #include "rmw/error_handling.h"
 #include "rmw/rmw.h"
-#include "tracetools/tracetools.h"
+// #include "tracetools/tracetools.h"
+
+#define ROS_PACKAGE_NAME "test"
 
 struct rcl_service_impl_s
 {
@@ -115,33 +117,35 @@ rcl_service_init(
   // Fill out implementation struct.
   // rmw handle (create rmw service)
   // TODO(wjwwood): pass along the allocator to rmw when it supports it
-  service->impl->rmw_handle = rmw_create_service(
-    rcl_node_get_rmw_handle(node),
-    type_support,
-    remapped_service_name,
-    &options->qos);
-  if (!service->impl->rmw_handle) {
-    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-    goto fail;
-  }
+  // DUMMY 'rmw_create_service'
+  // service->impl->rmw_handle = rmw_create_service(
+  //   rcl_node_get_rmw_handle(node),
+  //   type_support,
+  //   remapped_service_name,
+  //   &options->qos);
+  // if (!service->impl->rmw_handle) {
+  //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+  //   goto fail;
+  // }
   // get actual qos, and store it
-  rmw_ret_t rmw_ret = rmw_service_request_subscription_get_actual_qos(
-    service->impl->rmw_handle,
-    &service->impl->actual_request_subscription_qos);
+  // DUMMY 'rmw_service_request_subscription_get_actual_qos' and 'rmw_service_response_publisher_get_actual_qos'
+  // rmw_ret_t rmw_ret = rmw_service_request_subscription_get_actual_qos(
+  //   service->impl->rmw_handle,
+  //   &service->impl->actual_request_subscription_qos);
 
-  if (RMW_RET_OK != rmw_ret) {
-    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-    goto fail;
-  }
+  // if (RMW_RET_OK != rmw_ret) {
+  //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+  //   goto fail;
+  // }
 
-  rmw_ret = rmw_service_response_publisher_get_actual_qos(
-    service->impl->rmw_handle,
-    &service->impl->actual_response_publisher_qos);
+  // rmw_ret = rmw_service_response_publisher_get_actual_qos(
+  //   service->impl->rmw_handle,
+  //   &service->impl->actual_response_publisher_qos);
 
-  if (RMW_RET_OK != rmw_ret) {
-    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-    goto fail;
-  }
+  // if (RMW_RET_OK != rmw_ret) {
+  //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+  //   goto fail;
+  // }
 
   // ROS specific namespacing conventions is not retrieved by get_actual_qos
   service->impl->actual_request_subscription_qos.avoid_ros_namespace_conventions =
@@ -153,12 +157,12 @@ rcl_service_init(
   service->impl->options = *options;
   RCUTILS_LOG_DEBUG_NAMED(ROS_PACKAGE_NAME, "Service initialized");
   ret = RCL_RET_OK;
-  TRACEPOINT(
-    rcl_service_init,
-    (const void *)service,
-    (const void *)node,
-    (const void *)service->impl->rmw_handle,
-    remapped_service_name);
+  // TRACEPOINT(
+  //   rcl_service_init,
+  //   (const void *)service,
+  //   (const void *)node,
+  //   (const void *)service->impl->rmw_handle,
+  //   remapped_service_name);
   goto cleanup;
 fail:
   if (service->impl) {
@@ -193,11 +197,12 @@ rcl_service_fini(rcl_service_t * service, rcl_node_t * node)
     if (!rmw_node) {
       return RCL_RET_INVALID_ARGUMENT;
     }
-    rmw_ret_t ret = rmw_destroy_service(rmw_node, service->impl->rmw_handle);
-    if (ret != RMW_RET_OK) {
-      RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-      result = RCL_RET_ERROR;
-    }
+    // DUMMY 'rmw_destroy_service'
+    // rmw_ret_t ret = rmw_destroy_service(rmw_node, service->impl->rmw_handle);
+    // if (ret != RMW_RET_OK) {
+    //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+    //   result = RCL_RET_ERROR;
+    // }
     allocator.deallocate(service->impl, allocator.state);
     service->impl = NULL;
   }
@@ -263,20 +268,21 @@ rcl_take_request_with_info(
   RCL_CHECK_FOR_NULL_WITH_MSG(options, "Failed to get service options", return RCL_RET_ERROR);
 
   bool taken = false;
-  rmw_ret_t ret = rmw_take_request(
-    service->impl->rmw_handle, request_header, ros_request, &taken);
-  if (RMW_RET_OK != ret) {
-    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-    if (RMW_RET_BAD_ALLOC == ret) {
-      return RCL_RET_BAD_ALLOC;
-    }
-    return RCL_RET_ERROR;
-  }
+  // DUMMY 'rmw_take_request'
+  // rmw_ret_t ret = rmw_take_request(
+  //   service->impl->rmw_handle, request_header, ros_request, &taken);
+  // if (RMW_RET_OK != ret) {
+  //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+  //   if (RMW_RET_BAD_ALLOC == ret) {
+  //     return RCL_RET_BAD_ALLOC;
+  //   }
+  //   return RCL_RET_ERROR;
+  // }
   RCUTILS_LOG_DEBUG_NAMED(
-    ROS_PACKAGE_NAME, "Service take request succeeded: %s", taken ? "true" : "false");
-  if (!taken) {
-    return RCL_RET_SERVICE_TAKE_FAILED;
-  }
+    ROS_PACKAGE_NAME, "Service take request succeeded: true");
+  // if (!taken) {
+  //   return RCL_RET_SERVICE_TAKE_FAILED;
+  // }
   return RCL_RET_OK;
 }
 
@@ -309,14 +315,15 @@ rcl_send_response(
   const rcl_service_options_t * options = rcl_service_get_options(service);
   RCL_CHECK_FOR_NULL_WITH_MSG(options, "Failed to get service options", return RCL_RET_ERROR);
 
-  ret = rmw_send_response(service->impl->rmw_handle, request_header, ros_response);
-  if (ret != RMW_RET_OK) {
-    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-    if (ret == RMW_RET_TIMEOUT) {
-      return RCL_RET_TIMEOUT;
-    }
-    return RCL_RET_ERROR;
-  }
+  // DUMMY 'rmw_send_response'
+  // ret = rmw_send_response(service->impl->rmw_handle, request_header, ros_response);
+  // if (ret != RMW_RET_OK) {
+  //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+  //   if (ret == RMW_RET_TIMEOUT) {
+  //     return RCL_RET_TIMEOUT;
+  //   }
+  //   return RCL_RET_ERROR;
+  // }
   return RCL_RET_OK;
 }
 
@@ -360,10 +367,12 @@ rcl_service_set_on_new_request_callback(
     return RCL_RET_INVALID_ARGUMENT;
   }
 
-  return rmw_service_set_on_new_request_callback(
-    service->impl->rmw_handle,
-    callback,
-    user_data);
+  // DUMMY 'rmw_service_set_on_new_request_callback'
+  return RCL_RET_OK;
+  // return rmw_service_set_on_new_request_callback(
+  //   service->impl->rmw_handle,
+  //   callback,
+  //   user_data);
 }
 
 #ifdef __cplusplus
