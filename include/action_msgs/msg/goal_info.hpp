@@ -1,31 +1,12 @@
+// generated from rosidl_generator_cpp/resource/idl.hpp.em
+// generated code does not contain a copyright notice
+
 #ifndef ACTION_MSGS__MSG__GOAL_INFO_HPP_
 #define ACTION_MSGS__MSG__GOAL_INFO_HPP_
 
-#include <memory>
+#include "action_msgs/msg/detail/goal_info__struct.hpp"
+#include "action_msgs/msg/detail/goal_info__builder.hpp"
+#include "action_msgs/msg/detail/goal_info__traits.hpp"
+#include "action_msgs/msg/detail/goal_info__type_support.hpp"
 
-#include "unique_identifier_msgs/msg/UUID.hpp"
-#include "builtin_interfaces/msg/time.hpp"
-
-namespace action_msgs 
-{
-
-namespace msg
-{
-
-using namespace unique_identifier_msgs::msg;
-using namespace builtin_interfaces::msg;
-
-template<class ContainerAllocator>
-struct GoalInfo_
-{
-  UUID goal_id;
-  Time stamp;
-};
-
-using GoalInfo = GoalInfo_<std::allocator<void>>;
-
-}
-
-}
-
-#endif // ACTION_MSGS__MSG__GOAL_INFO_HPP_
+#endif  // ACTION_MSGS__MSG__GOAL_INFO_HPP_

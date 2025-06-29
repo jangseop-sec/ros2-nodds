@@ -1,25 +1,12 @@
+// generated from rosidl_generator_c/resource/idl.h.em
+// with input from action_msgs:msg/GoalInfo.idl
+// generated code does not contain a copyright notice
+
 #ifndef ACTION_MSGS__MSG__GOAL_INFO_H_
 #define ACTION_MSGS__MSG__GOAL_INFO_H_
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
-#include "unique_identifier_msgs/msg/UUID.h"
-#include "builtin_interfaces/msg/time.h"
-
-typedef unique_identifier_msgs__msg__UUID UUID;
-typedef builtin_interfaces__msgs__Time Time;
-
-typedef struct GoalInfo {
-  UUID goal_id;
-  Time stamp;
-} action_msgs__msg__GoalInfo;
-
-
-#ifdef __cplusplus
-}
-#endif
+#include "action_msgs/msg/detail/goal_info__struct.h"
+#include "action_msgs/msg/detail/goal_info__functions.h"
+#include "action_msgs/msg/detail/goal_info__type_support.h"
 
 #endif  // ACTION_MSGS__MSG__GOAL_INFO_H_

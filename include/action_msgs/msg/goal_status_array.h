@@ -1,27 +1,12 @@
+// generated from rosidl_generator_c/resource/idl.h.em
+// with input from action_msgs:msg/GoalStatusArray.idl
+// generated code does not contain a copyright notice
+
 #ifndef ACTION_MSGS__MSG__GOAL_STATUS_ARRAY_H_
 #define ACTION_MSGS__MSG__GOAL_STATUS_ARRAY_H_
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+#include "action_msgs/msg/detail/goal_status_array__struct.h"
+#include "action_msgs/msg/detail/goal_status_array__functions.h"
+#include "action_msgs/msg/detail/goal_status_array__type_support.h"
 
-#include <stddef.h>
-
-#include <action_msgs/msg/goal_status.h>
-
-typedef action_msgs__msg__GoalStatus GoalStatus;
-
-struct GoalStatusList {
-  GoalStatus * data;
-  size_t size;
-};
-typedef struct GoalStatusArray {
-  struct GoalStatusList status_list;  // Array of goal statuses
-} action_msgs__msg__GoalStatusArray;
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif // ACTION_MSGS__MSG__GOAL_STATUS_ARRAY_H_
+#endif  // ACTION_MSGS__MSG__GOAL_STATUS_ARRAY_H_
