@@ -19,6 +19,8 @@
 #include "rcutils/logging_macros.h"
 #include "rcutils/strdup.h"
 
+#define ROS_PACKAGE_NAME "test"
+
 rcl_log_levels_t
 rcl_get_zero_initialized_log_levels()
 {
