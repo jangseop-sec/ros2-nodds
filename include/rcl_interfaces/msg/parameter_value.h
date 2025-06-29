@@ -1,29 +1,12 @@
+// generated from rosidl_generator_c/resource/idl.h.em
+// with input from rcl_interfaces:msg/ParameterValue.idl
+// generated code does not contain a copyright notice
+
 #ifndef RCL_INTERFACES__MSG__PARAMETER_VALUE_H_
 #define RCL_INTERFACES__MSG__PARAMETER_VALUE_H_
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
-#include <stdint.h>
-#include <stdbool.h>
-
-typedef struct ParameterValue
-{
-  bool bool_value;
-  int64_t integer_value;
-  double double_value;
-  char * string_value;
-  uint8_t * byte_array_value;
-  bool * bool_array_value;
-  int64_t * integer_array_value;
-  double * double_array_value;
-  char ** string_array_value;
-} rcl_interfaces__msg__ParameterValue;
-
-#ifdef __cplusplus
-}
-#endif
+#include "rcl_interfaces/msg/detail/parameter_value__struct.h"
+#include "rcl_interfaces/msg/detail/parameter_value__functions.h"
+#include "rcl_interfaces/msg/detail/parameter_value__type_support.h"
 
 #endif  // RCL_INTERFACES__MSG__PARAMETER_VALUE_H_

@@ -1,23 +1,12 @@
+// generated from rosidl_generator_c/resource/idl.h.em
+// with input from rcl_interfaces:srv/GetParameters.idl
+// generated code does not contain a copyright notice
+
 #ifndef RCL_INTERFACES__SRV__GET_PARAMETERS_H_
 #define RCL_INTERFACES__SRV__GET_PARAMETERS_H_
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
-#include "rcl_interfaces/msg/parameter_value.h"
-
-typedef rcl_interfaces__msg__ParameterValue ParameterValue;
-
-typedef struct GetParameters
-{
-  char ** names;  // Array of parameter names to get
-  ParameterValue * values;  // Array of parameter values corresponding to the names
-} rcl_interfaces__srv__GetParameters;
-
-#ifdef __cplusplus
-}
-#endif
+#include "rcl_interfaces/srv/detail/get_parameters__struct.h"
+#include "rcl_interfaces/srv/detail/get_parameters__functions.h"
+#include "rcl_interfaces/srv/detail/get_parameters__type_support.h"
 
 #endif  // RCL_INTERFACES__SRV__GET_PARAMETERS_H_

@@ -1,25 +1,12 @@
+// generated from rosidl_generator_cpp/resource/idl.hpp.em
+// generated code does not contain a copyright notice
+
 #ifndef RCL_INTERFACES__MSG__INTEGER_RANGE_HPP_
 #define RCL_INTERFACES__MSG__INTEGER_RANGE_HPP_
 
-#include <cstdint>
-#include <ostream>
-
-namespace rcl_interfaces
-{
-namespace msg
-{
-
-template<typename ContainerAllocator>
-struct IntegerRange_
-{
-  int64_t from_value;
-  int64_t to_value;
-  uint64_t step;
-};
-
-using IntegerRange = IntegerRange_<std::allocator<void>>;
-
-}  // namespace msg
-}  // namespace rcl_interfaces
+#include "rcl_interfaces/msg/detail/integer_range__struct.hpp"
+#include "rcl_interfaces/msg/detail/integer_range__builder.hpp"
+#include "rcl_interfaces/msg/detail/integer_range__traits.hpp"
+#include "rcl_interfaces/msg/detail/integer_range__type_support.hpp"
 
 #endif  // RCL_INTERFACES__MSG__INTEGER_RANGE_HPP_

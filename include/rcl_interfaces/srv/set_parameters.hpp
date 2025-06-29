@@ -1,27 +1,12 @@
+// generated from rosidl_generator_cpp/resource/idl.hpp.em
+// generated code does not contain a copyright notice
+
 #ifndef RCL_INTERFACES__SRV__SET_PARAMETERS_HPP_
 #define RCL_INTERFACES__SRV__SET_PARAMETERS_HPP_
 
-#include <memory>
-#include <vector>
-
-#include "rcl_interfaces/msg/parameter.hpp"
-#include "rcl_interfaces/msg/set_parameter_result.hpp"
-
-namespace rcl_interfaces
-{
-
-namespace srv
-{
-
-using namespace rcl_interfaces::msg;
-
-template<typename ContainerAllocator>
-struct SetParameters_
-{
-  std::vector<Parameter> parameters;  // Array of parameters to set
-  std::vector<SetParameterResult> results;  // Array of results corresponding to each
-} // namespace srv
-
-}
+#include "rcl_interfaces/srv/detail/set_parameters__struct.hpp"
+#include "rcl_interfaces/srv/detail/set_parameters__builder.hpp"
+#include "rcl_interfaces/srv/detail/set_parameters__traits.hpp"
+#include "rcl_interfaces/srv/detail/set_parameters__type_support.hpp"
 
 #endif  // RCL_INTERFACES__SRV__SET_PARAMETERS_HPP_

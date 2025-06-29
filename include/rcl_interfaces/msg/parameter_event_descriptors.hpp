@@ -1,28 +1,12 @@
+// generated from rosidl_generator_cpp/resource/idl.hpp.em
+// generated code does not contain a copyright notice
+
 #ifndef RCL_INTERFACES__MSG__PARAMETER_EVENT_DESCRIPTORS_HPP_
 #define RCL_INTERFACES__MSG__PARAMETER_EVENT_DESCRIPTORS_HPP_
 
-#include <vector>
-#include <memory>
-
-#include "rcl_interfaces/msg/parameter_descriptor.hpp"
-
-
-namespace rcl_interfaces
-{
-namespace msg
-{
-
-template<typename ContainerAllocator>
-struct ParameterEventDescriptors_
-{
-  std::vector<ParameterDescriptor> new_parameters;
-  std::vector<ParameterDescriptor> changed_parameters;
-  std::vector<ParameterDescriptor> deleted_parameters;
-};
-
-using ParameterEventDescriptors = ParameterEventDescriptors_<std::allocator<void>>;
-
-}  // namespace msg
-}  // namespace rcl_interfaces
+#include "rcl_interfaces/msg/detail/parameter_event_descriptors__struct.hpp"
+#include "rcl_interfaces/msg/detail/parameter_event_descriptors__builder.hpp"
+#include "rcl_interfaces/msg/detail/parameter_event_descriptors__traits.hpp"
+#include "rcl_interfaces/msg/detail/parameter_event_descriptors__type_support.hpp"
 
 #endif  // RCL_INTERFACES__MSG__PARAMETER_EVENT_DESCRIPTORS_HPP_

@@ -1,22 +1,12 @@
+// generated from rosidl_generator_c/resource/idl.h.em
+// with input from rcl_interfaces:msg/Parameter.idl
+// generated code does not contain a copyright notice
+
 #ifndef RCL_INTERFACES__MSG__PARAMETER_H_
 #define RCL_INTERFACES__MSG__PARAMETER_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#include "rcl_interfaces/msg/parameter_value.h"
-
-typedef rcl_interfaces__msg__ParameterValue ParameterValue;
-
-typedef struct Parameter
-{
-  char * name;  // Name of the parameter
-  ParameterValue value;  // Value of the parameter
-} rcl_interfaces__msg__Parameter;
-
-#ifdef __cplusplus
-}
-#endif
+#include "rcl_interfaces/msg/detail/parameter__struct.h"
+#include "rcl_interfaces/msg/detail/parameter__functions.h"
+#include "rcl_interfaces/msg/detail/parameter__type_support.h"
 
 #endif  // RCL_INTERFACES__MSG__PARAMETER_H_

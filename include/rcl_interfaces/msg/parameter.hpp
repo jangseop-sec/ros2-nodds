@@ -1,24 +1,12 @@
+// generated from rosidl_generator_cpp/resource/idl.hpp.em
+// generated code does not contain a copyright notice
+
 #ifndef RCL_INTERFACES__MSG__PARAMETER_HPP_
 #define RCL_INTERFACES__MSG__PARAMETER_HPP_
 
-// Example parameter structure
-namespace rcl_interfaces
-{
-namespace msg
-{
-
-#include "rcl_interfaces/msg/parameter_value.hpp"
-
-template<typename ContainerAllocator>
-struct Parameter_
-{
-  std::string name;
-  ParameterValue value;
-};
-
-using Parameter = Parameter_<std::allocator<void>>;
-
-}  // namespace msg
-}  // namespace rcl_interfaces
+#include "rcl_interfaces/msg/detail/parameter__struct.hpp"
+#include "rcl_interfaces/msg/detail/parameter__builder.hpp"
+#include "rcl_interfaces/msg/detail/parameter__traits.hpp"
+#include "rcl_interfaces/msg/detail/parameter__type_support.hpp"
 
 #endif  // RCL_INTERFACES__MSG__PARAMETER_HPP_

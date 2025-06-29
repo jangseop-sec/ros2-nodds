@@ -1,21 +1,12 @@
+// generated from rosidl_generator_c/resource/idl.h.em
+// with input from builtin_interfaces:msg/Duration.idl
+// generated code does not contain a copyright notice
+
 #ifndef BUILTIN_INTERFACES__MSG__DURATION_H_
 #define BUILTIN_INTERFACES__MSG__DURATION_H_
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+#include "builtin_interfaces/msg/detail/duration__struct.h"
+#include "builtin_interfaces/msg/detail/duration__functions.h"
+#include "builtin_interfaces/msg/detail/duration__type_support.h"
 
-#include <stdint.h>
-
-typedef struct Duration
-{
-  int32_t sec;
-  uint32_t nanosec;
-} builtin_interfaces__msg__Duration;
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif // BUILTIN_INTERFACES__MSG__DURATION_H_
+#endif  // BUILTIN_INTERFACES__MSG__DURATION_H_

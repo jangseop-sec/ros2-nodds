@@ -1,25 +1,12 @@
+// generated from rosidl_generator_cpp/resource/idl.hpp.em
+// generated code does not contain a copyright notice
+
 #ifndef RCL_INTERFACES__SRV__GET_PARAMETER_TYPES_HPP_
 #define RCL_INTERFACES__SRV__GET_PARAMETER_TYPES_HPP_
 
-#include <memory>
-#include <vector>
+#include "rcl_interfaces/srv/detail/get_parameter_types__struct.hpp"
+#include "rcl_interfaces/srv/detail/get_parameter_types__builder.hpp"
+#include "rcl_interfaces/srv/detail/get_parameter_types__traits.hpp"
+#include "rcl_interfaces/srv/detail/get_parameter_types__type_support.hpp"
 
-namespace rcl_interfaces
-{
-
-namespace srv
-{
-
-template<typename ContainerAllocator>
-struct GetParameterTypes_
-{
-  std::vector<std::string> names;
-  std::vector<uint8_t> types;
-};
-
-using GetParameterTypes = GetParameterTypes_<std::allocator<void>>;
-
-}
-
-}
 #endif  // RCL_INTERFACES__SRV__GET_PARAMETER_TYPES_HPP_

@@ -1,21 +1,12 @@
+// generated from rosidl_generator_c/resource/idl.h.em
+// with input from rcl_interfaces:msg/IntegerRange.idl
+// generated code does not contain a copyright notice
+
 #ifndef RCL_INTERFACES__MSG__INTEGER_RANGE_H_
 #define RCL_INTERFACES__MSG__INTEGER_RANGE_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#include <stdint.h>
-
-typedef struct IntegerRange
-{
-  int64_t from_value;  // The lower bound of the range
-  int64_t to_value;    // The upper bound of the range
-  int64_t step;        // The step size for the range
-} rcl_interfaces__msg__IntegerRange;
-
-#ifdef __cplusplus
-}
-#endif
+#include "rcl_interfaces/msg/detail/integer_range__struct.h"
+#include "rcl_interfaces/msg/detail/integer_range__functions.h"
+#include "rcl_interfaces/msg/detail/integer_range__type_support.h"
 
 #endif  // RCL_INTERFACES__MSG__INTEGER_RANGE_H_
