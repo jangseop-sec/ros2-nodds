@@ -25,6 +25,8 @@
 
 #include "rmw/security_options.h"
 
+#define ROS_PACKAGE_NAME "test"
+
 rcl_ret_t
 rcl_get_security_options_from_environment(
   const char * name,
