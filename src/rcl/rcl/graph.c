@@ -28,10 +28,11 @@ extern "C"
 #include "rcutils/time.h"
 #include "rcutils/types.h"
 #include "rmw/error_handling.h"
-#include "rmw/get_node_info_and_types.h"
-#include "rmw/get_service_names_and_types.h"
-#include "rmw/get_topic_endpoint_info.h"
-#include "rmw/get_topic_names_and_types.h"
+// DUMMY ddd-impl header
+// #include "rmw/get_node_info_and_types.h"
+// #include "rmw/get_service_names_and_types.h"
+// #include "rmw/get_topic_endpoint_info.h"
+// #include "rmw/get_topic_names_and_types.h"
 #include "rmw/names_and_types.h"
 #include "rmw/rmw.h"
 #include "rmw/topic_endpoint_info_array.h"
@@ -103,14 +104,17 @@ rcl_get_publisher_names_and_types_by_node(
     return rcl_ret;
   }
   rcutils_allocator_t rcutils_allocator = *allocator;
-  rmw_ret = rmw_get_publisher_names_and_types_by_node(
-    rcl_node_get_rmw_handle(node),
-    &rcutils_allocator,
-    node_name,
-    valid_namespace,
-    no_demangle,
-    topic_names_and_types
-  );
+  
+  // DUMMY 'rmw_get_publisher_names_and_types_by_node'
+  rmw_ret = RMW_RET_OK;
+  // rmw_ret = rmw_get_publisher_names_and_types_by_node(
+  //   rcl_node_get_rmw_handle(node),
+  //   &rcutils_allocator,
+  //   node_name,
+  //   valid_namespace,
+  //   no_demangle,
+  //   topic_names_and_types
+  // );
   return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
 }
 
@@ -145,14 +149,16 @@ rcl_get_subscriber_names_and_types_by_node(
   if (RCL_RET_OK != rcl_ret) {
     return rcl_ret;
   }
-  rmw_ret = rmw_get_subscriber_names_and_types_by_node(
-    rcl_node_get_rmw_handle(node),
-    &rcutils_allocator,
-    node_name,
-    valid_namespace,
-    no_demangle,
-    topic_names_and_types
-  );
+
+  rmw_ret = RMW_RET_OK;  // DUMMY 'rmw_get_subscriber_names_and_types_by_node'
+  // rmw_ret = rmw_get_subscriber_names_and_types_by_node(
+  //   rcl_node_get_rmw_handle(node),
+  //   &rcutils_allocator,
+  //   node_name,
+  //   valid_namespace,
+  //   no_demangle,
+  //   topic_names_and_types
+  // );
   return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
 }
 
@@ -186,13 +192,15 @@ rcl_get_service_names_and_types_by_node(
     return rcl_ret;
   }
   rcutils_allocator_t rcutils_allocator = *allocator;
-  rmw_ret = rmw_get_service_names_and_types_by_node(
-    rcl_node_get_rmw_handle(node),
-    &rcutils_allocator,
-    node_name,
-    valid_namespace,
-    service_names_and_types
-  );
+  
+  rmw_ret = RMW_RET_OK;  // DUMMY 'rmw_get_service_names_and_types_by_node'
+  // rmw_ret = rmw_get_service_names_and_types_by_node(
+  //   rcl_node_get_rmw_handle(node),
+  //   &rcutils_allocator,
+  //   node_name,
+  //   valid_namespace,
+  //   service_names_and_types
+  // );
   return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
 }
 
@@ -226,13 +234,14 @@ rcl_get_client_names_and_types_by_node(
     return rcl_ret;
   }
   rcutils_allocator_t rcutils_allocator = *allocator;
-  rmw_ret = rmw_get_client_names_and_types_by_node(
-    rcl_node_get_rmw_handle(node),
-    &rcutils_allocator,
-    node_name,
-    valid_namespace,
-    service_names_and_types
-  );
+  rmw_ret = RMW_RET_OK;  // DUMMY 'rmw_get_client_names_and_types_by_node'
+  // rmw_ret = rmw_get_client_names_and_types_by_node(
+  //   rcl_node_get_rmw_handle(node),
+  //   &rcutils_allocator,
+  //   node_name,
+  //   valid_namespace,
+  //   service_names_and_types
+  // );
   return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
 }
 
@@ -254,12 +263,13 @@ rcl_get_topic_names_and_types(
     return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
   }
   rcutils_allocator_t rcutils_allocator = *allocator;
-  rmw_ret = rmw_get_topic_names_and_types(
-    rcl_node_get_rmw_handle(node),
-    &rcutils_allocator,
-    no_demangle,
-    topic_names_and_types
-  );
+  rmw_ret = RMW_RET_OK;  // DUMMY 'rmw_get_topic_names_and_types'
+  // rmw_ret = rmw_get_topic_names_and_types(
+  //   rcl_node_get_rmw_handle(node),
+  //   &rcutils_allocator,
+  //   no_demangle,
+  //   topic_names_and_types
+  // );
   return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
 }
 
@@ -280,11 +290,12 @@ rcl_get_service_names_and_types(
     return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
   }
   rcutils_allocator_t rcutils_allocator = *allocator;
-  rmw_ret = rmw_get_service_names_and_types(
-    rcl_node_get_rmw_handle(node),
-    &rcutils_allocator,
-    service_names_and_types
-  );
+  rmw_ret = RMW_RET_OK;  // DUMMY 'rmw_get_service_names_and_types'
+  // rmw_ret = rmw_get_service_names_and_types(
+  //   rcl_node_get_rmw_handle(node),
+  //   &rcutils_allocator,
+  //   service_names_and_types
+  // );
   return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
 }
 
@@ -341,10 +352,12 @@ rcl_get_node_names(
     return RCL_RET_INVALID_ARGUMENT;
   }
   (void)allocator;  // to be used in rmw_get_node_names in the future
-  rmw_ret_t rmw_ret = rmw_get_node_names(
-    rcl_node_get_rmw_handle(node),
-    node_names,
-    node_namespaces);
+  
+  rmw_ret_t rmw_ret = RMW_RET_OK;  // DUMMY 'rmw_get_node_names'
+  // rmw_ret_t rmw_ret = rmw_get_node_names(
+  //   rcl_node_get_rmw_handle(node),
+  //   node_names,
+  //   node_namespaces);
 
   if (RMW_RET_OK != rmw_ret) {
     return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
@@ -410,11 +423,12 @@ rcl_get_node_names_with_enclaves(
     return RCL_RET_INVALID_ARGUMENT;
   }
   (void)allocator;  // to be used in rmw_get_node_names in the future
-  rmw_ret_t rmw_ret = rmw_get_node_names_with_enclaves(
-    rcl_node_get_rmw_handle(node),
-    node_names,
-    node_namespaces,
-    enclaves);
+  rmw_ret_t rmw_ret = RMW_RET_OK;  // DUMMY 'rmw_get_node_names_with_enclaves'
+  // rmw_ret_t rmw_ret = rmw_get_node_names_with_enclaves(
+  //   rcl_node_get_rmw_handle(node),
+  //   node_names,
+  //   node_namespaces,
+  //   enclaves);
   return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
 }
 
@@ -433,7 +447,8 @@ rcl_count_publishers(
   }
   RCL_CHECK_ARGUMENT_FOR_NULL(topic_name, RCL_RET_INVALID_ARGUMENT);
   RCL_CHECK_ARGUMENT_FOR_NULL(count, RCL_RET_INVALID_ARGUMENT);
-  rmw_ret_t rmw_ret = rmw_count_publishers(rcl_node_get_rmw_handle(node), topic_name, count);
+  rmw_ret_t rmw_ret = RMW_RET_OK;  // DUMMY 'rmw_count_publishers'
+  // rmw_ret_t rmw_ret = rmw_count_publishers(rcl_node_get_rmw_handle(node), topic_name, count);
   return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
 }
 
@@ -452,7 +467,8 @@ rcl_count_subscribers(
   }
   RCL_CHECK_ARGUMENT_FOR_NULL(topic_name, RCL_RET_INVALID_ARGUMENT);
   RCL_CHECK_ARGUMENT_FOR_NULL(count, RCL_RET_INVALID_ARGUMENT);
-  rmw_ret_t rmw_ret = rmw_count_subscribers(rcl_node_get_rmw_handle(node), topic_name, count);
+  rmw_ret_t rmw_ret = RMW_RET_OK;  // DUMMY 'rmw_count_subscribers'
+  // rmw_ret_t rmw_ret = rmw_count_subscribers(rcl_node_get_rmw_handle(node), topic_name, count);
   return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
 }
 
@@ -687,13 +703,15 @@ rcl_get_publishers_info_by_topic(
   bool no_mangle,
   rmw_topic_endpoint_info_array_t * publishers_info)
 {
-  return __rcl_get_info_by_topic(
-    node,
-    allocator,
-    topic_name,
-    no_mangle,
-    publishers_info,
-    rmw_get_publishers_info_by_topic);
+  // DUMMY 'rmw_get_publishers_info_by_topic'
+  return RCL_RET_OK;
+  // return __rcl_get_info_by_topic(
+  //   node,
+  //   allocator,
+  //   topic_name,
+  //   no_mangle,
+  //   publishers_info,
+  //   rmw_get_publishers_info_by_topic);
 }
 
 rcl_ret_t
@@ -704,13 +722,14 @@ rcl_get_subscriptions_info_by_topic(
   bool no_mangle,
   rmw_topic_endpoint_info_array_t * subscriptions_info)
 {
-  return __rcl_get_info_by_topic(
-    node,
-    allocator,
-    topic_name,
-    no_mangle,
-    subscriptions_info,
-    rmw_get_subscriptions_info_by_topic);
+  return RCL_RET_OK;
+  // return __rcl_get_info_by_topic(
+  //   node,
+  //   allocator,
+  //   topic_name,
+  //   no_mangle,
+  //   subscriptions_info,
+  //   rmw_get_subscriptions_info_by_topic);
 }
 
 rcl_ret_t
@@ -731,11 +750,12 @@ rcl_service_server_is_available(
   }
   RCL_CHECK_ARGUMENT_FOR_NULL(client, RCL_RET_INVALID_ARGUMENT);
   RCL_CHECK_ARGUMENT_FOR_NULL(is_available, RCL_RET_INVALID_ARGUMENT);
-  rmw_ret_t rmw_ret = rmw_service_server_is_available(
-    rcl_node_get_rmw_handle(node),
-    rcl_client_get_rmw_handle(client),
-    is_available
-  );
+  rmw_ret_t rmw_ret = RMW_RET_OK;  // DUMMY 'rmw_service_server_is_available'
+  // rmw_ret_t rmw_ret = rmw_service_server_is_available(
+  //   rcl_node_get_rmw_handle(node),
+  //   rcl_client_get_rmw_handle(client),
+  //   is_available
+  // );
   return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
 }
 
