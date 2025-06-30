@@ -1,41 +1,12 @@
+// generated from rosidl_generator_cpp/resource/idl.hpp.em
+// generated code does not contain a copyright notice
+
 #ifndef LIFECYCLE_MSGS__MSG__STATE_HPP_
 #define LIFECYCLE_MSGS__MSG__STATE_HPP_
 
-#include <string>
-#include <memory>
-
-namespace lifecycle_msgs
-{
-namespace msg
-{
-
-// State ID constants
-
-
-template<typename ContainerAllocator>
-struct State_
-{
-  static constexpr uint8_t PRIMARY_STATE_UNKNOWN = 0;
-  static constexpr uint8_t PRIMARY_STATE_UNCONFIGURED = 1;
-  static constexpr uint8_t PRIMARY_STATE_INACTIVE = 2;
-  static constexpr uint8_t PRIMARY_STATE_ACTIVE = 3;
-  static constexpr uint8_t PRIMARY_STATE_FINALIZED = 4;
-
-  static constexpr uint8_t TRANSITION_STATE_CONFIGURING = 10;
-  static constexpr uint8_t TRANSITION_STATE_CLEANINGUP = 11;
-  static constexpr uint8_t TRANSITION_STATE_SHUTTINGDOWN = 12;
-  static constexpr uint8_t TRANSITION_STATE_ACTIVATING = 13;
-  static constexpr uint8_t TRANSITION_STATE_DEACTIVATING = 14;
-  static constexpr uint8_t TRANSITION_STATE_ERRORPROCESSING = 15;
-  // State fields
-  uint8_t id;
-  std::string label;
-
-};
-
-using State = State_<std::allocator<void>>;
-
-}  // namespace msg
-}  // namespace lifecycles_msgs
+#include "lifecycle_msgs/msg/detail/state__struct.hpp"
+#include "lifecycle_msgs/msg/detail/state__builder.hpp"
+#include "lifecycle_msgs/msg/detail/state__traits.hpp"
+#include "lifecycle_msgs/msg/detail/state__type_support.hpp"
 
 #endif  // LIFECYCLE_MSGS__MSG__STATE_HPP_

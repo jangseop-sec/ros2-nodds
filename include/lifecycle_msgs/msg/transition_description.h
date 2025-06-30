@@ -1,26 +1,12 @@
-#ifndef LIFECYCLES_MSG__MSG__TRANSITION_DESCRIPTION_H_
-#define LIFECYCLES_MSG__MSG__TRANSITION_DESCRIPTION_H_
+// generated from rosidl_generator_c/resource/idl.h.em
+// with input from lifecycle_msgs:msg/TransitionDescription.idl
+// generated code does not contain a copyright notice
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#ifndef LIFECYCLE_MSGS__MSG__TRANSITION_DESCRIPTION_H_
+#define LIFECYCLE_MSGS__MSG__TRANSITION_DESCRIPTION_H_
 
-#include <stdint.h>
-#include "lifecycle_msgs/msg/state.h"
-#include "lifecycle_msgs/msg/transition.h"
+#include "lifecycle_msgs/msg/detail/transition_description__struct.h"
+#include "lifecycle_msgs/msg/detail/transition_description__functions.h"
+#include "lifecycle_msgs/msg/detail/transition_description__type_support.h"
 
-typedef lifecycles_msgs__msg__State State;
-typedef lifecycles_msgs__msg__Transition Transition;
-
-typedef struct TransitionDescription
-{
-  Transition transition;  // The transition being described
-  State start_state;       // The state before the transition
-  State goal_state;        // The state after the transition
-} lifecycles_msg__msg__TransitionDescription;
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif  // LIFECYCLES_MSGS__MSG__TRANSITION_DESCRIPTION_H_
+#endif  // LIFECYCLE_MSGS__MSG__TRANSITION_DESCRIPTION_H_

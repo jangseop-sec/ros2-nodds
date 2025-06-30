@@ -1,30 +1,12 @@
+// generated from rosidl_generator_c/resource/idl.h.em
+// with input from lifecycle_msgs:msg/TransitionEvent.idl
+// generated code does not contain a copyright notice
+
 #ifndef LIFECYCLE_MSGS__MSG__TRANSITION_EVENT_H_
 #define LIFECYCLE_MSGS__MSG__TRANSITION_EVENT_H_
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
-#include <stdint.h>
-
-#include "lifecycle_msgs/msg/state.h"
-#include "lifecycle_msgs/msg/transition.h"
-
-typedef lifecycles_msgs__msg__State State;
-typedef lifecycles_msgs__msg__Transition Transition;
-
-// Define the TransitionEvent message struct
-typedef struct TransitionEvent
-{
-  uint64_t timestamp;  // Timestamp of the event
-  Transition transition;  // The transition being described 
-  State start_state;  // The state before the transition
-  State goal_state;  // The state after the transition
-} lifecycle_msgs__msg__TransitionEvent;
-
-#ifdef __cplusplus
-}
-#endif
+#include "lifecycle_msgs/msg/detail/transition_event__struct.h"
+#include "lifecycle_msgs/msg/detail/transition_event__functions.h"
+#include "lifecycle_msgs/msg/detail/transition_event__type_support.h"
 
 #endif  // LIFECYCLE_MSGS__MSG__TRANSITION_EVENT_H_
