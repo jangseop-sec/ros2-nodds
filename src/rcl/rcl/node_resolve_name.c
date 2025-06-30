@@ -27,6 +27,8 @@
 
 #include "./remap_impl.h"
 
+#define ROS_PACKAGE_NAME "test"
+
 static
 rcl_ret_t
 rcl_resolve_name(

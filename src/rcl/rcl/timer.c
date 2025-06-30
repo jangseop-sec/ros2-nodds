@@ -25,7 +25,9 @@ extern "C"
 #include "rcutils/logging_macros.h"
 #include "rcutils/stdatomic_helper.h"
 #include "rcutils/time.h"
-#include "tracetools/tracetools.h"
+// #include "tracetools/tracetools.h"
+
+#define ROS_PACKAGE_NAME "test"
 
 struct rcl_timer_impl_s
 {
@@ -196,7 +198,7 @@ rcl_timer_init(
     return RCL_RET_BAD_ALLOC;
   }
   *timer->impl = impl;
-  TRACEPOINT(rcl_timer_init, (const void *)timer, period);
+  // TRACEPOINT(rcl_timer_init, (const void *)timer, period);
   return RCL_RET_OK;
 }
 

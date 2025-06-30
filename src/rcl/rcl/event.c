@@ -35,6 +35,8 @@ extern "C"
 #include "./publisher_impl.h"
 #include "./subscription_impl.h"
 
+#define ROS_PACKAGE_NAME "test"
+
 rcl_event_t
 rcl_get_zero_initialized_event()
 {

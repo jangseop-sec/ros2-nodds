@@ -25,7 +25,9 @@ extern "C"
 
 #include "rmw/error_handling.h"
 
-#include "tracetools/tracetools.h"
+// #include "tracetools/tracetools.h"
+
+#define ROS_PACKAGE_NAME "test"
 
 #include "rcl/arguments.h"
 #include "rcl/domain_id.h"
@@ -211,16 +213,17 @@ rcl_init(
   }
 
   // Initialize rmw_init.
-  rmw_ret_t rmw_ret = rmw_init(
-    &(context->impl->init_options.impl->rmw_init_options),
-    &(context->impl->rmw_context));
-  if (RMW_RET_OK != rmw_ret) {
-    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-    fail_ret = rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
-    goto fail;
-  }
+  // DUMMY 'rmw_init'
+  // rmw_ret_t rmw_ret = rmw_init(
+  //   &(context->impl->init_options.impl->rmw_init_options),
+  //   &(context->impl->rmw_context));
+  // if (RMW_RET_OK != rmw_ret) {
+  //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+  //   fail_ret = rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
+  //   goto fail;
+  // }
 
-  TRACEPOINT(rcl_init, (const void *)context);
+  // TRACEPOINT(rcl_init, (const void *)context);
 
   return RCL_RET_OK;
 fail:
@@ -242,11 +245,12 @@ rcl_shutdown(rcl_context_t * context)
     return RCL_RET_ALREADY_SHUTDOWN;
   }
 
-  rmw_ret_t rmw_ret = rmw_shutdown(&(context->impl->rmw_context));
-  if (RMW_RET_OK != rmw_ret) {
-    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-    return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
-  }
+  // DUMMY 'rmw_shutdown'
+  // rmw_ret_t rmw_ret = rmw_shutdown(&(context->impl->rmw_context));
+  // if (RMW_RET_OK != rmw_ret) {
+  //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+  //   return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
+  // }
 
   // reset the instance id to 0 to indicate "invalid"
   rcutils_atomic_store((atomic_uint_least64_t *)(&context->instance_id_storage), 0);
