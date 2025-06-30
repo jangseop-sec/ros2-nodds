@@ -49,9 +49,11 @@ extern "C"
 #include "rmw/rmw.h"
 #include "rmw/validate_namespace.h"
 #include "rmw/validate_node_name.h"
-#include "tracetools/tracetools.h"
+// #include "tracetools/tracetools.h"
 
 #include "./context_impl.h"
+
+#define ROS_PACKAGE_NAME "test"
 
 const char * const RCL_DISABLE_LOANED_MESSAGES_ENV_VAR = "ROS_DISABLE_LOANED_MESSAGES";
 
@@ -256,30 +258,33 @@ rcl_node_init(
   RCUTILS_LOG_DEBUG_NAMED(
     ROS_PACKAGE_NAME, "Using domain ID of '%zu'", context->impl->rmw_context.actual_domain_id);
 
-  node->impl->rmw_node_handle = rmw_create_node(
-    &(node->context->impl->rmw_context),
-    name, local_namespace_);
+  // DUMMY 'rmw_create_node'
+  // node->impl->rmw_node_handle = rmw_create_node(
+  //   &(node->context->impl->rmw_context),
+  //   name, local_namespace_);
 
-  RCL_CHECK_FOR_NULL_WITH_MSG(
-    node->impl->rmw_node_handle, rmw_get_error_string().str, goto fail);
+  // RCL_CHECK_FOR_NULL_WITH_MSG(
+  //   node->impl->rmw_node_handle, rmw_get_error_string().str, goto fail);
   // graph guard condition
-  rmw_graph_guard_condition = rmw_node_get_graph_guard_condition(node->impl->rmw_node_handle);
-  RCL_CHECK_FOR_NULL_WITH_MSG(
-    rmw_graph_guard_condition, rmw_get_error_string().str, goto fail);
+  // DUMMY 'rmw_node_get_graph_guard_condition'
+  // rmw_graph_guard_condition = rmw_node_get_graph_guard_condition(node->impl->rmw_node_handle);
+  // RCL_CHECK_FOR_NULL_WITH_MSG(
+  //   rmw_graph_guard_condition, rmw_get_error_string().str, goto fail);
 
-  node->impl->graph_guard_condition = (rcl_guard_condition_t *)allocator->allocate(
-    sizeof(rcl_guard_condition_t), allocator->state);
-  RCL_CHECK_FOR_NULL_WITH_MSG(
-    node->impl->graph_guard_condition,
-    "allocating memory failed",
-    goto fail);
-  *node->impl->graph_guard_condition = rcl_get_zero_initialized_guard_condition();
-  graph_guard_condition_options.allocator = *allocator;
-  ret = rcl_guard_condition_init_from_rmw(
-    node->impl->graph_guard_condition,
-    rmw_graph_guard_condition,
-    context,
-    graph_guard_condition_options);
+  // node->impl->graph_guard_condition = (rcl_guard_condition_t *)allocator->allocate(
+  //   sizeof(rcl_guard_condition_t), allocator->state);
+  // RCL_CHECK_FOR_NULL_WITH_MSG(
+  //   node->impl->graph_guard_condition,
+  //   "allocating memory failed",
+  //   goto fail);
+  // *node->impl->graph_guard_condition = rcl_get_zero_initialized_guard_condition();
+  // graph_guard_condition_options.allocator = *allocator;
+  // ret = rcl_guard_condition_init_from_rmw(
+  //   node->impl->graph_guard_condition,
+  //   rmw_graph_guard_condition,
+  //   context,
+  //   graph_guard_condition_options);
+  ret = RCL_RET_OK;
   if (ret != RCL_RET_OK) {
     // error message already set
     goto fail;
@@ -295,12 +300,12 @@ rcl_node_init(
   }
   RCUTILS_LOG_DEBUG_NAMED(ROS_PACKAGE_NAME, "Node initialized");
   ret = RCL_RET_OK;
-  TRACEPOINT(
-    rcl_node_init,
-    (const void *)node,
-    (const void *)rcl_node_get_rmw_handle(node),
-    rcl_node_get_name(node),
-    rcl_node_get_namespace(node));
+  // TRACEPOINT(
+  //   rcl_node_init,
+  //   (const void *)node,
+  //   (const void *)rcl_node_get_rmw_handle(node),
+  //   rcl_node_get_name(node),
+  //   rcl_node_get_namespace(node));
   goto cleanup;
 fail:
   if (node->impl) {
@@ -318,7 +323,10 @@ fail:
       allocator->deallocate((char *)node->impl->fq_name, allocator->state);
     }
     if (node->impl->rmw_node_handle) {
-      ret = rmw_destroy_node(node->impl->rmw_node_handle);
+      // DUMMY 'rmw_destroy_node'
+      ret= RMW_RET_OK;
+      // ret = rmw_destroy_node(node->impl->rmw_node_handle);
+      
       if (ret != RMW_RET_OK) {
         RCUTILS_LOG_ERROR_NAMED(
           ROS_PACKAGE_NAME,
@@ -381,11 +389,11 @@ rcl_node_fini(rcl_node_t * node)
       result = RCL_RET_ERROR;
     }
   }
-  rmw_ret_t rmw_ret = rmw_destroy_node(node->impl->rmw_node_handle);
-  if (rmw_ret != RMW_RET_OK) {
-    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-    result = RCL_RET_ERROR;
-  }
+  // rmw_ret_t rmw_ret = rmw_destroy_node(node->impl->rmw_node_handle);
+  // if (rmw_ret != RMW_RET_OK) {
+  //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+  //   result = RCL_RET_ERROR;
+  // }
   rcl_ret = rcl_guard_condition_fini(node->impl->graph_guard_condition);
   if (rcl_ret != RCL_RET_OK) {
     RCL_SET_ERROR_MSG(rmw_get_error_string().str);
