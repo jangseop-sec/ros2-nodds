@@ -33,7 +33,7 @@ extern "C"
 #include "rcl/rcl.h"
 #include "rcl/time.h"
 
-// #include "rcutils/logging_macros.h"
+#include "rcutils/logging_macros.h"
 #include "rcutils/strdup.h"
 
 #include "rmw/rmw.h"

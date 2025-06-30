@@ -34,11 +34,12 @@ extern "C"
 #include "rcl/types.h"
 #include "rcl/wait.h"
 
-// #include "rcutils/logging_macros.h"
+#include "rcutils/logging_macros.h"
 #include "rcutils/strdup.h"
 
 #include "rmw/qos_profiles.h"
 #include "rmw/types.h"
+
 
 
 rcl_action_client_t

@@ -37,6 +37,8 @@ extern "C"
 
 #include "rcl_lifecycle/data_types.h"
 
+#define ROS_PACKAGE_NAME "test"
+
 static const char * pub_transition_event_topic = "~/transition_event";
 static const char * srv_change_state_service = "~/change_state";
 static const char * srv_get_state_service = "~/get_state";

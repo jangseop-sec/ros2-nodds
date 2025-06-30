@@ -26,6 +26,8 @@ extern "C"
 #include "rcl/macros.h"
 #include "rcl/node.h"
 
+#include "rosidl_runtime_c/action_type_support_struct.h"
+
 
 /// Internal action client implementation struct.
 typedef struct rcl_action_client_impl_s rcl_action_client_impl_t;

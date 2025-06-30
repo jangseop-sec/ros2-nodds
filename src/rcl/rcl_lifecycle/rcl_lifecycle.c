@@ -29,12 +29,14 @@ extern "C"
 #include "rcutils/logging_macros.h"
 #include "rcutils/macros.h"
 #include "rcutils/strdup.h"
-#include "tracetools/tracetools.h"
+// #include "tracetools/tracetools.h"
 
 #include "rcl_lifecycle/default_state_machine.h"
 #include "rcl_lifecycle/transition_map.h"
 
 #include "./com_interface.h"
+
+#define ROS_PACKAGE_NAME "test"
 
 rcl_lifecycle_state_t
 rcl_lifecycle_get_zero_initialized_state()
@@ -247,10 +249,10 @@ rcl_lifecycle_state_machine_init(
     }
   }
 
-  TRACEPOINT(
-    rcl_lifecycle_state_machine_init,
-    (const void *)node_handle,
-    (const void *)state_machine);
+  // TRACEPOINT(
+  //   rcl_lifecycle_state_machine_init,
+  //   (const void *)node_handle,
+  //   (const void *)state_machine);
   return RCL_RET_OK;
 }
 
@@ -370,11 +372,11 @@ _trigger_transition(
     }
   }
 
-  TRACEPOINT(
-    rcl_lifecycle_transition,
-    (const void *)state_machine,
-    transition->start->label,
-    state_machine->current_state->label);
+  // TRACEPOINT(
+  //   rcl_lifecycle_transition,
+  //   (const void *)state_machine,
+  //   transition->start->label,
+  //   state_machine->current_state->label);
   return RCL_RET_OK;
 }
 
