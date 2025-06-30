@@ -80,13 +80,15 @@ rcl_publisher_event_init(
   event->impl->rmw_handle = rmw_get_zero_initialized_event();
   event->impl->allocator = *allocator;
 
-  rmw_ret_t ret = rmw_publisher_event_init(
-    &event->impl->rmw_handle,
-    publisher->impl->rmw_handle,
-    rmw_event_type);
-  if (ret != RMW_RET_OK) {
-    goto fail;
-  }
+  // DUMMY 'rmw_publisher_event_init'
+  rmw_ret_t ret = RMW_RET_OK;
+  // rmw_ret_t ret = rmw_publisher_event_init(
+  //   &event->impl->rmw_handle,
+  //   publisher->impl->rmw_handle,
+  //   rmw_event_type);
+  // if (ret != RMW_RET_OK) {
+  //   goto fail;
+  // }
 
   return RCL_RET_OK;
 fail:
@@ -134,13 +136,15 @@ rcl_subscription_event_init(
   event->impl->rmw_handle = rmw_get_zero_initialized_event();
   event->impl->allocator = *allocator;
 
-  rmw_ret_t ret = rmw_subscription_event_init(
-    &event->impl->rmw_handle,
-    subscription->impl->rmw_handle,
-    rmw_event_type);
-  if (ret != RMW_RET_OK) {
-    goto fail;
-  }
+  // DUMMY 'rmw_subscription_event_init'
+  rmw_ret_t ret = RMW_RET_OK;
+  // rmw_ret_t ret = rmw_subscription_event_init(
+  //   &event->impl->rmw_handle,
+  //   subscription->impl->rmw_handle,
+  //   rmw_event_type);
+  // if (ret != RMW_RET_OK) {
+  //   goto fail;
+  // }
 
   return RCL_RET_OK;
 fail:
@@ -159,16 +163,19 @@ rcl_take_event(
     return RCL_RET_EVENT_INVALID;
   }
   RCL_CHECK_ARGUMENT_FOR_NULL(event_info, RCL_RET_INVALID_ARGUMENT);
-  rmw_ret_t ret = rmw_take_event(&event->impl->rmw_handle, event_info, &taken);
-  if (RMW_RET_OK != ret) {
-    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-    return rcl_convert_rmw_ret_to_rcl_ret(ret);
-  }
-  if (!taken) {
-    RCUTILS_LOG_DEBUG_NAMED(
-      ROS_PACKAGE_NAME, "take_event request complete, unable to take event");
-    return RCL_RET_EVENT_TAKE_FAILED;
-  }
+
+  // DUMMY 'rmw_take_event'
+  rmw_ret_t ret = RMW_RET_OK;
+  // rmw_ret_t ret = rmw_take_event(&event->impl->rmw_handle, event_info, &taken);
+  // if (RMW_RET_OK != ret) {
+  //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+  //   return rcl_convert_rmw_ret_to_rcl_ret(ret);
+  // }
+  // if (!taken) {
+  //   RCUTILS_LOG_DEBUG_NAMED(
+  //     ROS_PACKAGE_NAME, "take_event request complete, unable to take event");
+  //   return RCL_RET_EVENT_TAKE_FAILED;
+  // }
   RCUTILS_LOG_DEBUG_NAMED(
     ROS_PACKAGE_NAME, "take_event request success");
   return rcl_convert_rmw_ret_to_rcl_ret(ret);
@@ -231,10 +238,11 @@ rcl_event_set_callback(
     return RCL_RET_INVALID_ARGUMENT;
   }
 
-  return rmw_event_set_callback(
-    &event->impl->rmw_handle,
-    callback,
-    user_data);
+
+  // return rmw_event_set_callback(
+  //   &event->impl->rmw_handle,
+  //   callback,
+  //   user_data);
 }
 
 #ifdef __cplusplus
