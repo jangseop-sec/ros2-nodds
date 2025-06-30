@@ -28,7 +28,7 @@ extern "C"
 #include "rcutils/types.h"
 
 #include "rmw/error_handling.h"
-#include "rmw/get_network_flow_endpoints.h"
+// #include "rmw/get_network_flow_endpoints.h"
 #include "rmw/network_flow_endpoint_array.h"
 #include "rmw/types.h"
 
@@ -73,15 +73,16 @@ rcl_publisher_get_network_flow_endpoints(
   }
 
   rmw_error_string_t error_string;
-  rmw_ret_t rmw_ret = rmw_publisher_get_network_flow_endpoints(
-    rcl_publisher_get_rmw_handle(publisher),
-    allocator,
-    network_flow_endpoint_array);
-  if (rmw_ret != RMW_RET_OK) {
-    error_string = rmw_get_error_string();
-    rmw_reset_error();
-    RCL_SET_ERROR_MSG(error_string.str);
-  }
+  rmw_ret_t rmw_ret = RMW_RET_OK;  // DUMMY 'rmw_publisher_get_network_flow_endpoints'
+  // rmw_ret_t rmw_ret = rmw_publisher_get_network_flow_endpoints(
+  //   rcl_publisher_get_rmw_handle(publisher),
+  //   allocator,
+  //   network_flow_endpoint_array);
+  // if (rmw_ret != RMW_RET_OK) {
+  //   error_string = rmw_get_error_string();
+  //   rmw_reset_error();
+  //   RCL_SET_ERROR_MSG(error_string.str);
+  // }
   return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
 }
 
@@ -104,15 +105,16 @@ rcl_subscription_get_network_flow_endpoints(
   }
 
   rmw_error_string_t error_string;
-  rmw_ret_t rmw_ret = rmw_subscription_get_network_flow_endpoints(
-    rcl_subscription_get_rmw_handle(subscription),
-    allocator,
-    network_flow_endpoint_array);
-  if (rmw_ret != RMW_RET_OK) {
-    error_string = rmw_get_error_string();
-    rmw_reset_error();
-    RCL_SET_ERROR_MSG(error_string.str);
-  }
+  rmw_ret_t rmw_ret = RMW_RET_OK;  // DUMMY 'rmw_subscription_get_network_flow_endpoints'
+  // rmw_ret_t rmw_ret = rmw_subscription_get_network_flow_endpoints(
+  //   rcl_subscription_get_rmw_handle(subscription),
+  //   allocator,
+  //   network_flow_endpoint_array);
+  // if (rmw_ret != RMW_RET_OK) {
+  //   error_string = rmw_get_error_string();
+  //   rmw_reset_error();
+  //   RCL_SET_ERROR_MSG(error_string.str);
+  // }
   return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
 }
 

@@ -32,6 +32,8 @@ extern "C"
 
 #include "rcl/rmw_implementation_identifier_check.h"
 
+#define ROS_PACKAGE_NAME "test"
+
 // Extracted this portable method of doing a "shared library constructor" from SO:
 //   http://stackoverflow.com/a/2390626/671658
 // Initializer/finalizer sample for MSVC and GCC/Clang.
@@ -131,32 +133,33 @@ rcl_ret_t rcl_rmw_implementation_identifier_check(void)
   }
 
   // If either environment variable is set, and it does not match, print an error and exit.
-  if (expected_rmw_impl) {
-    const char * actual_rmw_impl_id = rmw_get_implementation_identifier();
-    const rcutils_error_string_t rmw_error_msg = rcl_get_error_string();
-    rcl_reset_error();
-    if (!actual_rmw_impl_id) {
-      RCL_SET_ERROR_MSG_WITH_FORMAT_STRING(
-        "Error getting RMW implementation identifier / RMW implementation not installed "
-        "(expected identifier of '%s'), with error message '%s', exiting with %d.",
-        expected_rmw_impl,
-        rmw_error_msg.str,
-        RCL_RET_ERROR
-      );
-      ret = RCL_RET_ERROR;
-      goto cleanup;
-    }
-    if (strcmp(actual_rmw_impl_id, expected_rmw_impl) != 0) {
-      RCL_SET_ERROR_MSG_WITH_FORMAT_STRING(
-        "Expected RMW implementation identifier of '%s' but instead found '%s', exiting with %d.",
-        expected_rmw_impl,
-        actual_rmw_impl_id,
-        RCL_RET_MISMATCHED_RMW_ID
-      );
-      ret = RCL_RET_MISMATCHED_RMW_ID;
-      goto cleanup;
-    }
-  }
+  // DUMMY 'rmw_get_implementation_identifier' call
+  // if (expected_rmw_impl) {
+  //   const char * actual_rmw_impl_id = rmw_get_implementation_identifier();
+  //   const rcutils_error_string_t rmw_error_msg = rcl_get_error_string();
+  //   rcl_reset_error();
+  //   if (!actual_rmw_impl_id) {
+  //     RCL_SET_ERROR_MSG_WITH_FORMAT_STRING(
+  //       "Error getting RMW implementation identifier / RMW implementation not installed "
+  //       "(expected identifier of '%s'), with error message '%s', exiting with %d.",
+  //       expected_rmw_impl,
+  //       rmw_error_msg.str,
+  //       RCL_RET_ERROR
+  //     );
+  //     ret = RCL_RET_ERROR;
+  //     goto cleanup;
+  //   }
+  //   if (strcmp(actual_rmw_impl_id, expected_rmw_impl) != 0) {
+  //     RCL_SET_ERROR_MSG_WITH_FORMAT_STRING(
+  //       "Expected RMW implementation identifier of '%s' but instead found '%s', exiting with %d.",
+  //       expected_rmw_impl,
+  //       actual_rmw_impl_id,
+  //       RCL_RET_MISMATCHED_RMW_ID
+  //     );
+  //     ret = RCL_RET_MISMATCHED_RMW_ID;
+  //     goto cleanup;
+  //   }
+  // }
   ret = RCL_RET_OK;
 // fallthrough
 cleanup:

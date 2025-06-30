@@ -148,18 +148,18 @@ __cleanup_context(rcl_context_t * context)
 
     // clean up rmw_context
     if (NULL != context->impl->rmw_context.implementation_identifier) {
-      rmw_ret_t rmw_context_fini_ret = rmw_context_fini(&(context->impl->rmw_context));
-      if (RMW_RET_OK != rmw_context_fini_ret) {
-        if (RCL_RET_OK == ret) {
-          ret = rcl_convert_rmw_ret_to_rcl_ret(rmw_context_fini_ret);
-        }
-        RCUTILS_SAFE_FWRITE_TO_STDERR(
-          "[rcl|context.c:" RCUTILS_STRINGIFY(__LINE__)
-          "] failed to finalize rmw context while cleaning up context, memory may be leaked: ");
-        RCUTILS_SAFE_FWRITE_TO_STDERR(rcutils_get_error_string().str);
-        RCUTILS_SAFE_FWRITE_TO_STDERR("\n");
-        rcutils_reset_error();
-      }
+      // rmw_ret_t rmw_context_fini_ret = rmw_context_fini(&(context->impl->rmw_context));
+      // if (RMW_RET_OK != rmw_context_fini_ret) {
+      //   if (RCL_RET_OK == ret) {
+      //     ret = rcl_convert_rmw_ret_to_rcl_ret(rmw_context_fini_ret);
+      //   }
+      //   RCUTILS_SAFE_FWRITE_TO_STDERR(
+      //     "[rcl|context.c:" RCUTILS_STRINGIFY(__LINE__)
+      //     "] failed to finalize rmw context while cleaning up context, memory may be leaked: ");
+      //   RCUTILS_SAFE_FWRITE_TO_STDERR(rcutils_get_error_string().str);
+      //   RCUTILS_SAFE_FWRITE_TO_STDERR("\n");
+      //   rcutils_reset_error();
+      // }
     }
 
     // clean up copy of argv if valid

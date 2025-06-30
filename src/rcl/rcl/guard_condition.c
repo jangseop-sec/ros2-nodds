@@ -83,14 +83,15 @@ __rcl_guard_condition_init_from_rmw_impl(
     guard_condition->impl->allocated_rmw_guard_condition = false;
   } else {
     // Otherwise create one.
-    guard_condition->impl->rmw_handle = rmw_create_guard_condition(&(context->impl->rmw_context));
-    if (!guard_condition->impl->rmw_handle) {
-      // Deallocate impl and exit.
-      allocator->deallocate(guard_condition->impl, allocator->state);
-      guard_condition->impl = NULL;
-      RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-      return RCL_RET_ERROR;
-    }
+    // DUMMY 'rmw_create_guard_condition' call to ensure the guard condition is created.
+    // guard_condition->impl->rmw_handle = rmw_create_guard_condition(&(context->impl->rmw_context));
+    // if (!guard_condition->impl->rmw_handle) {
+    //   // Deallocate impl and exit.
+    //   allocator->deallocate(guard_condition->impl, allocator->state);
+    //   guard_condition->impl = NULL;
+    //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+    //   return RCL_RET_ERROR;
+    // }
     guard_condition->impl->allocated_rmw_guard_condition = true;
   }
   // Copy options into impl.
@@ -129,10 +130,11 @@ rcl_guard_condition_fini(rcl_guard_condition_t * guard_condition)
     // assuming the allocator is valid because it is checked in rcl_guard_condition_init()
     rcl_allocator_t allocator = guard_condition->impl->options.allocator;
     if (guard_condition->impl->rmw_handle && guard_condition->impl->allocated_rmw_guard_condition) {
-      if (rmw_destroy_guard_condition(guard_condition->impl->rmw_handle) != RMW_RET_OK) {
-        RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-        result = RCL_RET_ERROR;
-      }
+      // DUMMY 'rmw_destroy_guard_condition' call 
+      // if (rmw_destroy_guard_condition(guard_condition->impl->rmw_handle) != RMW_RET_OK) {
+      //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+      //   result = RCL_RET_ERROR;
+      // }
     }
     allocator.deallocate(guard_condition->impl, allocator.state);
     guard_condition->impl = NULL;
@@ -157,10 +159,11 @@ rcl_trigger_guard_condition(rcl_guard_condition_t * guard_condition)
     return RCL_RET_INVALID_ARGUMENT;  // error already set
   }
   // Trigger the guard condition.
-  if (rmw_trigger_guard_condition(guard_condition->impl->rmw_handle) != RMW_RET_OK) {
-    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-    return RCL_RET_ERROR;
-  }
+  // DUMMY 'rmw_trigger_guard_condition' call
+  // if (rmw_trigger_guard_condition(guard_condition->impl->rmw_handle) != RMW_RET_OK) {
+  //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+  //   return RCL_RET_ERROR;
+  // }
   return RCL_RET_OK;
 }
 

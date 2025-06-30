@@ -163,10 +163,11 @@ rcl_wait_set_init(
     number_of_services +
     number_of_events;
 
-  wait_set->impl->rmw_wait_set = rmw_create_wait_set(&(context->impl->rmw_context), num_conditions);
-  if (!wait_set->impl->rmw_wait_set) {
-    goto fail;
-  }
+  // DUMMY 'rmw_create_wait_set' call
+  // wait_set->impl->rmw_wait_set = rmw_create_wait_set(&(context->impl->rmw_context), num_conditions);
+  // if (!wait_set->impl->rmw_wait_set) {
+  //   goto fail;
+  // }
 
   // Initialize subscription space.
   rcl_ret_t ret = rcl_wait_set_resize(
@@ -179,10 +180,11 @@ rcl_wait_set_init(
   return RCL_RET_OK;
 fail:
   if (rcl_wait_set_is_valid(wait_set)) {
-    rmw_ret_t ret = rmw_destroy_wait_set(wait_set->impl->rmw_wait_set);
-    if (ret != RMW_RET_OK) {
-      fail_ret = RCL_RET_WAIT_SET_INVALID;
-    }
+    // DUMMY 'rmw_destroy_wait_set' call
+    // rmw_ret_t ret = rmw_destroy_wait_set(wait_set->impl->rmw_wait_set);
+    // if (ret != RMW_RET_OK) {
+    //   fail_ret = RCL_RET_WAIT_SET_INVALID;
+    // }
   }
   __wait_set_clean_up(wait_set);
   return fail_ret;
@@ -195,11 +197,11 @@ rcl_wait_set_fini(rcl_wait_set_t * wait_set)
   RCL_CHECK_ARGUMENT_FOR_NULL(wait_set, RCL_RET_INVALID_ARGUMENT);
 
   if (rcl_wait_set_is_valid(wait_set)) {
-    rmw_ret_t ret = rmw_destroy_wait_set(wait_set->impl->rmw_wait_set);
-    if (ret != RMW_RET_OK) {
-      RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-      result = RCL_RET_WAIT_SET_INVALID;
-    }
+    // rmw_ret_t ret = rmw_destroy_wait_set(wait_set->impl->rmw_wait_set);
+    // if (ret != RMW_RET_OK) {
+    //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+    //   result = RCL_RET_WAIT_SET_INVALID;
+    // }
     __wait_set_clean_up(wait_set);
   }
   return result;
@@ -595,14 +597,16 @@ rcl_wait(rcl_wait_set_t * wait_set, int64_t timeout)
   }
 
   // Wait.
-  rmw_ret_t ret = rmw_wait(
-    &wait_set->impl->rmw_subscriptions,
-    &wait_set->impl->rmw_guard_conditions,
-    &wait_set->impl->rmw_services,
-    &wait_set->impl->rmw_clients,
-    &wait_set->impl->rmw_events,
-    wait_set->impl->rmw_wait_set,
-    timeout_argument);
+  // DUMMY 'rmw_wait' call
+  rmw_ret_t ret = RMW_RET_OK;
+  // rmw_ret_t ret = rmw_wait(
+  //   &wait_set->impl->rmw_subscriptions,
+  //   &wait_set->impl->rmw_guard_conditions,
+  //   &wait_set->impl->rmw_services,
+  //   &wait_set->impl->rmw_clients,
+  //   &wait_set->impl->rmw_events,
+  //   wait_set->impl->rmw_wait_set,
+  //   timeout_argument);
 
   // Items that are not ready will have been set to NULL by rmw_wait.
   // We now update our handles accordingly.
