@@ -60,10 +60,11 @@ void GenericPublisher::deserialize_message(
   const rmw_serialized_message_t & serialized_message,
   void * deserialized_msg)
 {
-  auto return_code = rmw_deserialize(&serialized_message, &type_support_, deserialized_msg);
-  if (return_code != RMW_RET_OK) {
-    rclcpp::exceptions::throw_from_rcl_error(return_code, "failed to deserialize msg");
-  }
+  // DUMMY 'rmw_deserialize' call
+  // auto return_code = rmw_deserialize(&serialized_message, &type_support_, deserialized_msg);
+  // if (return_code != RMW_RET_OK) {
+  //   rclcpp::exceptions::throw_from_rcl_error(return_code, "failed to deserialize msg");
+  // }
 }
 
 void GenericPublisher::publish_loaned_message(void * loaned_message)
