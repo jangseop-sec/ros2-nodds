@@ -93,11 +93,12 @@ PublisherBase::PublisherBase(
     rcl_reset_error();
     throw std::runtime_error(msg);
   }
-  if (rmw_get_gid_for_publisher(publisher_rmw_handle, &rmw_gid_) != RMW_RET_OK) {
-    auto msg = std::string("failed to get publisher gid: ") + rmw_get_error_string().str;
-    rmw_reset_error();
-    throw std::runtime_error(msg);
-  }
+  // DUMMY 'rmw_get_gid_for_publisher' call
+  // if (rmw_get_gid_for_publisher(publisher_rmw_handle, &rmw_gid_) != RMW_RET_OK) {
+  //   auto msg = std::string("failed to get publisher gid: ") + rmw_get_error_string().str;
+  //   rmw_reset_error();
+  //   throw std::runtime_error(msg);
+  // }
 }
 
 PublisherBase::~PublisherBase()
@@ -245,13 +246,14 @@ PublisherBase::operator==(const rmw_gid_t & gid) const
 bool
 PublisherBase::operator==(const rmw_gid_t * gid) const
 {
-  bool result = false;
-  auto ret = rmw_compare_gids_equal(gid, &this->get_gid(), &result);
-  if (ret != RMW_RET_OK) {
-    auto msg = std::string("failed to compare gids: ") + rmw_get_error_string().str;
-    rmw_reset_error();
-    throw std::runtime_error(msg);
-  }
+  bool result = false;  // DUMMY dummify로 인해 return 값이 false로 고정됨 (그냥 모델링??)
+  // DUMMY 'rmw_compare_gids_equal' call
+  // auto ret = rmw_compare_gids_equal(gid, &this->get_gid(), &result);
+  // if (ret != RMW_RET_OK) {
+  //   auto msg = std::string("failed to compare gids: ") + rmw_get_error_string().str;
+  //   rmw_reset_error();
+  //   throw std::runtime_error(msg);
+  // }
   return result;
 }
 
