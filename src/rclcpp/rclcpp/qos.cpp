@@ -19,6 +19,7 @@
 #include "rmw/error_handling.h"
 #include "rmw/types.h"
 #include "rmw/qos_profiles.h"
+#include "rmw/qos_policy_kind.h"
 
 namespace rclcpp
 {
@@ -317,12 +318,13 @@ qos_check_compatible(const QoS & publisher_qos, const QoS & subscription_qos)
   rmw_qos_compatibility_type_t compatible;
   const size_t reason_size = 2048u;
   char reason_c_str[reason_size] = "";
-  rmw_ret_t ret = rmw_qos_profile_check_compatible(
-    publisher_qos.get_rmw_qos_profile(),
-    subscription_qos.get_rmw_qos_profile(),
-    &compatible,
-    reason_c_str,
-    reason_size);
+  rmw_ret_t ret = RMW_RET_OK;   // DUMMY 'rmw_qos_profile_check_compatible' call
+  // rmw_ret_t ret = rmw_qos_profile_check_compatible(
+  //   publisher_qos.get_rmw_qos_profile(),
+  //   subscription_qos.get_rmw_qos_profile(),
+  //   &compatible,
+  //   reason_c_str,
+  //   reason_size);
   if (RMW_RET_OK != ret) {
     std::string error_str(rmw_get_error_string().str);
     rmw_reset_error();

@@ -7,10 +7,48 @@ extern "C" {
 
 #include "rmw/types.h"
 
+static const rmw_qos_profile_t rmw_qos_profile_sensor_data =
+{
+  RMW_QOS_POLICY_HISTORY_KEEP_LAST,
+  5,
+  RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT,
+  RMW_QOS_POLICY_DURABILITY_VOLATILE,
+  RMW_QOS_DEADLINE_DEFAULT,
+  RMW_QOS_LIFESPAN_DEFAULT,
+  RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT,
+  RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT,
+  false
+};
+
+typedef enum rmw_qos_compatibility_type_e
+{
+  /// QoS policies are compatible
+  RMW_QOS_COMPATIBILITY_OK = 0,
+
+  /// QoS policies may not be compatible
+  RMW_QOS_COMPATIBILITY_WARNING,
+
+  /// QoS policies are not compatible
+  RMW_QOS_COMPATIBILITY_ERROR
+} rmw_qos_compatibility_type_t;
+
 static const rmw_qos_profile_t rmw_qos_profile_services_default =
 {
   RMW_QOS_POLICY_HISTORY_KEEP_LAST,
   10,
+  RMW_QOS_POLICY_RELIABILITY_RELIABLE,
+  RMW_QOS_POLICY_DURABILITY_VOLATILE,
+  RMW_QOS_DEADLINE_DEFAULT,
+  RMW_QOS_LIFESPAN_DEFAULT,
+  RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT,
+  RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT,
+  false
+};
+
+static const rmw_qos_profile_t rmw_qos_profile_parameters =
+{
+  RMW_QOS_POLICY_HISTORY_KEEP_LAST,
+  1000,
   RMW_QOS_POLICY_RELIABILITY_RELIABLE,
   RMW_QOS_POLICY_DURABILITY_VOLATILE,
   RMW_QOS_DEADLINE_DEFAULT,
@@ -32,6 +70,34 @@ static const rmw_qos_profile_t rmw_qos_profile_default =
   RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT,
   false
 };
+
+static const rmw_qos_profile_t rmw_qos_profile_parameter_events =
+{
+  RMW_QOS_POLICY_HISTORY_KEEP_LAST,
+  1000,
+  RMW_QOS_POLICY_RELIABILITY_RELIABLE,
+  RMW_QOS_POLICY_DURABILITY_VOLATILE,
+  RMW_QOS_DEADLINE_DEFAULT,
+  RMW_QOS_LIFESPAN_DEFAULT,
+  RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT,
+  RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT,
+  false
+};
+
+static const rmw_qos_profile_t rmw_qos_profile_system_default =
+{
+  RMW_QOS_POLICY_HISTORY_SYSTEM_DEFAULT,
+  RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT,
+  RMW_QOS_POLICY_RELIABILITY_SYSTEM_DEFAULT,
+  RMW_QOS_POLICY_DURABILITY_SYSTEM_DEFAULT,
+  RMW_QOS_DEADLINE_DEFAULT,
+  RMW_QOS_LIFESPAN_DEFAULT,
+  RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT,
+  RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT,
+  false
+};
+
+
 
 #ifdef __cplusplus
 }

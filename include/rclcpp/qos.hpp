@@ -23,6 +23,7 @@
 #include "rcl/logging_rosout.h"
 #include "rmw/incompatible_qos_events_statuses.h"
 #include "rmw/qos_profiles.h"
+#include "rmw/qos_policy_kind.h"
 #include "rmw/types.h"
 
 namespace rclcpp

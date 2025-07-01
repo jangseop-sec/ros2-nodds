@@ -153,6 +153,8 @@ typedef struct rmw_qos_profile_s
   bool avoid_ros_namespace_conventions;
 } rmw_qos_profile_t;
 
+enum {RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT = 0};
+
 typedef enum rmw_endpoint_type_e
 {
   /// Endpoint type has not yet been set
