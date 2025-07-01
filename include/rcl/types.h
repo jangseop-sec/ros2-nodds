@@ -17,6 +17,11 @@
 #ifndef RCL__TYPES_H_
 #define RCL__TYPES_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include <rmw/types.h>
 #include <rmw/ret_types.h>
 
@@ -126,5 +131,9 @@ typedef rmw_ret_t rcl_ret_t;
 
 /// typedef for rmw_serialized_message_t;
 typedef rmw_serialized_message_t rcl_serialized_message_t;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  // RCL__TYPES_H_

@@ -28,6 +28,7 @@ extern "C"
 #include "rcl/macros.h"
 #include "rcl/node.h"
 #include "rcl/visibility_control.h"
+#include "rcl/types.h"
 
 #include "rmw/types.h"
 #include "rmw/message_sequence.h"
