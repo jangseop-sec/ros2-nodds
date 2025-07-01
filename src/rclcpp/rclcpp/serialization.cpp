@@ -40,13 +40,14 @@ void SerializationBase::serialize_message(
   rcpputils::check_true(nullptr != ros_message, "ROS message is nullpointer.");
   rcpputils::check_true(nullptr != serialized_message, "Serialized message is nullpointer.");
 
-  const auto ret = rmw_serialize(
-    ros_message,
-    type_support_,
-    &serialized_message->get_rcl_serialized_message());
-  if (ret != RMW_RET_OK) {
-    rclcpp::exceptions::throw_from_rcl_error(ret, "Failed to serialize ROS message.");
-  }
+  // DUMMY 'rmw_serialize' call
+  // const auto ret = rmw_serialize(
+  //   ros_message,
+  //   type_support_,
+  //   &serialized_message->get_rcl_serialized_message());
+  // if (ret != RMW_RET_OK) {
+  //   rclcpp::exceptions::throw_from_rcl_error(ret, "Failed to serialize ROS message.");
+  // }
 }
 
 void SerializationBase::deserialize_message(
@@ -62,11 +63,12 @@ void SerializationBase::deserialize_message(
     "Wrongly initialized. Serialized message has a size of zero.");
   rcpputils::check_true(nullptr != ros_message, "ROS message is a nullpointer.");
 
-  const auto ret = rmw_deserialize(
-    &serialized_message->get_rcl_serialized_message(), type_support_, ros_message);
-  if (ret != RMW_RET_OK) {
-    rclcpp::exceptions::throw_from_rcl_error(ret, "Failed to deserialize ROS message.");
-  }
+  // DUMMY 'rmw_deserialize' call
+  // const auto ret = rmw_deserialize(
+  //   &serialized_message->get_rcl_serialized_message(), type_support_, ros_message);
+  // if (ret != RMW_RET_OK) {
+  //   rclcpp::exceptions::throw_from_rcl_error(ret, "Failed to deserialize ROS message.");
+  // }
 }
 
 }  // namespace rclcpp
