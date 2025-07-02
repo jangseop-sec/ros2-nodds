@@ -20,17 +20,19 @@
 #include "rclcpp/logging.hpp"
 
 #include "rmw/types.h"
+#include "rmw/serialized_message.h"
 
 namespace rclcpp
 {
 
 inline void copy_rcl_message(const rcl_serialized_message_t & from, rcl_serialized_message_t & to)
 {
-  const auto ret = rmw_serialized_message_init(
-    &to, from.buffer_capacity, &from.allocator);
-  if (RCL_RET_OK != ret) {
-    rclcpp::exceptions::throw_from_rcl_error(ret);
-  }
+  // DUMMY 'rmw_serialized_message_init' call, dangerous to crash when buffer copy ‼️
+  // const auto ret = rmw_serialized_message_init(
+  //   &to, from.buffer_capacity, &from.allocator);
+  // if (RCL_RET_OK != ret) {
+  //   rclcpp::exceptions::throw_from_rcl_error(ret);
+  // }
 
   // do not call memcpy if the pointer is "static"
   if (to.buffer != from.buffer) {
