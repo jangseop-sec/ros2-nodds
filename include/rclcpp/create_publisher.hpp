@@ -18,6 +18,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <iostream>
 
 #include "rclcpp/node_interfaces/get_node_topics_interface.hpp"
 #include "rclcpp/node_interfaces/node_topics_interface.hpp"
@@ -52,7 +53,7 @@ create_publisher(
     rclcpp::PublisherOptionsWithAllocator<AllocatorT>()
   )
 )
-{
+{ 
   auto node_topics_interface = rclcpp::node_interfaces::get_node_topics_interface(node_topics);
   const rclcpp::QoS & actual_qos = options.qos_overriding_options.get_policy_kinds().size() ?
     rclcpp::detail::declare_qos_parameters(

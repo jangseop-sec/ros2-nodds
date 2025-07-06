@@ -20,6 +20,7 @@
 #include "rosidl_runtime_cpp/traits.hpp"
 #include "rosidl_runtime_cpp/message_type_support_decl.hpp"
 #include "rosidl_typesupport_cpp/message_type_support.hpp"
+#include "rosidl_typesupport_introspection_cpp/message_type_support_decl.hpp"
 
 #include "rclcpp/type_adapter.hpp"
 
@@ -47,7 +48,7 @@ typename std::enable_if_t<
 >
 get_message_type_support_handle()
 {
-  auto handle = rosidl_typesupport_cpp::get_message_type_support_handle<MessageT>();
+  auto handle = rosidl_typesupport_introspection_cpp::get_message_type_support_handle<MessageT>();
   if (!handle) {
     throw std::runtime_error("Type support handle unexpectedly nullptr");
   }
@@ -63,7 +64,7 @@ typename std::enable_if_t<
 >
 get_message_type_support_handle()
 {
-  auto handle = rosidl_typesupport_cpp::get_message_type_support_handle<
+  auto handle = rosidl_typesupport_introspection_cpp::get_message_type_support_handle<
     typename TypeAdapter<AdaptedType>::ros_message_type
     >();
   if (!handle) {

@@ -18,11 +18,16 @@
 #include <rosidl_runtime_c/message_type_support_struct.h>
 #include <rosidl_runtime_c/visibility_control.h>
 
+#include "rosidl_typesupport_introspection_cpp/message_type_support_decl.hpp"
+#include "rosidl_typesupport_introspection_cpp/service_type_support_decl.hpp"
+
 namespace rosidl_typesupport_cpp
 {
 
 template<typename T>
-const rosidl_message_type_support_t * get_message_type_support_handle();
+const rosidl_message_type_support_t * get_message_type_support_handle() {
+  return rosidl_typesupport_introspection_cpp::get_message_type_support_handle<T>();
+}
 
 }  // namespace rosidl_typesupport_cpp
 

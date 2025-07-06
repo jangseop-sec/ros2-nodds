@@ -193,6 +193,17 @@ ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_introspecti
   }
   return &rcl_interfaces__msg__Log__rosidl_typesupport_introspection_c__Log_message_type_support_handle;
 }
+
+const rosidl_message_type_support_t *
+rosidl_typesupport_c__get_message_type_support_handle__rcl_interfaces__msg__Log() {
+  rcl_interfaces__msg__Log__rosidl_typesupport_introspection_c__Log_message_member_array[0].members_ =
+    ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_introspection_c, builtin_interfaces, msg, Time)();
+  if (!rcl_interfaces__msg__Log__rosidl_typesupport_introspection_c__Log_message_type_support_handle.typesupport_identifier) {
+    rcl_interfaces__msg__Log__rosidl_typesupport_introspection_c__Log_message_type_support_handle.typesupport_identifier =
+      rosidl_typesupport_introspection_c__identifier;
+  }
+  return &rcl_interfaces__msg__Log__rosidl_typesupport_introspection_c__Log_message_type_support_handle;
+}
 #ifdef __cplusplus
 }
 #endif

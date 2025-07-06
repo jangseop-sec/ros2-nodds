@@ -17,7 +17,10 @@
 #include <memory>
 #include <vector>
 
+#include <iostream>
+
 #include "rclcpp/node_interfaces/node_base.hpp"
+#include "rclcpp/logging.hpp"
 
 #include "rcl/arguments.h"
 #include "rclcpp/exceptions.hpp"
@@ -47,6 +50,7 @@ NodeBase::NodeBase(
   notify_guard_condition_(context),
   notify_guard_condition_is_valid_(false)
 {
+
   // Create the rcl node and store it in a shared_ptr with a custom destructor.
   std::unique_ptr<rcl_node_t> rcl_node(new rcl_node_t(rcl_get_zero_initialized_node()));
 

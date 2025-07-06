@@ -26,6 +26,9 @@ ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(
   Log
 )();
 
+const rosidl_message_type_support_t *
+rosidl_typesupport_c__get_message_type_support_handle__rcl_interfaces__msg__Log();
+
 #ifdef __cplusplus
 }
 #endif

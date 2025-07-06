@@ -18,11 +18,15 @@
 #include <rosidl_runtime_c/service_type_support_struct.h>
 #include <rosidl_runtime_c/visibility_control.h>
 
+#include "rosidl_typesupport_introspection_cpp/service_type_support_decl.hpp"
+
 namespace rosidl_typesupport_cpp
 {
 
 template<typename T>
-const rosidl_service_type_support_t * get_service_type_support_handle();
+const rosidl_service_type_support_t * get_service_type_support_handle() {
+  return rosidl_typesupport_introspection_cpp::get_service_type_support_handle<T>();
+}
 
 }  // namespace rosidl_typesupport_cpp
 
