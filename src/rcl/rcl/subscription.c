@@ -109,6 +109,13 @@ rcl_subscription_init(
   //   remapped_topic_name,
   //   &(options->qos),
   //   &(options->rmw_subscription_options));
+  // REWRITE create rmw subscription 
+  subscription->impl->rmw_handle = (rmw_subscription_t *) malloc(sizeof(rmw_subscription_t));
+  const char * remapped_topic_name_ptr = strdup(remapped_topic_name);
+  subscription->impl->rmw_handle->topic_name = remapped_topic_name_ptr;
+  subscription->impl->rmw_handle->can_loan_messages = false;
+  subscription->impl->rmw_handle->is_cft_enabled = false;
+
   // if (!subscription->impl->rmw_handle) {
   //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
   //   goto fail;

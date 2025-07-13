@@ -57,6 +57,7 @@ rcl_publisher_init(
   const rcl_publisher_options_t * options
 )
 {
+  printf("[rcl_publisher_init] entry point node name=[%s]\n", rcl_node_get_name(node));
   RCUTILS_CAN_RETURN_WITH_ERROR_OF(RCL_RET_INVALID_ARGUMENT);
   RCUTILS_CAN_RETURN_WITH_ERROR_OF(RCL_RET_ALREADY_INIT);
   RCUTILS_CAN_RETURN_WITH_ERROR_OF(RCL_RET_NODE_INVALID);
@@ -120,6 +121,12 @@ rcl_publisher_init(
   //   remapped_topic_name,
   //   &(options->qos),
   //   &(options->rmw_publisher_options));
+  // REWRITE create rmw publisher
+  publisher->impl->rmw_handle = (rmw_publisher_t *) malloc(sizeof(rmw_publisher_t));
+  const char * remapped_topic_name_ptr = strdup(remapped_topic_name);
+  publisher->impl->rmw_handle->topic_name = remapped_topic_name_ptr;
+  publisher->impl->rmw_handle->can_loan_messages = false;
+
   // RCL_CHECK_FOR_NULL_WITH_MSG(
   //   publisher->impl->rmw_handle, rmw_get_error_string().str, goto fail);
   // get actual qos, and store it
@@ -258,6 +265,9 @@ rcl_publish(
 {
   RCUTILS_CAN_RETURN_WITH_ERROR_OF(RCL_RET_PUBLISHER_INVALID);
   RCUTILS_CAN_RETURN_WITH_ERROR_OF(RCL_RET_ERROR);
+
+  // LOG rmw_publish
+  printf("[rcl_publish] publish message: %s\n", publisher->impl->rmw_handle->topic_name);
 
   if (!rcl_publisher_is_valid(publisher)) {
     return RCL_RET_PUBLISHER_INVALID;  // error already set

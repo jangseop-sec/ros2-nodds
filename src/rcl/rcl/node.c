@@ -57,15 +57,6 @@ extern "C"
 
 const char * const RCL_DISABLE_LOANED_MESSAGES_ENV_VAR = "ROS_DISABLE_LOANED_MESSAGES";
 
-struct rcl_node_impl_s
-{
-  rcl_node_options_t options;
-  rmw_node_t * rmw_node_handle;
-  rcl_guard_condition_t * graph_guard_condition;
-  const char * logger_name;
-  const char * fq_name;
-};
-
 
 /// Return the logger name associated with a node given the validated node name and namespace.
 /**
@@ -262,6 +253,13 @@ rcl_node_init(
   // node->impl->rmw_node_handle = rmw_create_node(
   //   &(node->context->impl->rmw_context),
   //   name, local_namespace_);
+  // REWRITE create rmw_node
+  node->impl->rmw_node_handle = (rmw_node_t *) malloc(sizeof(rmw_node_t));
+  node->impl->rmw_node_handle->context = &(node->context->impl->rmw_context);
+  char * name_ptr = strdup(name);
+  node->impl->rmw_node_handle->name = name_ptr;
+  char * local_namespace_ptr = strdup(local_namespace_);
+  node->impl->rmw_node_handle->namespace_ = local_namespace_ptr;
 
   // RCL_CHECK_FOR_NULL_WITH_MSG(
   //   node->impl->rmw_node_handle, rmw_get_error_string().str, goto fail);
