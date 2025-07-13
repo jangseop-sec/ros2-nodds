@@ -26,6 +26,9 @@ ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(
   TransitionEvent
 )();
 
+const rosidl_message_type_support_t *
+rosidl_typesupport_c__get_message_type_support_handle__lifecycle_msgs__msg__TransitionEvent();
+
 #ifdef __cplusplus
 }
 #endif

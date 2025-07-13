@@ -147,6 +147,18 @@ ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_introspecti
   }
   return &lifecycle_msgs__msg__TransitionEvent__rosidl_typesupport_introspection_c__TransitionEvent_message_type_support_handle;
 }
+
+const rosidl_message_type_support_t *
+rosidl_typesupport_c__get_message_type_support_handle__lifecycle_msgs__msg__TransitionEvent() {
+  lifecycle_msgs__msg__TransitionEvent__rosidl_typesupport_introspection_c__TransitionEvent_message_member_array[0].members_ =
+    ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_introspection_c, builtin_interfaces, msg, Time)();
+  if (!lifecycle_msgs__msg__TransitionEvent__rosidl_typesupport_introspection_c__TransitionEvent_message_type_support_handle.typesupport_identifier) {
+    lifecycle_msgs__msg__TransitionEvent__rosidl_typesupport_introspection_c__TransitionEvent_message_type_support_handle.typesupport_identifier =
+      rosidl_typesupport_introspection_c__identifier;
+  }
+  return &lifecycle_msgs__msg__TransitionEvent__rosidl_typesupport_introspection_c__TransitionEvent_message_type_support_handle;
+}
+
 #ifdef __cplusplus
 }
 #endif
