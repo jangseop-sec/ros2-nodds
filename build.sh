@@ -37,6 +37,7 @@ c_pkgs=(
   rmw
   rosidl/rosidl_runtime_c
   rosidl/rosidl_typesupport_introspection_c
+  rosidl/rosidl_typesupport_c
   tracetools
 )
 
@@ -57,6 +58,7 @@ cpp_pkgs=(
   libstatistics_collector/collector
   libstatistics_collector/moving_average_statistics
   rosidl/rosidl_typesupport_introspection_cpp
+  rosidl/rosidl_typesupport_c
   tracetools
 )
 
