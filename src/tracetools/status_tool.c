@@ -16,11 +16,11 @@
 #include "tracetools/status.h"
 #include "tracetools/tracetools.h"
 
-int main()
-{
-#ifndef TRACETOOLS_DISABLED
-  return tracetools_status(ros_trace_compile_status());
-#else
-  return tracetools_status(false);
-#endif
-}
+// int main()
+// {
+// #ifndef TRACETOOLS_DISABLED
+//   return tracetools_status(ros_trace_compile_status());
+// #else
+//   return tracetools_status(false);
+// #endif
+// }
