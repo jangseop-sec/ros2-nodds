@@ -418,6 +418,13 @@ public:
   {
     return any_callback_.use_take_shared_method();
   }
+  
+  AnySubscriptionCallback<MessageT, AllocatorT>
+  get_any_callback() {
+    return any_callback_;
+  }
+
+  
 
 private:
   RCLCPP_DISABLE_COPY(Subscription)
