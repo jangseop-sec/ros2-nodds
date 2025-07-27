@@ -1,0 +1,1 @@
+/home/ubuntu/symros/symros_ws/build/nav2_msgs/rosidl_generator_c/nav2_msgs/msg/detail/route_node__functions.h
