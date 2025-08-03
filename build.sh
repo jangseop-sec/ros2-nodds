@@ -70,7 +70,7 @@ for pkg in "${c_pkgs[@]}"; do
     obj="${pkg//\//__}__${filename%.c}.o"
     if [ ! -f "$obj" ] || [ "$src" -nt "$obj" ]; then
       echo "[$idx/$count] compile $src => $obj ..."
-      gcc -c -I ../$INCLUDE_PATH $src -o $obj
+      gcc -fPIC -c -I ../$INCLUDE_PATH $src -o $obj
     else
       echo "[$idx/$count] $filename is up-do-date"
     fi
@@ -86,7 +86,7 @@ for pkg in "${cpp_pkgs[@]}"; do
     obj="${pkg//\//__}__${filename%.cpp}.o"
     if [ ! -f "$obj" ] || [ "$src" -nt "$obj" ]; then
       echo "[$idx/$count] compile $src => $obj ..."
-      g++ -c -I ../$INCLUDE_PATH $src -o $obj
+      g++ -fPIC -c -I ../$INCLUDE_PATH $src -o $obj
     else
       echo "[$idx/$count] $filename is up-do-date"
     fi
@@ -103,7 +103,7 @@ for pkg in "${msg_pkgs[@]}"; do
 
     if [ ! -f "$obj" ] || [ "$src" -nt "$obj" ]; then
       echo "[$idx/$count] compile $src => $obj ..."
-      g++ -c -I ../$INCLUDE_PATH $src -o $obj
+      g++ -fPIC -c -I ../$INCLUDE_PATH $src -o $obj
     else
       echo "[$idx/$count] $filename is up-do-date"
     fi
@@ -114,7 +114,7 @@ for pkg in "${msg_pkgs[@]}"; do
     obj="${pkg//\//__}__${filename%.c}_c.o"
     if [ ! -f "$obj" ] || [ "$src" -nt "$obj" ]; then
       echo "[$idx/$count] compile $src => $obj ..."
-      gcc -c -I ../$INCLUDE_PATH $src -o $obj
+      gcc -fPIC -c -I ../$INCLUDE_PATH $src -o $obj
     else
       echo "[$idx/$count] $filename is up-do-date"
     fi
@@ -124,3 +124,6 @@ done
 
 echo "generate static library"
 ar rcs libros2_no_dds.a *.o
+
+echo "generate shared library"
+g++ -shared -o libros2_nos_dds.so *.o
