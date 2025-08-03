@@ -28,6 +28,7 @@ extern "C"
 #include "rcutils/macros.h"
 #include "rmw/error_handling.h"
 #include "rmw/rmw.h"
+#include "rmw/allocators.h"
 // #include "tracetools/tracetools.h"
 
 #define ROS_PACKAGE_NAME "test"
@@ -127,6 +128,20 @@ rcl_service_init(
   //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
   //   goto fail;
   // }
+  rmw_service_t * rmw_service = rmw_service_allocate();
+  if (!rmw_service) {
+    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+    goto fail;
+  }
+  rmw_service->service_name = (const char *) rmw_allocate(strlen(remapped_service_name) + 1);
+  if (!rmw_service->service_name) {
+    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+    goto fail;
+  }
+  memcpy((char *)(rmw_service->service_name), remapped_service_name, strlen(remapped_service_name) + 1);
+  service->impl->rmw_handle = rmw_service;
+
+
   // get actual qos, and store it
   // DUMMY 'rmw_service_request_subscription_get_actual_qos' and 'rmw_service_response_publisher_get_actual_qos'
   // rmw_ret_t rmw_ret = rmw_service_request_subscription_get_actual_qos(

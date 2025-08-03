@@ -33,6 +33,8 @@ extern "C"
 #include "rmw/subscription_options.h"
 #include "rmw/subscription_content_filter_options.h"
 #include "rmw/validate_full_topic_name.h"
+#include "rmw/rmw.h"
+#include "rmw/allocators.h"
 // #include "tracetools/tracetools.h"
 
 #include "./common.h"
@@ -110,11 +112,20 @@ rcl_subscription_init(
   //   &(options->qos),
   //   &(options->rmw_subscription_options));
   // REWRITE create rmw subscription 
-  subscription->impl->rmw_handle = (rmw_subscription_t *) malloc(sizeof(rmw_subscription_t));
-  const char * remapped_topic_name_ptr = strdup(remapped_topic_name);
-  subscription->impl->rmw_handle->topic_name = remapped_topic_name_ptr;
-  subscription->impl->rmw_handle->can_loan_messages = false;
-  subscription->impl->rmw_handle->is_cft_enabled = false;
+  rmw_subscription_t * rmw_subscription = rmw_subscription_allocate();
+  if (!rmw_subscription) {
+    RCL_SET_ERROR_MSG("create_subscription() failed to allocate rmw_subscription");
+    goto fail;
+  }
+  rmw_subscription->topic_name = rcutils_strdup(remapped_topic_name, rcutils_get_default_allocator());
+  if (!rmw_subscription->topic_name) {
+    RCL_SET_ERROR_MSG("create_subscription() failed to allocate memory for subscription topic name"); 
+    goto fail;
+  }
+  rmw_subscription->can_loan_messages = false;
+  rmw_subscription->is_cft_enabled = false;
+  // TODO rmw_susbscription->options can be allocated??
+  subscription->impl->rmw_handle = rmw_subscription;
 
   // if (!subscription->impl->rmw_handle) {
   //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);

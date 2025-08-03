@@ -34,9 +34,11 @@ extern "C"
 #include "rmw/time.h"
 #include "rcl/types.h"
 #include "rmw/error_handling.h"
+#include "rmw/rmw.h"
 
 // FIXME delete if find dependency in include headers
 #include "rmw/qos_profiles.h"
+#include "rmw/allocators.h"
 
 #include "./common.h"
 #include "./publisher_impl.h"
@@ -122,13 +124,24 @@ rcl_publisher_init(
   //   &(options->qos),
   //   &(options->rmw_publisher_options));
   // REWRITE create rmw publisher
-  publisher->impl->rmw_handle = (rmw_publisher_t *) malloc(sizeof(rmw_publisher_t));
-  const char * remapped_topic_name_ptr = strdup(remapped_topic_name);
-  publisher->impl->rmw_handle->topic_name = remapped_topic_name_ptr;
-  publisher->impl->rmw_handle->can_loan_messages = false;
-
-  // RCL_CHECK_FOR_NULL_WITH_MSG(
-  //   publisher->impl->rmw_handle, rmw_get_error_string().str, goto fail);
+  rmw_publisher_t * rmw_publisher = rmw_publisher_allocate();
+  if (!rmw_publisher) {
+    RMW_SET_ERROR_MSG("create_publisher() failed to allocate rmw_publisher");
+    publisher->impl->rmw_handle = NULL;
+    RCL_CHECK_FOR_NULL_WITH_MSG(
+      publisher->impl->rmw_handle, rmw_get_error_string().str, goto fail);
+  }
+  rmw_publisher->can_loan_messages = false;
+  rmw_publisher->topic_name = (char *) rmw_allocate(strlen(remapped_topic_name) + 1);
+  if (!rmw_publisher->topic_name) {
+    RMW_SET_ERROR_MSG("create_publisher() failed to allocate memory for topic_name");
+    publisher->impl->rmw_handle = NULL;
+    RCL_CHECK_FOR_NULL_WITH_MSG(
+      publisher->impl->rmw_handle, rmw_get_error_string().str, goto fail);
+  }
+  memcpy((char *)rmw_publisher->topic_name, remapped_topic_name, strlen(remapped_topic_name) + 1);
+  publisher->impl->rmw_handle = rmw_publisher;
+  
   // get actual qos, and store it
   // DUMMY 'rmw_publisher_get_actual_qos'
   // rmw_ret_t rmw_ret = rmw_publisher_get_actual_qos(

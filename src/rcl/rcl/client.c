@@ -29,6 +29,7 @@ extern "C"
 #include "rcutils/stdatomic_helper.h"
 #include "rmw/error_handling.h"
 #include "rmw/rmw.h"
+#include "rmw/allocators.h"
 // #include "tracetools/tracetools.h"
 
 #include "./common.h"
@@ -116,6 +117,21 @@ rcl_client_init(
   //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
   //   goto fail;
   // }
+  rmw_client_t * rmw_client = rmw_client_allocate();
+  if (!rmw_client) {
+    RMW_SET_ERROR_MSG("create_client() failed to allocate memory for rmw_client");
+    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+    goto fail;
+  }
+
+  rmw_client->service_name = (const char *) rmw_allocate(strlen(remapped_service_name) + 1);
+  if (!rmw_client->service_name) {
+    RMW_SET_ERROR_MSG("create_client() failed to allocate memory for service_name");
+    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+    goto fail;
+  }
+  memcpy((char *)rmw_client->service_name, remapped_service_name, strlen(remapped_service_name) + 1);
+  client->impl->rmw_handle = rmw_client;
 
   // get actual qos, and store it
   // DUMMY 'rmw_client_request_publisher_get_actual_qos'
