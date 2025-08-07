@@ -16,7 +16,8 @@
 #define RMW__EVENTS_STATUSES__OFFERED_DEADLINE_MISSED_H_
 
 #include <stddef.h>
-#include <stdint.h>
+
+#include "rmw/visibility_control.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -24,7 +25,7 @@ extern "C"
 #endif
 
 /// QoS Deadline Missed information provided by a publisher.
-typedef struct rmw_offered_deadline_missed_status_s
+typedef struct RMW_PUBLIC_TYPE rmw_offered_deadline_missed_status_s
 {
   /**
    * Lifetime cumulative number of offered deadline periods elapsed during which a Publisher failed

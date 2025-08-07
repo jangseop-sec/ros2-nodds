@@ -17,13 +17,15 @@
 
 #include <stdint.h>
 
+#include "rmw/visibility_control.h"
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
 /// QoS Liveliness Lost information provided by a publisher.
-typedef struct rmw_liveliness_lost_status_s
+typedef struct RMW_PUBLIC_TYPE rmw_liveliness_lost_status_s
 {
   /**
    * Lifetime cumulative number of times that a previously-alive Publisher became not alive due to

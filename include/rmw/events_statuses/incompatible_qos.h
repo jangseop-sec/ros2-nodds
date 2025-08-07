@@ -18,13 +18,14 @@
 #include <stdint.h>
 
 #include "rmw/qos_policy_kind.h"
+#include "rmw/visibility_control.h"
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct rmw_qos_incompatible_event_status_s
+typedef struct RMW_PUBLIC_TYPE rmw_qos_incompatible_event_status_s
 {
   /**
    * Total cumulative number of times the concerned subscription discovered a

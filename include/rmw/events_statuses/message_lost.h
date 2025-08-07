@@ -17,12 +17,14 @@
 
 #include <stddef.h>
 
+#include "rmw/visibility_control.h"
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct rmw_message_lost_status_s
+typedef struct RMW_PUBLIC_TYPE rmw_message_lost_status_s
 {
   /// Total number of messages lost.
   size_t total_count;
