@@ -33,6 +33,21 @@ extern "C"
  */
 typedef struct rmw_context_impl_s rmw_context_impl_t;
 
+// Definition of struct rmw_context_impl_s as declared in rmw/init.h
+struct rmw_context_impl_s
+{
+  /// Pointer to `rmw_dds_common::Context`.
+  void * common;
+  /// Pointer to `rmw_fastrtps_shared_cpp::CustomParticipantInfo`.
+  void * participant_info;
+  /// Mutex used to protect initialization/destruction.
+  // std::mutex mutex;
+  /// Reference count.
+  uint64_t count;
+  /// Shutdown flag.
+  bool is_shutdown;
+};
+
 /// Initialization context structure which is used to store init specific information.
 typedef struct RMW_PUBLIC_TYPE rmw_context_s
 {

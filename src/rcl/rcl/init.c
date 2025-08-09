@@ -42,6 +42,9 @@ extern "C"
 #include "./context_impl.h"
 #include "./init_options_impl.h"
 
+#include "rmw/rmw.h"
+#include "rmw/allocators.h"
+
 static atomic_uint_least64_t __rcl_next_unique_id = ATOMIC_VAR_INIT(1);
 
 rcl_ret_t
@@ -217,11 +220,76 @@ rcl_init(
   // rmw_ret_t rmw_ret = rmw_init(
   //   &(context->impl->init_options.impl->rmw_init_options),
   //   &(context->impl->rmw_context));
-  // if (RMW_RET_OK != rmw_ret) {
-  //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
-  //   fail_ret = rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
-  //   goto fail;
-  // }
+  // REWRITE 'rmw_init'
+  rmw_ret_t rmw_ret = RMW_RET_OK;
+  const rmw_init_options_t * rmw_options = &(context->impl->init_options.impl->rmw_init_options);
+  rmw_context_t * rmw_context = &(context->impl->rmw_context);
+
+  // RMW_CHECK_ARGUMENT_FOR_NULL(rmw_options, RMW_RET_INVALID_ARGUMENT);
+  // RMW_CHECK_ARGUMENT_FOR_NULL(rmw_context, RMW_RET_INVALID_ARGUMENT);
+
+  // RMW_CHECK_FOR_NULL_WITH_MSG(
+  //   rmw_options->enclave,
+  //   "expected non-null enclave",
+  //   rmw_ret = RMW_RET_INVALID_ARGUMENT);
+  
+  if (rmw_ret != RMW_RET_OK) {
+    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+    fail_ret = rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
+    goto fail;
+  }
+
+  rmw_context->instance_id = rmw_options->instance_id;
+  rmw_context->actual_domain_id = 
+    RMW_DEFAULT_DOMAIN_ID == rmw_options->domain_id ? 0uL : rmw_options->domain_id;
+  
+  rmw_context->impl = (rmw_context_impl_t *) malloc(sizeof(rmw_context_impl_t));
+  rmw_context->impl->is_shutdown = false;
+  rmw_context->options = rmw_get_zero_initialized_init_options();
+
+  // rmw_init_options_copy
+  // src=rmw_options
+  // dst=&rmw_context->options
+  const rmw_init_options_t * src = rmw_options;
+  rmw_init_options_t * dst = &rmw_context->options;
+
+  const rcutils_allocator_t * rmw_options_allocator = &src->allocator;
+
+  rmw_init_options_t tmp = *src;
+  tmp.enclave = rcutils_strdup(tmp.enclave, *rmw_options_allocator);
+  if (src->enclave == NULL && tmp.enclave == NULL) {
+    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+    fail_ret = rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
+    goto fail;
+  }
+
+  tmp.security_options = rmw_get_default_security_options();
+  // rmw_security_options_copy
+  // src=rmw_options->security_options
+  // dst=&tmp.security_options
+  const rmw_security_options_t * security_options_src = &src->security_options;
+  rmw_security_options_t * security_options_dst = &tmp.security_options;
+  char * new_root_path = rcutils_strdup(
+    security_options_src->security_root_path, *rmw_options_allocator);
+  if (security_options_src->security_root_path && !new_root_path) {
+    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+    fail_ret = rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
+    goto fail;
+  } 
+
+  rmw_options_allocator->deallocate(security_options_dst->security_root_path, rmw_options_allocator->state);
+  security_options_dst->security_root_path = new_root_path;
+  security_options_dst->enforce_security = security_options_src->enforce_security;
+  // fini of rmw_security_options_copy
+
+  *dst = tmp;
+  // fini of rmw_init_options_copy
+
+  if (RMW_RET_OK != rmw_ret) {
+    RCL_SET_ERROR_MSG(rmw_get_error_string().str);
+    fail_ret = rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
+    goto fail;
+  }
 
   // TRACEPOINT(rcl_init, (const void *)context);
 
@@ -251,6 +319,15 @@ rcl_shutdown(rcl_context_t * context)
   //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
   //   return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
   // }
+  // REWRITE 'rmw_shutdown'
+  rmw_ret_t rmw_ret = RMW_RET_OK;
+  // rmw_ret = RMW_CHECK_ARGUMENT_FOR_NULL(&(context->impl->rmw_context), RMW_RET_INVALID_ARGUMENT);
+  // rmw_ret = RMW_CHECK_FOR_NULL_WITH_MSG(
+    // context->impl->rmw_context.impl,
+    // "expected initialized context",
+    // return RMW_RET_INVALID_ARGUMENT);
+
+  context->impl->rmw_context.impl->is_shutdown = true;
 
   // reset the instance id to 0 to indicate "invalid"
   rcutils_atomic_store((atomic_uint_least64_t *)(&context->instance_id_storage), 0);
