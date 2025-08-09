@@ -33,6 +33,7 @@ extern "C"
 #include "rmw/rmw.h"
 #include "rmw/event.h"
 #include "rmw/types.h"
+#include "rmw/allocators.h"
 
 #include "./context_impl.h"
 
@@ -168,6 +169,13 @@ rcl_wait_set_init(
   // if (!wait_set->impl->rmw_wait_set) {
   //   goto fail;
   // }
+  // REWRITE create rmw wait set
+  wait_set->impl->rmw_wait_set = rmw_wait_set_allocate();
+  if (!wait_set->impl->rmw_wait_set) {
+    RCL_SET_ERROR_MSG("creating rmw wait set failed");
+    goto fail;
+  }
+
 
   // Initialize subscription space.
   rcl_ret_t ret = rcl_wait_set_resize(
@@ -185,6 +193,11 @@ fail:
     // if (ret != RMW_RET_OK) {
     //   fail_ret = RCL_RET_WAIT_SET_INVALID;
     // }
+    // REWRITE 'rmw_destroy_wait_set'
+    if (wait_set->impl->rmw_wait_set->data) {
+      rmw_free(wait_set->impl->rmw_wait_set->data);
+    }
+    rmw_wait_set_free(wait_set->impl->rmw_wait_set);
   }
   __wait_set_clean_up(wait_set);
   return fail_ret;

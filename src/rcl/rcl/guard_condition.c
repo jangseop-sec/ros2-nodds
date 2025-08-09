@@ -23,6 +23,7 @@ extern "C"
 #include "rcl/rcl.h"
 #include "rmw/error_handling.h"
 #include "rmw/rmw.h"
+#include "rmw/allocators.h"
 
 #include "./context_impl.h"
 
@@ -92,6 +93,9 @@ __rcl_guard_condition_init_from_rmw_impl(
     //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
     //   return RCL_RET_ERROR;
     // }
+    // REWRITE 'rmw_create_guard_condition'
+    guard_condition->impl->rmw_handle = rmw_guard_condition_allocate();
+
     guard_condition->impl->allocated_rmw_guard_condition = true;
   }
   // Copy options into impl.
@@ -135,6 +139,10 @@ rcl_guard_condition_fini(rcl_guard_condition_t * guard_condition)
       //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
       //   result = RCL_RET_ERROR;
       // }
+      // REWRITE 'rmw_destroy_guard_condition'
+      RMW_CHECK_ARGUMENT_FOR_NULL(guard_condition->impl->rmw_handle, RMW_RET_INVALID_ARGUMENT);
+      rmw_guard_condition_free(guard_condition->impl->rmw_handle);
+      result = RCL_RET_OK;
     }
     allocator.deallocate(guard_condition->impl, allocator.state);
     guard_condition->impl = NULL;

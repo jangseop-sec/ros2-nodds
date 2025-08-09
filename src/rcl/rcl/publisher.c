@@ -59,7 +59,6 @@ rcl_publisher_init(
   const rcl_publisher_options_t * options
 )
 {
-  printf("[rcl_publisher_init] entry point node name=[%s]\n", rcl_node_get_name(node));
   RCUTILS_CAN_RETURN_WITH_ERROR_OF(RCL_RET_INVALID_ARGUMENT);
   RCUTILS_CAN_RETURN_WITH_ERROR_OF(RCL_RET_ALREADY_INIT);
   RCUTILS_CAN_RETURN_WITH_ERROR_OF(RCL_RET_NODE_INVALID);
@@ -153,6 +152,11 @@ rcl_publisher_init(
   // }
   // publisher->impl->actual_qos.avoid_ros_namespace_conventions =
   //   options->qos.avoid_ros_namespace_conventions;
+  // REWRITE 'rmw_get_actual_qos'
+  publisher->impl->actual_qos = options->qos;
+  publisher->impl->actual_qos.avoid_ros_namespace_conventions =
+  options->qos.avoid_ros_namespace_conventions;
+
   // options
   publisher->impl->options = *options;
   RCUTILS_LOG_DEBUG_NAMED(ROS_PACKAGE_NAME, "Publisher initialized");
@@ -171,9 +175,16 @@ fail:
   if (publisher->impl) {
     if (publisher->impl->rmw_handle) {
       // DUMMY 'rmw_destroy_publisher', return default 'rmw_ret_t'(RMW_RET_OK)
-      rmw_ret_t rmw_fail_ret = RMW_RET_OK;
       // rmw_ret_t rmw_fail_ret = rmw_destroy_publisher(
       //   rcl_node_get_rmw_handle(node), publisher->impl->rmw_handle);
+      // REWRITE 'rmw_destroy_publisher'
+      RMW_CHECK_ARGUMENT_FOR_NULL(rcl_node_get_rmw_handle(node), RMW_RET_INVALID_ARGUMENT);
+      RMW_CHECK_ARGUMENT_FOR_NULL(publisher->impl->rmw_handle, RMW_RET_INVALID_ARGUMENT);
+
+      rmw_free((void *)(publisher->impl->rmw_handle->topic_name));
+      rmw_publisher_free(publisher->impl->rmw_handle);
+      rmw_ret_t rmw_fail_ret = RMW_RET_OK;
+
       if (RMW_RET_OK != rmw_fail_ret) {
         RCUTILS_SAFE_FWRITE_TO_STDERR(rmw_get_error_string().str);
         RCUTILS_SAFE_FWRITE_TO_STDERR("\n");
@@ -213,9 +224,16 @@ rcl_publisher_fini(rcl_publisher_t * publisher, rcl_node_t * node)
       return RCL_RET_INVALID_ARGUMENT;
     }
     // DUMMY 'rmw_destroy_publisher', return default 'rmw_ret_t'(RMW_RET_OK)
-    rmw_ret_t ret = RMW_RET_OK;
     // rmw_ret_t ret =
     //   rmw_destroy_publisher(rmw_node, publisher->impl->rmw_handle);
+    // REWRITE 'rmw_destroy_publisher'
+    RMW_CHECK_ARGUMENT_FOR_NULL(rmw_node, RMW_RET_INVALID_ARGUMENT);
+    RMW_CHECK_ARGUMENT_FOR_NULL(publisher->impl->rmw_handle, RMW_RET_INVALID_ARGUMENT);
+
+    rmw_free((void *)(publisher->impl->rmw_handle->topic_name));
+    rmw_publisher_free(publisher->impl->rmw_handle);
+    rmw_ret_t ret = RMW_RET_OK;
+
     if (ret != RMW_RET_OK) {
       RCL_SET_ERROR_MSG(rmw_get_error_string().str);
       result = RCL_RET_ERROR;

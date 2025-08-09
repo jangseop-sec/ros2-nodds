@@ -142,6 +142,10 @@ rcl_subscription_init(
   // }
   // subscription->impl->actual_qos.avoid_ros_namespace_conventions =
   //   options->qos.avoid_ros_namespace_conventions;
+  // REWRITE 'rmw_subscription_get_actual_qos'
+  subscription->impl->actual_qos = options->qos;
+  subscription->impl->actual_qos.avoid_ros_namespace_conventions =
+    options->qos.avoid_ros_namespace_conventions;
   // options
   subscription->impl->options = *options;
   RCUTILS_LOG_DEBUG_NAMED(ROS_PACKAGE_NAME, "Subscription initialized");
@@ -159,9 +163,16 @@ fail:
   if (subscription->impl) {
     if (subscription->impl->rmw_handle) {
       // DUMMY 'rwm_destroy_subscription', return default rmw_ret_t(RMW_RET_OK)
-      rmw_ret_t rmw_fail_ret = RMW_RET_OK;
       // rmw_ret_t rmw_fail_ret = rmw_destroy_subscription(
       //   rcl_node_get_rmw_handle(node), subscription->impl->rmw_handle);
+      // REWRITE 'rmw_destroy_subscription'
+      RMW_CHECK_ARGUMENT_FOR_NULL(rcl_node_get_rmw_handle(node), RMW_RET_INVALID_ARGUMENT);
+      RMW_CHECK_ARGUMENT_FOR_NULL(subscription->impl->rmw_handle, RMW_RET_INVALID_ARGUMENT);
+      
+      rmw_free((void *)(subscription->impl->rmw_handle->topic_name));
+      rmw_subscription_free(subscription->impl->rmw_handle);
+      rmw_ret_t rmw_fail_ret = RMW_RET_OK;
+
       if (RMW_RET_OK != rmw_fail_ret) {
         RCUTILS_SAFE_FWRITE_TO_STDERR(rmw_get_error_string().str);
         RCUTILS_SAFE_FWRITE_TO_STDERR("\n");
@@ -205,9 +216,16 @@ rcl_subscription_fini(rcl_subscription_t * subscription, rcl_node_t * node)
       return RCL_RET_INVALID_ARGUMENT;
     }
     // DUMMY 'rmw_destroy_subscription', return default rmw_ret_t(RMW_RET_OK)
-    rmw_ret_t ret = RMW_RET_OK;
     // rmw_ret_t ret =
     //   rmw_destroy_subscription(rmw_node, subscription->impl->rmw_handle);
+    // REWRITE 'rmw_destroy_subscription'
+    RMW_CHECK_ARGUMENT_FOR_NULL(rmw_node, RMW_RET_INVALID_ARGUMENT);
+    RMW_CHECK_ARGUMENT_FOR_NULL(subscription->impl->rmw_handle, RMW_RET_INVALID_ARGUMENT);
+    
+    rmw_free((void *)(subscription->impl->rmw_handle->topic_name));
+    rmw_subscription_free(subscription->impl->rmw_handle);
+    rmw_ret_t ret = RMW_RET_OK;
+    
     if (ret != RMW_RET_OK) {
       RCL_SET_ERROR_MSG(rmw_get_error_string().str);
       result = RCL_RET_ERROR;

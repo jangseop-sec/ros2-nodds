@@ -161,6 +161,9 @@ rcl_service_init(
   //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
   //   goto fail;
   // }
+  // REWRITE 'rmw_service_request_subscription_get_actual_qos' and 'rmw_service_response_publisher_get_actual_qos'
+  service->impl->actual_request_subscription_qos = options->qos;
+  service->impl->actual_response_publisher_qos = options->qos;
 
   // ROS specific namespacing conventions is not retrieved by get_actual_qos
   service->impl->actual_request_subscription_qos.avoid_ros_namespace_conventions =
@@ -218,6 +221,12 @@ rcl_service_fini(rcl_service_t * service, rcl_node_t * node)
     //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
     //   result = RCL_RET_ERROR;
     // }
+    // REWRITE 'rmw_destroy_service'
+    RMW_CHECK_ARGUMENT_FOR_NULL(rmw_node, RMW_RET_INVALID_ARGUMENT);
+    RMW_CHECK_ARGUMENT_FOR_NULL(service->impl->rmw_handle, RMW_RET_INVALID_ARGUMENT);
+    rmw_free((void *)(service->impl->rmw_handle->service_name));
+    rmw_service_free(service->impl->rmw_handle);
+
     allocator.deallocate(service->impl, allocator.state);
     service->impl = NULL;
   }

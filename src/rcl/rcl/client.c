@@ -117,6 +117,7 @@ rcl_client_init(
   //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
   //   goto fail;
   // }
+  // REWRITE create rmw client
   rmw_client_t * rmw_client = rmw_client_allocate();
   if (!rmw_client) {
     RMW_SET_ERROR_MSG("create_client() failed to allocate memory for rmw_client");
@@ -153,6 +154,9 @@ rcl_client_init(
   //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
   //   goto fail;
   // }
+  // REWRITE 'rmw_client_response_subscription_get_actual_qos'
+  client->impl->actual_request_publisher_qos = options->qos;
+  client->impl->actual_response_subscription_qos = options->qos;
 
   // ROS specific namespacing conventions avoidance
   // is not retrieved by get_actual_qos
@@ -210,6 +214,13 @@ rcl_client_fini(rcl_client_t * client, rcl_node_t * node)
     //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
     //   result = RCL_RET_ERROR;
     // }
+    // REWRITE 'rmw_destroy_client'
+    RMW_CHECK_ARGUMENT_FOR_NULL(rmw_node, RMW_RET_INVALID_ARGUMENT);
+    RMW_CHECK_ARGUMENT_FOR_NULL(client->impl->rmw_handle, RMW_RET_INVALID_ARGUMENT);
+
+    rmw_free((void *)(client->impl->rmw_handle->service_name));
+    rmw_client_free(client->impl->rmw_handle);
+    
     allocator.deallocate(client->impl, allocator.state);
     client->impl = NULL;
   }
