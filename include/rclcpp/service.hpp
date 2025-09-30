@@ -494,6 +494,11 @@ public:
     }
   }
 
+  AnyServiceCallback<ServiceT>
+  get_any_callback() {
+    return any_callback_;
+  }
+
 private:
   RCLCPP_DISABLE_COPY(Service)
 

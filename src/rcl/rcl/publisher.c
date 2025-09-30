@@ -43,6 +43,8 @@ extern "C"
 #include "./common.h"
 #include "./publisher_impl.h"
 
+#include "symros/symros_graph.h"
+
 rcl_publisher_t
 rcl_get_zero_initialized_publisher()
 {
@@ -59,6 +61,8 @@ rcl_publisher_init(
   const rcl_publisher_options_t * options
 )
 {
+  printf("[rcl_publisher_init] entry point\n");
+  
   RCUTILS_CAN_RETURN_WITH_ERROR_OF(RCL_RET_INVALID_ARGUMENT);
   RCUTILS_CAN_RETURN_WITH_ERROR_OF(RCL_RET_ALREADY_INIT);
   RCUTILS_CAN_RETURN_WITH_ERROR_OF(RCL_RET_NODE_INVALID);
@@ -199,6 +203,10 @@ fail:
   // Fall through to cleanup
 cleanup:
   allocator->deallocate(remapped_topic_name, allocator->state);
+
+  // REWRITE symros_graph add publisher
+  symros_add_publisher(node, publisher, type_support->typesupport_identifier);
+
   return ret;
 }
 
@@ -242,6 +250,9 @@ rcl_publisher_fini(rcl_publisher_t * publisher, rcl_node_t * node)
     publisher->impl = NULL;
   }
   RCUTILS_LOG_DEBUG_NAMED(ROS_PACKAGE_NAME, "Publisher finalized");
+
+  // REWRITE symros_graph remove publisher
+  symros_remove_publisher(publisher);
   return result;
 }
 

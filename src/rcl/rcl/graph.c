@@ -41,6 +41,8 @@ extern "C"
 
 #include "./common.h"
 
+#include "symros/symros_graph.h"
+
 rcl_ret_t
 __validate_node_name_and_namespace(
   const char * node_name,
@@ -106,7 +108,6 @@ rcl_get_publisher_names_and_types_by_node(
   rcutils_allocator_t rcutils_allocator = *allocator;
   
   // DUMMY 'rmw_get_publisher_names_and_types_by_node'
-  rmw_ret = RMW_RET_OK;
   // rmw_ret = rmw_get_publisher_names_and_types_by_node(
   //   rcl_node_get_rmw_handle(node),
   //   &rcutils_allocator,
@@ -115,7 +116,14 @@ rcl_get_publisher_names_and_types_by_node(
   //   no_demangle,
   //   topic_names_and_types
   // );
-  return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
+  // REWRITE 'rmw_get_publisher_names_and_types_by_node'
+  rcl_ret = symros_get_publisher_names_and_types_by_node(
+    node_name,
+    valid_namespace,
+    topic_names_and_types
+  );
+
+  return rcl_ret;
 }
 
 rcl_ret_t
@@ -150,7 +158,7 @@ rcl_get_subscriber_names_and_types_by_node(
     return rcl_ret;
   }
 
-  rmw_ret = RMW_RET_OK;  // DUMMY 'rmw_get_subscriber_names_and_types_by_node'
+  // DUMMY 'rmw_get_subscriber_names_and_types_by_node'
   // rmw_ret = rmw_get_subscriber_names_and_types_by_node(
   //   rcl_node_get_rmw_handle(node),
   //   &rcutils_allocator,
@@ -159,7 +167,14 @@ rcl_get_subscriber_names_and_types_by_node(
   //   no_demangle,
   //   topic_names_and_types
   // );
-  return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
+  // REWRITE 'rmw_get_subscriber_names_and_types_by_node'
+  rcl_ret = symros_get_subscriber_names_and_types_by_node(
+    node_name,
+    valid_namespace,
+    topic_names_and_types
+  );
+
+  return rcl_ret;
 }
 
 rcl_ret_t
@@ -193,7 +208,7 @@ rcl_get_service_names_and_types_by_node(
   }
   rcutils_allocator_t rcutils_allocator = *allocator;
   
-  rmw_ret = RMW_RET_OK;  // DUMMY 'rmw_get_service_names_and_types_by_node'
+  // DUMMY 'rmw_get_service_names_and_types_by_node'
   // rmw_ret = rmw_get_service_names_and_types_by_node(
   //   rcl_node_get_rmw_handle(node),
   //   &rcutils_allocator,
@@ -201,7 +216,13 @@ rcl_get_service_names_and_types_by_node(
   //   valid_namespace,
   //   service_names_and_types
   // );
-  return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
+  // REWRITE 'rmw_get_service_names_and_types_by_node'
+  rcl_ret = symros_get_service_names_and_types_by_node(
+    node_name,
+    valid_namespace,
+    service_names_and_types
+  );
+  return rcl_ret;
 }
 
 rcl_ret_t
@@ -234,7 +255,7 @@ rcl_get_client_names_and_types_by_node(
     return rcl_ret;
   }
   rcutils_allocator_t rcutils_allocator = *allocator;
-  rmw_ret = RMW_RET_OK;  // DUMMY 'rmw_get_client_names_and_types_by_node'
+  // DUMMY 'rmw_get_client_names_and_types_by_node'
   // rmw_ret = rmw_get_client_names_and_types_by_node(
   //   rcl_node_get_rmw_handle(node),
   //   &rcutils_allocator,
@@ -242,7 +263,14 @@ rcl_get_client_names_and_types_by_node(
   //   valid_namespace,
   //   service_names_and_types
   // );
-  return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
+  // REWRITE 'rmw_get_client_names_and_types_by_node'
+  rcl_ret = symros_get_client_names_and_types_by_node(
+    node_name,
+    valid_namespace,
+    service_names_and_types
+  );
+
+  return rcl_ret;
 }
 
 rcl_ret_t
@@ -263,14 +291,19 @@ rcl_get_topic_names_and_types(
     return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
   }
   rcutils_allocator_t rcutils_allocator = *allocator;
-  rmw_ret = RMW_RET_OK;  // DUMMY 'rmw_get_topic_names_and_types'
+  // DUMMY 'rmw_get_topic_names_and_types'
   // rmw_ret = rmw_get_topic_names_and_types(
   //   rcl_node_get_rmw_handle(node),
   //   &rcutils_allocator,
   //   no_demangle,
   //   topic_names_and_types
   // );
-  return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
+  // REWRITE 'rmw_get_topic_names_and_types'
+  rcl_ret_t rcl_ret = symros_get_topic_names_and_types_(
+    topic_names_and_types
+  );
+
+  return rcl_ret;
 }
 
 rcl_ret_t
@@ -290,13 +323,18 @@ rcl_get_service_names_and_types(
     return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
   }
   rcutils_allocator_t rcutils_allocator = *allocator;
-  rmw_ret = RMW_RET_OK;  // DUMMY 'rmw_get_service_names_and_types'
+  // DUMMY 'rmw_get_service_names_and_types'
   // rmw_ret = rmw_get_service_names_and_types(
   //   rcl_node_get_rmw_handle(node),
   //   &rcutils_allocator,
   //   service_names_and_types
   // );
-  return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
+  // REWRITE 'rmw_get_service_names_and_types'
+  rcl_ret_t rcl_ret = symros_get_service_names_and_types(
+    service_names_and_types
+  );
+
+  return rcl_ret;
 }
 
 rcl_ret_t
@@ -353,14 +391,18 @@ rcl_get_node_names(
   }
   (void)allocator;  // to be used in rmw_get_node_names in the future
   
-  rmw_ret_t rmw_ret = RMW_RET_OK;  // DUMMY 'rmw_get_node_names'
+  // DUMMY 'rmw_get_node_names'
   // rmw_ret_t rmw_ret = rmw_get_node_names(
   //   rcl_node_get_rmw_handle(node),
   //   node_names,
   //   node_namespaces);
+  // REWRITE 'rmw_get_node_names'
+  rcl_ret_t rcl_ret = symros_get_node_names(
+    node_names, node_namespaces
+  );
 
-  if (RMW_RET_OK != rmw_ret) {
-    return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
+  if (RCL_RET_OK != rcl_ret) {
+    return rcl_ret;
   }
 
   // Check that none of the node names are NULL or empty
@@ -447,9 +489,12 @@ rcl_count_publishers(
   }
   RCL_CHECK_ARGUMENT_FOR_NULL(topic_name, RCL_RET_INVALID_ARGUMENT);
   RCL_CHECK_ARGUMENT_FOR_NULL(count, RCL_RET_INVALID_ARGUMENT);
-  rmw_ret_t rmw_ret = RMW_RET_OK;  // DUMMY 'rmw_count_publishers'
+  // DUMMY 'rmw_count_publishers'
   // rmw_ret_t rmw_ret = rmw_count_publishers(rcl_node_get_rmw_handle(node), topic_name, count);
-  return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
+  // REWRITE 'rmw_count_pulishers'
+  rcl_ret_t rcl_ret = symros_count_publishers(topic_name, count);
+
+  return rcl_ret;
 }
 
 rcl_ret_t
@@ -467,9 +512,11 @@ rcl_count_subscribers(
   }
   RCL_CHECK_ARGUMENT_FOR_NULL(topic_name, RCL_RET_INVALID_ARGUMENT);
   RCL_CHECK_ARGUMENT_FOR_NULL(count, RCL_RET_INVALID_ARGUMENT);
-  rmw_ret_t rmw_ret = RMW_RET_OK;  // DUMMY 'rmw_count_subscribers'
+  // DUMMY 'rmw_count_subscribers'
   // rmw_ret_t rmw_ret = rmw_count_subscribers(rcl_node_get_rmw_handle(node), topic_name, count);
-  return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
+  rcl_ret_t rcl_ret = symros_count_subscribers(topic_name, count);
+
+  return rcl_ret;
 }
 
 typedef rcl_ret_t (* count_entities_func_t)(
@@ -750,13 +797,15 @@ rcl_service_server_is_available(
   }
   RCL_CHECK_ARGUMENT_FOR_NULL(client, RCL_RET_INVALID_ARGUMENT);
   RCL_CHECK_ARGUMENT_FOR_NULL(is_available, RCL_RET_INVALID_ARGUMENT);
-  rmw_ret_t rmw_ret = RMW_RET_OK;  // DUMMY 'rmw_service_server_is_available'
+  // DUMMY 'rmw_service_server_is_available'
   // rmw_ret_t rmw_ret = rmw_service_server_is_available(
   //   rcl_node_get_rmw_handle(node),
   //   rcl_client_get_rmw_handle(client),
   //   is_available
   // );
-  return rcl_convert_rmw_ret_to_rcl_ret(rmw_ret);
+  // REWRITE 'rmw_service_server_is_available'
+  rcl_ret_t rcl_ret = symros_service_server_is_available(client, is_available);
+  return rcl_ret;
 }
 
 #ifdef __cplusplus

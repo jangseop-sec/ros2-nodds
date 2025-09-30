@@ -49,6 +49,18 @@ struct Context
   rmw_guard_condition_t * listener_thread_gc;
   /// Guard condition that should be triggered when the graph changes.
   rmw_guard_condition_t * graph_guard_condition;
+
+  // singleton pattern
+  Context(const Context&) = delete;
+  Context& opeerator(const Context&) = delete;
+
+  static Context& get_instance() {
+    static Context instance;
+    return instance;
+  }
+
+private:
+  Context() {}
 };
 
 }  // namespace rmw_dds_common

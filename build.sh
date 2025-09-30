@@ -1,8 +1,12 @@
 #!/bin/bash
 
 INCLUDE_PATH="include"
-BUILD_PATH="build"
+BUILD_PATH="build-sym"
 
+# CC="/home/ubuntu/symros/SYMROS/llvm-12/bin/clang"
+# CXX="/home/ubuntu/symros/SYMROS/llvm-12/bin/clang++"
+CC="/home/ubuntu/symros/SYMROS/symcc/symcc"
+CXX="/home/ubuntu/symros/SYMROS/symcc/sym++"
 
 # count file
 file_list=$(find . -type f \( -name "*.c" -o -name "*.cpp" \))
@@ -60,6 +64,7 @@ cpp_pkgs=(
   rosidl/rosidl_typesupport_introspection_cpp
   rosidl/rosidl_typesupport_c
   tracetools
+  symros
 )
 
 # c based packages compilation
@@ -70,7 +75,7 @@ for pkg in "${c_pkgs[@]}"; do
     obj="${pkg//\//__}__${filename%.c}.o"
     if [ ! -f "$obj" ] || [ "$src" -nt "$obj" ]; then
       echo "[$idx/$count] compile $src => $obj ..."
-      gcc -fPIC -c -I ../$INCLUDE_PATH $src -o $obj
+      $CC -fPIC -c -I ../$INCLUDE_PATH $src -o $obj
     else
       echo "[$idx/$count] $filename is up-do-date"
     fi
@@ -86,7 +91,7 @@ for pkg in "${cpp_pkgs[@]}"; do
     obj="${pkg//\//__}__${filename%.cpp}.o"
     if [ ! -f "$obj" ] || [ "$src" -nt "$obj" ]; then
       echo "[$idx/$count] compile $src => $obj ..."
-      g++ -fPIC -c -I ../$INCLUDE_PATH $src -o $obj
+      $CXX -std=c++17 -fPIC -c -I ../$INCLUDE_PATH $src -o $obj
     else
       echo "[$idx/$count] $filename is up-do-date"
     fi
@@ -103,7 +108,7 @@ for pkg in "${msg_pkgs[@]}"; do
 
     if [ ! -f "$obj" ] || [ "$src" -nt "$obj" ]; then
       echo "[$idx/$count] compile $src => $obj ..."
-      g++ -fPIC -c -I ../$INCLUDE_PATH $src -o $obj
+      $CXX -std=c++17 -fPIC -c -I ../$INCLUDE_PATH $src -o $obj
     else
       echo "[$idx/$count] $filename is up-do-date"
     fi
@@ -114,7 +119,7 @@ for pkg in "${msg_pkgs[@]}"; do
     obj="${pkg//\//__}__${filename%.c}_c.o"
     if [ ! -f "$obj" ] || [ "$src" -nt "$obj" ]; then
       echo "[$idx/$count] compile $src => $obj ..."
-      gcc -fPIC -c -I ../$INCLUDE_PATH $src -o $obj
+      $CC -fPIC -c -I ../$INCLUDE_PATH $src -o $obj
     else
       echo "[$idx/$count] $filename is up-do-date"
     fi
@@ -126,4 +131,4 @@ echo "generate static library"
 ar rcs libros2_no_dds.a *.o
 
 echo "generate shared library"
-g++ -shared -o libros2_nos_dds.so *.o
+$CXX -std=c++17 -shared -o libros2_no_dds.so *.o

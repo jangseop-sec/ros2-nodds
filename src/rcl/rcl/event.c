@@ -89,6 +89,10 @@ rcl_publisher_event_init(
   // if (ret != RMW_RET_OK) {
   //   goto fail;
   // }
+  // REWRITE 'rmw_publisher_event_init'
+  rmw_event_t * rmw_event = &event->impl->rmw_handle;
+  const rmw_publisher_t * rmw_publisher = publisher->impl->rmw_handle;
+  rmw_event->event_type = event_type;
 
   return RCL_RET_OK;
 fail:
@@ -145,6 +149,10 @@ rcl_subscription_event_init(
   // if (ret != RMW_RET_OK) {
   //   goto fail;
   // }
+  // REWRITE 'rmw_subscription_event_init'
+  rmw_event_t * rmw_event = &event->impl->rmw_handle;
+  const rmw_publisher_t * rmw_publisher = subscription->impl->rmw_handle;
+  rmw_event->event_type = event_type;
 
   return RCL_RET_OK;
 fail:

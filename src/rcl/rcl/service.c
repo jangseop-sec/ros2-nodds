@@ -31,6 +31,8 @@ extern "C"
 #include "rmw/allocators.h"
 // #include "tracetools/tracetools.h"
 
+#include "symros/symros_graph.h"
+
 #define ROS_PACKAGE_NAME "test"
 
 struct rcl_service_impl_s
@@ -191,6 +193,10 @@ fail:
   // Fall through to clean up
 cleanup:
   allocator->deallocate(remapped_service_name, allocator->state);
+
+  // REWRITE symros_graph add service
+  symros_add_service(node, service, type_support->typesupport_identifier);
+
   return ret;
 }
 
@@ -231,6 +237,10 @@ rcl_service_fini(rcl_service_t * service, rcl_node_t * node)
     service->impl = NULL;
   }
   RCUTILS_LOG_DEBUG_NAMED(ROS_PACKAGE_NAME, "Service finalized");
+
+  // REWRITE symros_graph remove service
+  symros_remove_service(service);
+
   return result;
 }
 

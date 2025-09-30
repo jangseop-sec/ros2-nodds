@@ -16,6 +16,7 @@
 
 #include <stdexcept>
 #include <string>
+#include <iostream>
 
 #include "rclcpp/callback_group.hpp"
 #include "rclcpp/exceptions.hpp"

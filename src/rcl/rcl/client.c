@@ -34,6 +34,8 @@ extern "C"
 
 #include "./common.h"
 
+#include "symros/symros_graph.h"
+
 #define ROS_PACKAGE_NAME "test"
 
 struct rcl_client_impl_s
@@ -186,6 +188,9 @@ fail:
   // Fall through to cleanup
 cleanup:
   allocator->deallocate(remapped_service_name, allocator->state);
+
+  // REWRITE symros_graph add client
+  symros_add_client(node, client, type_support->typesupport_identifier);
   return ret;
 }
 

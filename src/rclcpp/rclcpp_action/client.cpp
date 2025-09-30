@@ -228,6 +228,9 @@ ClientBase::action_server_is_ready() const
 bool
 ClientBase::wait_for_action_server_nanoseconds(std::chrono::nanoseconds timeout)
 {
+  // REWRITE symros
+  return true;
+
   auto start = std::chrono::steady_clock::now();
   // make an event to reuse, rather than create a new one each time
   auto node_ptr = pimpl_->node_graph_.lock();
@@ -332,6 +335,7 @@ ClientBase::add_to_wait_set(rcl_wait_set_t * wait_set)
 bool
 ClientBase::is_ready(rcl_wait_set_t * wait_set)
 {
+  return true;
   bool is_feedback_ready{false};
   bool is_status_ready{false};
   bool is_goal_response_ready{false};

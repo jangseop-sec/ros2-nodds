@@ -24,6 +24,11 @@
 #include "rclcpp/visibility_control.hpp"
 #include "rmw/rmw.h"
 
+#include "symros/symros.hpp"
+
+#include "rosidl_typesupport_introspection_cpp/message_introspection.hpp"
+#include "rosidl_typesupport_introspection_cpp/service_introspection.hpp"
+
 namespace rclcpp
 {
 
@@ -50,6 +55,17 @@ create_service(
     service_name, any_service_callback, service_options);
   auto serv_base_ptr = std::dynamic_pointer_cast<ServiceBase>(serv);
   node_services->add_service(serv_base_ptr, group);
+
+  // symros test
+  std::cout << "[symros_create_service] " << service_name << std::endl;
+  if (auto srv = std::dynamic_pointer_cast<rclcpp::ServiceBase>(serv)) {
+    auto members = static_cast<const rosidl_typesupport_introspection_cpp::ServiceMembers *>(rosidl_typesupport_cpp::get_service_type_support_handle<ServiceT>()->data);
+    std::string service_namespace_ = members->service_namespace_;
+    std::string service_name_ = members->service_name_;
+
+    symros::SymROSManager::get_instance().add_service(srv, service_namespace_, service_name_);
+  }
+
   return serv;
 }
 

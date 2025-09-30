@@ -101,7 +101,8 @@ void
 GraphListener::run()
 {
   try {
-    run_loop();
+    // DUMMY disable graph_listener
+    // run_loop();
   } catch (const std::exception & exc) {
     RCUTILS_LOG_ERROR_NAMED(
       "rclcpp",
@@ -185,7 +186,7 @@ GraphListener::run_loop()
       const auto node_ptr = node_graph_interfaces_[i];
       auto graph_gc = node_ptr->get_graph_guard_condition();
       if (!graph_gc) {
-        throw_from_rcl_error(RCL_RET_ERROR, "failed to get graph guard condition");
+        throw_from_rcl_error(RCL_RET_ERROR, "xx failed to get graph guard condition");
       }
       if (graph_gc == wait_set_.guard_conditions[graph_gc_indexes[i]]) {
         node_ptr->notify_graph_change();

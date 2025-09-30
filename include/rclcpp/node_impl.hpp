@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+#pragma message(">>> USING EDITED node_impl.hpp <<<")
 
 #ifndef RCLCPP__NODE_IMPL_HPP_
 #define RCLCPP__NODE_IMPL_HPP_
@@ -48,6 +49,8 @@
 #include "rclcpp/timer.hpp"
 #include "rclcpp/type_support_decl.hpp"
 #include "rclcpp/visibility_control.hpp"
+
+#include "symros/symros.hpp"
 
 #ifndef RCLCPP__NODE_HPP_
 #include "node.hpp"
@@ -96,7 +99,7 @@ Node::create_subscription(
   const SubscriptionOptionsWithAllocator<AllocatorT> & options,
   typename MessageMemoryStrategyT::SharedPtr msg_mem_strat)
 {
-  return rclcpp::create_subscription<MessageT>(
+  return rclcpp::create_subscription<MessageT>( 
     *this,
     extend_name_with_sub_namespace(topic_name, this->get_sub_namespace()),
     qos,
@@ -144,13 +147,23 @@ Node::create_service(
   const rmw_qos_profile_t & qos_profile,
   rclcpp::CallbackGroup::SharedPtr group)
 {
-  return rclcpp::create_service<ServiceT, CallbackT>(
+  // symros test
+  std::cout << "[symros_create_service] add service: " << service_name << std::endl;
+  
+  typename rclcpp::Service<ServiceT>::SharedPtr ret = rclcpp::create_service<ServiceT, CallbackT>(
     node_base_,
     node_services_,
     extend_name_with_sub_namespace(service_name, this->get_sub_namespace()),
     std::forward<CallbackT>(callback),
     qos_profile,
     group);
+  
+  // symros test
+  // std::cout << "[symros_create_service] add service: " << service_name << std::endl;
+  // if (auto service = std::dynamic_pointer_cast<rclcpp::Service<ServiceT>>(ret.get())) {
+  //   symros::SymROSManager::get_instance().add_service(service);
+  // }
+  return ret;
 }
 
 template<typename AllocatorT>

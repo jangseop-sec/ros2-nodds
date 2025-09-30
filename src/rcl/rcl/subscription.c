@@ -40,6 +40,7 @@ extern "C"
 #include "./common.h"
 #include "./subscription_impl.h"
 
+#include "symros/symros_graph.h"
 
 rcl_subscription_t
 rcl_get_zero_initialized_subscription()
@@ -57,6 +58,8 @@ rcl_subscription_init(
   const rcl_subscription_options_t * options
 )
 {
+  // debug message
+  printf("[rcl_subscription_init] entry point: %s\n", topic_name);
   rcl_ret_t fail_ret = RCL_RET_ERROR;
 
   // Check options and allocator first, so the allocator can be used in errors.
@@ -192,6 +195,11 @@ fail:
   // Fall through to cleanup
 cleanup:
   allocator->deallocate(remapped_topic_name, allocator->state);
+  printf("[rcl_subscription_init] fini\n");
+
+  // REWRITE symros_graph add subscriber
+  symros_add_subscription(node, subscription, type_support->typesupport_identifier);
+
   return ret;
 }
 
@@ -241,6 +249,10 @@ rcl_subscription_fini(rcl_subscription_t * subscription, rcl_node_t * node)
     subscription->impl = NULL;
   }
   RCUTILS_LOG_DEBUG_NAMED(ROS_PACKAGE_NAME, "Subscription finalized");
+
+  // REWRITE symros_graph remove subscription
+  symros_remove_subscription(subscription);
+
   return result;
 }
 

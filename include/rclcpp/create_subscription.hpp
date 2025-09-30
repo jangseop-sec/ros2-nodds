@@ -21,6 +21,9 @@
 #include <stdexcept>
 #include <string>
 #include <utility>
+#include <iostream>
+
+#include <cxxabi.h>
 
 #include "rclcpp/detail/resolve_enable_topic_statistics.hpp"
 
@@ -37,6 +40,8 @@
 #include "rclcpp/timer.hpp"
 #include "rclcpp/topic_statistics/subscription_topic_statistics.hpp"
 #include "rmw/qos_profiles.h"
+
+#include "symros/symros.hpp"
 
 namespace rclcpp
 {
@@ -136,7 +141,17 @@ create_subscription(
   auto sub = node_topics_interface->create_subscription(topic_name, factory, actual_qos);
   node_topics_interface->add_subscription(sub, options.callback_group);
 
-  return std::dynamic_pointer_cast<SubscriptionT>(sub);
+  typename std::shared_ptr<SubscriptionT> ret = std::dynamic_pointer_cast<SubscriptionT>(sub);
+
+  // symros test
+  using SubT = rclcpp::Subscription<MessageT, AllocatorT, MessageT, MessageT>;
+  std::cout << "[symros_create_subscription] detail::create_subscription: " << topic_name << std::endl;
+  if (auto sub = std::dynamic_pointer_cast<SubT>(ret)) {
+    std::cout << "[symros_create_subscription] add subscription in database: " << topic_name << std::endl;
+    symros::SymROSManager::get_instance().add_subscription(sub);
+  }
+
+  return ret;
 }
 }  // namespace detail
 

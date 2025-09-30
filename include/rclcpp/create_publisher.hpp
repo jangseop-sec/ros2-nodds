@@ -54,6 +54,7 @@ create_publisher(
   )
 )
 { 
+  std::cout << "create_publisher called with topic: " << topic_name << std::endl;
   auto node_topics_interface = rclcpp::node_interfaces::get_node_topics_interface(node_topics);
   const rclcpp::QoS & actual_qos = options.qos_overriding_options.get_policy_kinds().size() ?
     rclcpp::detail::declare_qos_parameters(

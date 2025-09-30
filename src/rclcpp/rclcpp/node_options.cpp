@@ -19,6 +19,7 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <iostream>
 
 #include "rclcpp/detail/utilities.hpp"
 #include "rclcpp/exceptions.hpp"
@@ -47,7 +48,9 @@ rcl_node_options_t_destructor(rcl_node_options_t * node_options)
       rcl_reset_error();
     }
 
-    delete node_options;
+    // std::cout << "error point is here!" << std::endl;
+    // delete node_options;
+
     node_options = nullptr;
   }
 }

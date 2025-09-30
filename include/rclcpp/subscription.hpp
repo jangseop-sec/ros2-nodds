@@ -424,8 +424,6 @@ public:
     return any_callback_;
   }
 
-  
-
 private:
   RCLCPP_DISABLE_COPY(Subscription)
 

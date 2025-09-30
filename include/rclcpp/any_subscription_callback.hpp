@@ -21,6 +21,7 @@
 #include <type_traits>
 #include <utility>
 #include <variant>  // NOLINT[build/include_order]
+#include <iostream>
 
 #include "rosidl_runtime_cpp/traits.hpp"
 #include "tracetools/tracetools.h"
@@ -492,6 +493,7 @@ public:
     std::shared_ptr<ROSMessageType> message,
     const rclcpp::MessageInfo & message_info)
   {
+    std::cout << "[symros] callback.dispatch" << std::endl;
     TRACEPOINT(callback_start, static_cast<const void *>(this), false);
     // Check if the variant is "unset", throw if it is.
     if (callback_variant_.index() == 0) {
@@ -584,6 +586,8 @@ public:
         }
       }, callback_variant_);
     TRACEPOINT(callback_end, static_cast<const void *>(this));
+    std::cout << "[symros] callback.dispatch finished" << std::endl;
+
   }
 
   // Dispatch when input is a serialized message and the output could be anything.

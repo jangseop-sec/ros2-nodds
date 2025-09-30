@@ -49,6 +49,11 @@ extern "C"
 #include "rmw/rmw.h"
 #include "rmw/validate_namespace.h"
 #include "rmw/validate_node_name.h"
+#include "rmw/allocators.h"
+#include "rmw/init.h"
+
+#include "symros/symros_graph.h"
+
 // #include "tracetools/tracetools.h"
 
 #include "./context_impl.h"
@@ -254,12 +259,25 @@ rcl_node_init(
   //   &(node->context->impl->rmw_context),
   //   name, local_namespace_);
   // REWRITE create rmw_node
-  node->impl->rmw_node_handle = (rmw_node_t *) malloc(sizeof(rmw_node_t));
-  node->impl->rmw_node_handle->context = &(node->context->impl->rmw_context);
-  char * name_ptr = strdup(name);
-  node->impl->rmw_node_handle->name = name_ptr;
-  char * local_namespace_ptr = strdup(local_namespace_);
-  node->impl->rmw_node_handle->namespace_ = local_namespace_ptr;
+  rmw_context_t * rmw_context = &(node->context->impl->rmw_context);
+  rmw_node_t * rmw_node = rmw_node_allocate();
+  if (!rmw_node) {
+    RMW_SET_ERROR_MSG("create_node() failed to allocate rmw_node");
+    node->impl->rmw_node_handle = NULL;
+    RCL_CHECK_FOR_NULL_WITH_MSG(
+      node->impl->rmw_node_handle, rmw_get_error_string().str, goto fail);
+  }
+
+  rmw_node->data = NULL;
+  rmw_node->name = (char *)(rmw_allocate(sizeof(char) * strlen(name) + 1));
+  memcpy((char *)rmw_node->name, name, strlen(name) + 1);
+
+  rmw_node->namespace_ = (char *)(rmw_allocate(sizeof(char) * strlen(local_namespace_) + 1));
+  memcpy((char *)rmw_node->namespace_, local_namespace_, strlen(local_namespace_) + 1);
+
+  rmw_node->context = rmw_context;
+
+  node->impl->rmw_node_handle = rmw_node;
 
   // RCL_CHECK_FOR_NULL_WITH_MSG(
   //   node->impl->rmw_node_handle, rmw_get_error_string().str, goto fail);
@@ -268,6 +286,7 @@ rcl_node_init(
   // rmw_graph_guard_condition = rmw_node_get_graph_guard_condition(node->impl->rmw_node_handle);
   // RCL_CHECK_FOR_NULL_WITH_MSG(
   //   rmw_graph_guard_condition, rmw_get_error_string().str, goto fail);
+  // REWRITE 'rmw_node_get_graph_guard_condition' common_context = rmw_context->impl->common;
 
   // node->impl->graph_guard_condition = (rcl_guard_condition_t *)allocator->allocate(
   //   sizeof(rcl_guard_condition_t), allocator->state);
@@ -282,6 +301,7 @@ rcl_node_init(
   //   rmw_graph_guard_condition,
   //   context,
   //   graph_guard_condition_options);
+
   ret = RCL_RET_OK;
   if (ret != RCL_RET_OK) {
     // error message already set
@@ -324,6 +344,11 @@ fail:
       // DUMMY 'rmw_destroy_node'
       ret= RMW_RET_OK;
       // ret = rmw_destroy_node(node->impl->rmw_node_handle);
+      // REWRITE 'rmw_destory_node'
+      rmw_node_t * rmw_node_handle = node->impl->rmw_node_handle;
+      rmw_free((char *)(rmw_node_handle->name));
+      rmw_free((char *)(rmw_node_handle->namespace_));
+      rmw_node_free(rmw_node_handle);
       
       if (ret != RMW_RET_OK) {
         RCUTILS_LOG_ERROR_NAMED(
@@ -365,12 +390,17 @@ cleanup:
   if (NULL != remapped_node_name) {
     allocator->deallocate(remapped_node_name, allocator->state);
   }
+
+  // REWRITE symors_graph add node
+  symros_add_node(node);
+
   return ret;
 }
 
 rcl_ret_t
 rcl_node_fini(rcl_node_t * node)
 {
+  printf("[rcl_node_fini] entry point node name=[%s]\n", rcl_node_get_name(node));
   RCUTILS_LOG_DEBUG_NAMED(ROS_PACKAGE_NAME, "Finalizing node");
   RCL_CHECK_ARGUMENT_FOR_NULL(node, RCL_RET_NODE_INVALID);
   if (!node->impl) {
@@ -387,11 +417,18 @@ rcl_node_fini(rcl_node_t * node)
       result = RCL_RET_ERROR;
     }
   }
+  // DUMMY 'rmw_destroy_node'
   // rmw_ret_t rmw_ret = rmw_destroy_node(node->impl->rmw_node_handle);
   // if (rmw_ret != RMW_RET_OK) {
   //   RCL_SET_ERROR_MSG(rmw_get_error_string().str);
   //   result = RCL_RET_ERROR;
   // }
+  // REWRITE 'rmw_destory_node'
+  rmw_node_t * rmw_node_handle = node->impl->rmw_node_handle;
+  rmw_free((char *)(rmw_node_handle->name));
+  rmw_free((char *)(rmw_node_handle->namespace_));
+  rmw_node_free(rmw_node_handle);
+
   rcl_ret = rcl_guard_condition_fini(node->impl->graph_guard_condition);
   if (rcl_ret != RCL_RET_OK) {
     RCL_SET_ERROR_MSG(rmw_get_error_string().str);
@@ -410,6 +447,10 @@ rcl_node_fini(rcl_node_t * node)
   allocator.deallocate(node->impl, allocator.state);
   node->impl = NULL;
   RCUTILS_LOG_DEBUG_NAMED(ROS_PACKAGE_NAME, "Node finalized");
+
+  // REWRITE symros_graph remove node
+  symros_remove_node(node);
+
   return result;
 }
 

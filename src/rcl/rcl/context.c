@@ -48,6 +48,7 @@ rcl_get_zero_initialized_context(void)
 rcl_ret_t
 rcl_context_fini(rcl_context_t * context)
 {
+  printf("[rcl_context_fini] entry point\n");
   RCL_CHECK_ARGUMENT_FOR_NULL(context, RCL_RET_INVALID_ARGUMENT);
   if (!context->impl) {
     // Context is zero-initialized
