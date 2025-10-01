@@ -46,6 +46,7 @@ namespace symros
     }
 
     srv_list.push_back(srv_base);
+    srv_idx = srv_list.size() - 1;
 
     if (is_target) {
 
@@ -58,8 +59,6 @@ namespace symros
       std::cout << ret;
       std::cout << "[symros_add_service] new service is created [" << srv_idx << "]" << srv_base->get_service_name() << ":" << service_namespace_ << "::" << service_name_ << std::endl;
     }
-  
-    srv_idx++;
   }
 
 
