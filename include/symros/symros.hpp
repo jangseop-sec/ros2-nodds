@@ -66,7 +66,7 @@ public:
   }
 
   template<typename serviceT>
-  rclcpp::Service<serviceT>
+  typename rclcpp::Service<serviceT>::SharedPtr
   get_service(int idx)
   {
     if (srv_idx == -1) {
@@ -75,6 +75,10 @@ public:
     if (idx < 0 || idx >= srv_list.size()) {
       throw std::out_of_range("Service index out of range");
     }
+
+    std::cout << "[symros] srv_idx[" << idx << "] : " << srv_list[idx]->get_service_name() << std::endl;
+ 
+    
     return std::dynamic_pointer_cast<rclcpp::Service<serviceT>>(srv_list[idx]);
   }
 
