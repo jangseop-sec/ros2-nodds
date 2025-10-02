@@ -48,17 +48,14 @@ namespace symros
     srv_list.push_back(srv_base);
     srv_idx = srv_list.size() - 1;
 
+#ifndef SYMROS_MODE
     if (is_target) {
-
-      // auto members = static_cast<const rosidl_typesupport_introspection_cpp::ServiceMembers *>(rosidl_typesupport_cpp::get_service_type_support_handle<ServiceT>()->data);
-      // std::string service_namespace_ = members->service_namespace_;
-      // std::string service_name_ = members->service_name_;
-
       std::string ret_prefix = "symros_result$$new_srv$$";
       std::string ret = ret_prefix + std::to_string(srv_idx) + "$$" + srv_base->get_service_name() + "$$" + service_namespace_ + "::" + service_name_  + "\n";
       std::cout << ret;
       std::cout << "[symros_add_service] new service is created [" << srv_idx << "]" << srv_base->get_service_name() << ":" << service_namespace_ << "::" << service_name_ << std::endl;
     }
+#endif  // SYMROS_MODE
   }
 
 
