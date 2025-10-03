@@ -1,12 +1,17 @@
 #!/bin/bash
 
 INCLUDE_PATH="include"
-BUILD_PATH="build-sym"
+MODE=$1
 
-# CC="/home/ubuntu/symros/SYMROS/llvm-12/bin/clang"
-# CXX="/home/ubuntu/symros/SYMROS/llvm-12/bin/clang++"
-CC="/home/ubuntu/symros/SYMROS/symcc/symcc"
-CXX="/home/ubuntu/symros/SYMROS/symcc/sym++"
+if [ $MODE == "conc" ]; then
+  BUILD_PATH="build-conc"
+  CC="/home/ubuntu/symros/SYMROS/llvm-12/bin/clang"
+  CXX="/home/ubuntu/symros/SYMROS/llvm-12/bin/clang++"
+else
+  BUILD_PATH="build-sym"
+  CC="/home/ubuntu/symros/SYMROS/symcc/symcc"
+  CXX="/home/ubuntu/symros/SYMROS/symcc/sym++"
+fi
 
 # count file
 file_list=$(find . -type f \( -name "*.c" -o -name "*.cpp" \))
