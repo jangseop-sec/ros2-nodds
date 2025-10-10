@@ -9,8 +9,8 @@ if [ $MODE == "conc" ]; then
   CXX="/home/ubuntu/symros/SYMROS/llvm-12/bin/clang++"
 else
   BUILD_PATH="build-sym"
-  CC="/home/ubuntu/symros/SYMROS/symcc/symcc"
-  CXX="/home/ubuntu/symros/SYMROS/symcc/sym++"
+  CC="/home/ubuntu/symros/SYMROS/symcc/build/symcc"
+  CXX="/home/ubuntu/symros/SYMROS/symcc/build/sym++"
 fi
 
 # count file
