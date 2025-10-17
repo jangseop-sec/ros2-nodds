@@ -1,6 +1,7 @@
 .vscode
 
 build
+build-sym-libstdc++
 build-sym
 build-conc
 install
