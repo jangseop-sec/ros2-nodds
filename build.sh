@@ -7,6 +7,10 @@ if [ $MODE == "conc" ]; then
   BUILD_PATH="build-conc"
   CC="/home/ubuntu/symros/SYMROS/llvm-12/bin/clang"
   CXX="/home/ubuntu/symros/SYMROS/llvm-12/bin/clang++"
+elif [ $MODE == "qsym" ]; then
+  BUILD_PATH="build-qsym"
+  CC="/home/ubuntu/symros/SYMROS/symcc/build-qsym/symcc"
+  CXX="/home/ubuntu/symros/SYMROS/symcc/build-qsym/sym++"
 else
   BUILD_PATH="build-sym-libc++"
   CC="/home/ubuntu/symros/SYMROS/symcc/build/symcc"
