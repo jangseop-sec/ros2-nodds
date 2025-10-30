@@ -119,6 +119,7 @@ rcl_node_init(
   rcl_context_t * context,
   const rcl_node_options_t * options)
 {
+  printf("[rcl_node_init] entry point node name=[%s]\n", name);
   const rmw_guard_condition_t * rmw_graph_guard_condition = NULL;
   rcl_guard_condition_options_t graph_guard_condition_options =
     rcl_guard_condition_get_default_options();

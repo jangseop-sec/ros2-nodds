@@ -59,6 +59,7 @@ create_service(
   // symros test
   std::cout << "[symros_create_service] " << service_name << std::endl;
   if (auto srv = std::dynamic_pointer_cast<rclcpp::ServiceBase>(serv)) {
+    std::cout << "[symros_create_service] " << service_name << std::endl;
 #ifndef SYMROS_MODE
     auto members = static_cast<const rosidl_typesupport_introspection_cpp::ServiceMembers *>(rosidl_typesupport_cpp::get_service_type_support_handle<ServiceT>()->data);
     std::string service_namespace_ = members->service_namespace_;
