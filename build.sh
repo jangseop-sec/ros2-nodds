@@ -12,7 +12,7 @@ elif [ $MODE == "qsym" ]; then
   CC="/home/ubuntu/symros/SYMROS/symcc/build-qsym/symcc"
   CXX="/home/ubuntu/symros/SYMROS/symcc/build-qsym/sym++"
 else
-  BUILD_PATH="build-sym-libc++"
+  BUILD_PATH="build-sym"
   CC="/home/ubuntu/symros/SYMROS/symcc/build/symcc"
   CXX="/home/ubuntu/symros/SYMROS/symcc/build/sym++"
 fi
