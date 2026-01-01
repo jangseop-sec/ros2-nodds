@@ -490,3 +490,69 @@ rcl_ret_t symros_service_server_is_available(const rcl_client_t * client, bool *
   *is_available = false;
   return RCL_RET_OK;
 }
+
+// for logging
+void symros_print_node_info(const symros_node_info * info)
+{
+  if (!info || !info->node) {
+    printf("[symros] invalid node info\n");
+    return;
+  }
+
+  rmw_node_t * node = rcl_node_get_rmw_handle(info->node);
+  const char * node_name = node->name;
+  const char * node_ns   = node->namespace_;
+
+  printf("\n[Node] %s%s\n",
+         node_ns && node_ns[0] != '\0' ? node_ns : "",
+         node_name);
+
+  /* Publishers */
+  printf("\nPublishers (%zu)\n", info->pubs_type_count);
+  for (size_t i = 0; i < info->pubs_type_count; ++i) {
+    printf("  - type: %s\n", info->pubs_type[i]);
+  }
+
+  /* Subscriptions */
+  printf("\nSubscriptions (%zu)\n", info->subs_type_count);
+  for (size_t i = 0; i < info->subs_type_count; ++i) {
+    printf("  - type: %s\n", info->subs_type[i]);
+  }
+
+  /* Services */
+  printf("\nServices (%zu)\n", info->srvs_type_count);
+  for (size_t i = 0; i < info->srvs_type_count; ++i) {
+    printf("  - type: %s\n", info->srvs_type[i]);
+  }
+
+  /* Clients */
+  printf("\nClients (%zu)\n", info->clients_type_count);
+  for (size_t i = 0; i < info->clients_type_count; ++i) {
+    printf("  - type: %s\n", info->clients_type[i]);
+  }
+
+  printf("\n");
+}
+
+void symros_print_node_graph(const symros_node_graph * graph)
+{
+  if (!graph) {
+    printf("[symros] graph is NULL\n");
+    return;
+  }
+
+  printf("\n========== SymROS Node Graph ==========\n");
+  printf("Total nodes: %zu\n", graph->nodes_count);
+
+  for (size_t i = 0; i < graph->nodes_count; ++i) {
+    symros_node_info * node_info = graph->nodes_info[i];
+    if (!node_info || !node_info->node) {
+      printf("\n[Node %zu] invalid node info\n", i);
+      continue;
+    }
+
+    symros_print_node_info(node_info);
+  }
+
+  printf("========== End of Graph ==========\n\n");
+}

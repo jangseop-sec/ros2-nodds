@@ -68,6 +68,10 @@ rcl_ret_t symros_count_publishers  (const char * topic_name, size_t count /*unus
 rcl_ret_t symros_count_subscribers (const char * topic_name, size_t count /*unused*/);
 rcl_ret_t symros_service_server_is_available(const rcl_client_t * client, bool * is_available);
 
+// for logging
+void symros_print_node_info(const symros_node_info * info);
+void symros_print_node_graph(const symros_node_graph * graph);
+
 #ifdef __cplusplus
 }
 #endif
