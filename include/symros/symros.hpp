@@ -8,6 +8,8 @@
 #include "rclcpp/subscription_base.hpp"
 #include "rclcpp/service.hpp"
 
+#include "rclcpp_action/server.hpp"
+
 #include "rcl/types.h"
 #include "rosidl_typesupport_introspection_cpp/message_introspection.hpp"
 #include "rosidl_typesupport_introspection_cpp/service_introspection.hpp"
@@ -36,6 +38,8 @@ public:
   void
   add_service(std::shared_ptr<rclcpp::ServiceBase> srv_base, std::string service_namespace_, std::string service_name_);
 
+  void
+  add_action(std::shared_ptr<rclcpp_action::ServerBase> act_srv_base, std::string action_id_, std::string action_namespace_, std::string action_name_);
   
 
   template<typename T>
@@ -87,10 +91,12 @@ private:
 
   int sub_idx = -1;
   int srv_idx = -1;
+  int act_srv_idx = -1;
   bool is_target;
 
   std::vector<std::shared_ptr<rclcpp::SubscriptionBase>> sub_list;
   std::vector<std::shared_ptr<rclcpp::ServiceBase>> srv_list;
+  std::vector<std::shared_ptr<rclcpp_action::ServerBase>> act_srv_list;
 
 };
 

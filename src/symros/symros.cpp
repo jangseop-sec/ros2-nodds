@@ -58,6 +58,24 @@ namespace symros
 #endif  // SYMROS_MODE
   }
 
+  void
+  SymROSManager::add_action(std::shared_ptr<rclcpp_action::ServerBase> action_server_base, std::string action_id_, std::string action_namespace_, std::string action_name_) {
+    if (act_srv_idx == -1) {
+      throw std::runtime_error("SymROSManager not initialized");
+    }
+
+    act_srv_list.push_back(action_server_base);
+    act_srv_idx = act_srv_list.size() - 1;
+
+  #ifndef SYMROS_MODE
+    if (is_target) {
+      std::string ret_prefix = "symros_result$$new_action_srv$$";
+      std::string ret = ret_prefix + std::to_string(act_srv_idx) + "$$" + action_id_ + "$$" + action_namespace_ + "::" + action_name_  + "\n";
+      std::cout << ret;
+      std::cout << "[symros_add_action_server] new action server is created [" << act_srv_idx << "]" << action_id_ << ":" << action_namespace_ << "::" << action_name_ << std::endl;
+    }
+  #endif  // SYMROS_MODE
+  }
 
   // void
   // SymROSManager::add_service(std::shared_ptr<rclcpp::ServiceBase> srv_base)
