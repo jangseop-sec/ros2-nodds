@@ -29,6 +29,21 @@
 #include "rclcpp_action/server.hpp"
 #include "rclcpp_action/visibility_control.hpp"
 
+#include "rosidl_typesupport_introspection_cpp/message_introspection.hpp"
+#include "rosidl_typesupport_introspection_cpp/service_introspection.hpp"
+
+#include "rosidl_runtime_cpp/traits.hpp"
+
+template<typename T>
+std::string type_name()
+{
+#ifdef __clang__ || __GNUC__
+    return __PRETTY_FUNCTION__;
+#elif defined(_MSC_VER)
+    return __FUNCSIG__;
+#endif
+}
+
 namespace rclcpp_action
 {
 /// Create an action server.
@@ -107,6 +122,51 @@ create_server(
       handle_accepted), deleter);
 
   node_waitables_interface->add_waitable(action_server, group);
+
+  // symros test
+  if (auto action_server_base = std::dynamic_pointer_cast<rclcpp_action::ServerBase>(action_server)) {
+    std::cout << "[symros_create_action_server] " << name << std::endl;
+    // TODO add action server in symros
+#ifndef SYMROS_MODE
+    std::string action_namespace_;
+    std::string action_name_;
+
+    const std::string s = type_name<ActionT>();
+    const std::string key = "T = ";
+    auto start = s.find(key);
+    if (start == std::string::npos) {
+      action_namespace_ = "";
+      action_name_ = "";
+    }
+
+    start += key.size();
+
+    auto end = s.find(']', start);
+    if (end == std::string::npos) {
+      action_namespace_ = "";
+      action_name_ = "";
+    }
+
+    std::string action_full_name = s.substr(start, end - start);
+
+    const std::string sep = "::";
+    auto pos = action_full_name.rfind(sep);
+
+    if (pos == std::string::npos) {
+      action_namespace_ = "";
+      action_name_ = action_full_name;
+    } else {
+      action_namespace_ = action_full_name.substr(0, pos);
+      action_name_ = action_full_name.substr(pos + sep.size());
+    }
+    std::cout << "[symros_create_action_server] " << action_namespace_ << " / " << action_name_ << std::endl;
+#endif
+    symros::SymROSManager::get_instance().add_action_server(
+      action_server_base,
+      name,
+      action_namespace_,
+      action_name_);
+  }
   return action_server;
 }
 
