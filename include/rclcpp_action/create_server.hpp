@@ -34,6 +34,8 @@
 
 #include "rosidl_runtime_cpp/traits.hpp"
 
+#include "symros/symros.hpp"
+
 template<typename T>
 std::string type_name()
 {
@@ -127,10 +129,9 @@ create_server(
   if (auto action_server_base = std::dynamic_pointer_cast<rclcpp_action::ServerBase>(action_server)) {
     std::cout << "[symros_create_action_server] " << name << std::endl;
     // TODO add action server in symros
-#ifndef SYMROS_MODE
     std::string action_namespace_;
     std::string action_name_;
-
+#ifndef SYMROS_MODE
     const std::string s = type_name<ActionT>();
     const std::string key = "T = ";
     auto start = s.find(key);
@@ -160,8 +161,11 @@ create_server(
       action_name_ = action_full_name.substr(pos + sep.size());
     }
     std::cout << "[symros_create_action_server] " << action_namespace_ << " / " << action_name_ << std::endl;
+#else
+  action_namespace_ = "";
+  action_name_ = "";
 #endif
-    symros::SymROSManager::get_instance().add_action_server(
+    symros::SymROSManager::get_instance().add_action(
       action_server_base,
       name,
       action_namespace_,
