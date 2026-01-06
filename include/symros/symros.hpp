@@ -3,10 +3,12 @@
 
 #include <memory>
 #include <vector>
+#include <map>
 
 #include "rclcpp/subscription.hpp"
 #include "rclcpp/subscription_base.hpp"
 #include "rclcpp/service.hpp"
+// #include "rclcpp/node.hpp"
 
 #include "rclcpp_action/server.hpp"
 
@@ -86,6 +88,8 @@ public:
     return std::dynamic_pointer_cast<rclcpp::Service<serviceT>>(srv_list[idx]);
   }
 
+  // std::map<std::string, rclcpp::ParameterValue> param_list;
+
 private:
   SymROSManager() {}
 
@@ -97,7 +101,6 @@ private:
   std::vector<std::shared_ptr<rclcpp::SubscriptionBase>> sub_list;
   std::vector<std::shared_ptr<rclcpp::ServiceBase>> srv_list;
   std::vector<std::shared_ptr<rclcpp_action::ServerBase>> act_srv_list;
-
 };
 
 }
