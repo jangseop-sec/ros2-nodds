@@ -61,7 +61,7 @@ rcl_publisher_init(
   const rcl_publisher_options_t * options
 )
 {
-  printf("[rcl_publisher_init] entry point %s\n, topic_name");
+  // printf("[rcl_publisher_init] entry point %s\n, topic_name");
   
   RCUTILS_CAN_RETURN_WITH_ERROR_OF(RCL_RET_INVALID_ARGUMENT);
   RCUTILS_CAN_RETURN_WITH_ERROR_OF(RCL_RET_ALREADY_INIT);

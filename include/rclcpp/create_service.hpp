@@ -57,7 +57,7 @@ create_service(
   node_services->add_service(serv_base_ptr, group);
 
   // symros test
-  std::cout << "[symros_create_service] " << service_name << std::endl;
+  std::cout << "[symros_create_service - start] " << service_name << std::endl;
   if (auto srv = std::dynamic_pointer_cast<rclcpp::ServiceBase>(serv)) {
     std::cout << "[symros_create_service] " << service_name << std::endl;
 #ifndef SYMROS_MODE
@@ -70,6 +70,7 @@ create_service(
 #endif  // SYMROS_MODE
     symros::SymROSManager::get_instance().add_service(srv, service_namespace_, service_name_);
   }
+  std::cout << "[symros_create_service - end] " << service_name << std::endl;
 
   return serv;
 }

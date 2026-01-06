@@ -804,6 +804,7 @@ NodeParameters::get_parameters(const std::vector<std::string> & names) const
   return results;
 }
 
+// TODO modify to lazy symbolization code for configuration pahse symbolization 
 rclcpp::Parameter
 NodeParameters::get_parameter(const std::string & name) const
 {
