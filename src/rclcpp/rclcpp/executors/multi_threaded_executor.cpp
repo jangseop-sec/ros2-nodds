@@ -45,24 +45,24 @@ MultiThreadedExecutor::~MultiThreadedExecutor() {}
 void
 MultiThreadedExecutor::spin()
 {
-  if (spinning.exchange(true)) {
-    throw std::runtime_error("spin() called while already spinning");
-  }
-  RCPPUTILS_SCOPE_EXIT(this->spinning.store(false); );
-  std::vector<std::thread> threads;
-  size_t thread_id = 0;
-  {
-    std::lock_guard wait_lock{wait_mutex_};
-    for (; thread_id < number_of_threads_ - 1; ++thread_id) {
-      auto func = std::bind(&MultiThreadedExecutor::run, this, thread_id);
-      threads.emplace_back(func);
-    }
-  }
+  // if (spinning.exchange(true)) {
+  //   throw std::runtime_error("spin() called while already spinning");
+  // }
+  // RCPPUTILS_SCOPE_EXIT(this->spinning.store(false); );
+  // std::vector<std::thread> threads;
+  // size_t thread_id = 0;
+  // {
+  //   std::lock_guard wait_lock{wait_mutex_};
+  //   for (; thread_id < number_of_threads_ - 1; ++thread_id) {
+  //     auto func = std::bind(&MultiThreadedExecutor::run, this, thread_id);
+  //     threads.emplace_back(func);
+  //   }
+  // }
 
-  run(thread_id);
-  for (auto & thread : threads) {
-    thread.join();
-  }
+  // run(thread_id);
+  // for (auto & thread : threads) {
+  //   thread.join();
+  // }
 }
 
 size_t
@@ -74,26 +74,26 @@ MultiThreadedExecutor::get_number_of_threads()
 void
 MultiThreadedExecutor::run(size_t this_thread_number)
 {
-  (void)this_thread_number;
-  while (rclcpp::ok(this->context_) && spinning.load()) {
-    rclcpp::AnyExecutable any_exec;
-    {
-      std::lock_guard wait_lock{wait_mutex_};
-      if (!rclcpp::ok(this->context_) || !spinning.load()) {
-        return;
-      }
-      if (!get_next_executable(any_exec, next_exec_timeout_)) {
-        continue;
-      }
-    }
-    if (yield_before_execute_) {
-      std::this_thread::yield();
-    }
+  // (void)this_thread_number;
+  // while (rclcpp::ok(this->context_) && spinning.load()) {
+  //   rclcpp::AnyExecutable any_exec;
+  //   {
+  //     std::lock_guard wait_lock{wait_mutex_};
+  //     if (!rclcpp::ok(this->context_) || !spinning.load()) {
+  //       return;
+  //     }
+  //     if (!get_next_executable(any_exec, next_exec_timeout_)) {
+  //       continue;
+  //     }
+  //   }
+  //   if (yield_before_execute_) {
+  //     std::this_thread::yield();
+  //   }
 
-    execute_any_executable(any_exec);
+  //   execute_any_executable(any_exec);
 
-    // Clear the callback_group to prevent the AnyExecutable destructor from
-    // resetting the callback group `can_be_taken_from`
-    any_exec.callback_group.reset();
-  }
+  //   // Clear the callback_group to prevent the AnyExecutable destructor from
+  //   // resetting the callback group `can_be_taken_from`
+  //   any_exec.callback_group.reset();
+  // }
 }
