@@ -84,7 +84,7 @@ for pkg in "${c_pkgs[@]}"; do
     obj="${pkg//\//__}__${filename%.c}.o"
     if [ ! -f "$obj" ] || [ "$src" -nt "$obj" ]; then
       echo "[$idx/$count] compile $src => $obj ..."
-      $CC -fPIC -c -I ../$INCLUDE_PATH $src -o $obj
+      $CC -g -O0 -fno-omit-frame-pointer -fPIC -c -I ../$INCLUDE_PATH $src -o $obj
     else
       echo "[$idx/$count] $filename is up-do-date"
     fi
@@ -100,7 +100,7 @@ for pkg in "${cpp_pkgs[@]}"; do
     obj="${pkg//\//__}__${filename%.cpp}.o"
     if [ ! -f "$obj" ] || [ "$src" -nt "$obj" ]; then
       echo "[$idx/$count] compile $src => $obj ..."
-      $CXX -std=c++17 -fPIC -c -I ../$INCLUDE_PATH $src -o $obj
+      $CXX -g -O0 -fno-omit-frame-pointer -std=c++17 -fPIC -c -I ../$INCLUDE_PATH $src -o $obj
     else
       echo "[$idx/$count] $filename is up-do-date"
     fi
@@ -117,7 +117,7 @@ for pkg in "${msg_pkgs[@]}"; do
 
     if [ ! -f "$obj" ] || [ "$src" -nt "$obj" ]; then
       echo "[$idx/$count] compile $src => $obj ..."
-      $CXX -std=c++17 -fPIC -c -I ../$INCLUDE_PATH $src -o $obj
+      $CXX -g -O0 -fno-omit-frame-pointer -std=c++17 -fPIC -c -I ../$INCLUDE_PATH $src -o $obj
     else
       echo "[$idx/$count] $filename is up-do-date"
     fi
@@ -128,7 +128,7 @@ for pkg in "${msg_pkgs[@]}"; do
     obj="${pkg//\//__}__${filename%.c}_c.o"
     if [ ! -f "$obj" ] || [ "$src" -nt "$obj" ]; then
       echo "[$idx/$count] compile $src => $obj ..."
-      $CC -fPIC -c -I ../$INCLUDE_PATH $src -o $obj
+      $CC -g -O0 -fno-omit-frame-pointer -fPIC -c -I ../$INCLUDE_PATH $src -o $obj
     else
       echo "[$idx/$count] $filename is up-do-date"
     fi
@@ -140,4 +140,4 @@ echo "generate static library"
 ar rcs libros2_no_dds.a *.o
 
 echo "generate shared library"
-$CXX -std=c++17 -shared -o libros2_no_dds.so *.o
+$CXX -g -O0 -fno-omit-frame-pointer -std=c++17 -shared -o libros2_no_dds.so *.o
