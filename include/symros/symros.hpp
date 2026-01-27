@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <map>
+#include <utility>
 
 #include "rclcpp/subscription.hpp"
 #include "rclcpp/subscription_base.hpp"
@@ -43,6 +44,8 @@ public:
   void
   add_action(std::shared_ptr<rclcpp_action::ServerBase> act_srv_base, std::string action_id_, std::string action_namespace_, std::string action_name_);
   
+  void
+  add_param(std::string name, std::string type);
 
   template<typename T>
   typename rclcpp::Subscription<T>::SharedPtr
@@ -90,6 +93,7 @@ public:
 
   // std::map<std::string, rclcpp::ParameterValue> param_list;
 
+
 private:
   SymROSManager() {}
 
@@ -101,6 +105,7 @@ private:
   std::vector<std::shared_ptr<rclcpp::SubscriptionBase>> sub_list;
   std::vector<std::shared_ptr<rclcpp::ServiceBase>> srv_list;
   std::vector<std::shared_ptr<rclcpp_action::ServerBase>> act_srv_list;
+  std::vector<std::pair<std::string, std::string>> param_list;
 };
 
 }

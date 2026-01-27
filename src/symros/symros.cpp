@@ -77,6 +77,17 @@ namespace symros
   #endif  // SYMROS_MODE
   }
 
+  void
+  SymROSManager::add_param(std::string name, std::string type) {
+    #ifndef SYMROS_MODE
+    if (is_target) {
+      std::string ret_prefix = "symros_result$$new_param$$";
+      std::string ret = ret_prefix + name + "$$" + type  + "\n";
+      std::cout << ret;
+    }
+    #endif  // SYMROS_MODE
+  }
+
   // void
   // SymROSManager::add_service(std::shared_ptr<rclcpp::ServiceBase> srv_base)
   // {

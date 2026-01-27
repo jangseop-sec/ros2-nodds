@@ -28,12 +28,15 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <iostream>
 
 #include "rcl_interfaces/srv/list_parameters.hpp"
 #include "rclcpp/create_publisher.hpp"
 #include "rclcpp/parameter_map.hpp"
 #include "rcutils/logging_macros.h"
 #include "rmw/qos_profiles.h"
+
+#include "symros/symros.hpp"
 
 #include "../detail/resolve_parameter_overrides.hpp"
 
@@ -428,6 +431,23 @@ declare_parameter_helper(
       };
     }
     parameter_descriptor.type = static_cast<uint8_t>(type);
+    
+    // REWRITE
+
+    static const std::unordered_map<rclcpp::ParameterType, std::string> param_type_to_string = {
+      {rclcpp::PARAMETER_NOT_SET, "void"},
+      {rclcpp::PARAMETER_BOOL, "bool"},
+      {rclcpp::PARAMETER_INTEGER, "int64_t"},
+      {rclcpp::PARAMETER_DOUBLE, "double"},
+      {rclcpp::PARAMETER_STRING, "std::string"},
+      {rclcpp::PARAMETER_BYTE_ARRAY, "std::vector<uint8_t>"},
+      {rclcpp::PARAMETER_BOOL_ARRAY, "std::vector<bool>"},
+      {rclcpp::PARAMETER_INTEGER_ARRAY, "std::vector<int64_t>"},
+      {rclcpp::PARAMETER_DOUBLE_ARRAY, "std::vector<double>"},
+      {rclcpp::PARAMETER_STRING_ARRAY, "std::vector<double>"},
+    };
+    symros::SymROSManager::get_instance().add_param(name, param_type_to_string.at(type));
+
   }
 
   rcl_interfaces::msg::ParameterEvent parameter_event;
