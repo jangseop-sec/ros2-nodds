@@ -9,6 +9,7 @@
 #include "rclcpp/subscription.hpp"
 #include "rclcpp/subscription_base.hpp"
 #include "rclcpp/service.hpp"
+#include "rclcpp/parameter.hpp"
 // #include "rclcpp/node.hpp"
 
 #include "rclcpp_action/server.hpp"
@@ -45,7 +46,7 @@ public:
   add_action(std::shared_ptr<rclcpp_action::ServerBase> act_srv_base, std::string action_id_, std::string action_namespace_, std::string action_name_);
   
   void
-  add_param(std::string name, std::string type);
+  add_param(std::string name, std::string type, rclcpp::ParameterValue default_value);
 
   template<typename T>
   typename rclcpp::Subscription<T>::SharedPtr

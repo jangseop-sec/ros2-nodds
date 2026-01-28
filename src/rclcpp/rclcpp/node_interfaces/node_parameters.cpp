@@ -446,7 +446,7 @@ declare_parameter_helper(
       {rclcpp::PARAMETER_DOUBLE_ARRAY, "std::vector<double>"},
       {rclcpp::PARAMETER_STRING_ARRAY, "std::vector<double>"},
     };
-    symros::SymROSManager::get_instance().add_param(name, param_type_to_string.at(type));
+    symros::SymROSManager::get_instance().add_param(name, param_type_to_string.at(type), default_value);
 
   }
 

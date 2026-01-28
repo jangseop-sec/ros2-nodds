@@ -78,11 +78,94 @@ namespace symros
   }
 
   void
-  SymROSManager::add_param(std::string name, std::string type) {
+  SymROSManager::add_param(std::string name, std::string type, rclcpp::ParameterValue default_value) {
     #ifndef SYMROS_MODE
     if (is_target) {
       std::string ret_prefix = "symros_result$$new_param$$";
-      std::string ret = ret_prefix + name + "$$" + type  + "\n";
+      std::string ret = ret_prefix + name + "$$" + type;
+      
+      if (default_value.get_type() != rclcpp::ParameterType::PARAMETER_NOT_SET) {
+        ret += "$$";
+
+        switch (default_value.get_type()) {
+          case rclcpp::ParameterType::PARAMETER_BOOL:
+            ret += default_value.get<bool>() ? "true" : "false";
+            break;
+
+          case rclcpp::ParameterType::PARAMETER_INTEGER:
+            ret += std::to_string(default_value.get<int64_t>());
+            break;
+
+          case rclcpp::ParameterType::PARAMETER_DOUBLE:
+            ret += std::to_string(default_value.get<double>());
+            break;
+
+          case rclcpp::ParameterType::PARAMETER_STRING:
+            ret += default_value.get<std::string>();
+            break;
+
+          case rclcpp::ParameterType::PARAMETER_BYTE_ARRAY: {
+            const auto & v = default_value.get<std::vector<uint8_t>>();
+            ret += "[";
+            for (size_t i = 0; i < v.size(); ++i) {
+              if (i) ret += ", ";
+              ret += std::to_string(static_cast<int>(v[i]));
+            }
+            ret += "]";
+            break;
+          }
+
+          case rclcpp::ParameterType::PARAMETER_BOOL_ARRAY: {
+            const auto & v = default_value.get<std::vector<bool>>();
+            ret += "[";
+            for (size_t i = 0; i < v.size(); ++i) {
+              if (i) ret += ", ";
+              ret += v[i] ? "true" : "false";
+            }
+            ret += "]";
+            break;
+          }
+
+          case rclcpp::ParameterType::PARAMETER_INTEGER_ARRAY: {
+            const auto & v = default_value.get<std::vector<int64_t>>();
+            ret += "[";
+            for (size_t i = 0; i < v.size(); ++i) {
+              if (i) ret += ", ";
+              ret += std::to_string(v[i]);
+            }
+            ret += "]";
+            break;
+          }
+
+          case rclcpp::ParameterType::PARAMETER_DOUBLE_ARRAY: {
+            const auto & v = default_value.get<std::vector<double>>();
+            ret += "[";
+            for (size_t i = 0; i < v.size(); ++i) {
+              if (i) ret += ", ";
+              ret += std::to_string(v[i]);
+            }
+            ret += "]";
+            break;
+          }
+
+          case rclcpp::ParameterType::PARAMETER_STRING_ARRAY: {
+            const auto & v = default_value.get<std::vector<std::string>>();
+            ret += "[";
+            for (size_t i = 0; i < v.size(); ++i) {
+              if (i) ret += ", ";
+              ret += "\"" + v[i] + "\"";
+            }
+            ret += "]";
+            break;
+          }
+
+          default:
+            // NOT_SET or unknown
+            break;
+        }
+
+        ret += "\n";
+      }
       std::cout << ret;
     }
     #endif  // SYMROS_MODE
