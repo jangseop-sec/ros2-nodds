@@ -39,36 +39,36 @@ struct ServerBaseData;
 namespace rclcpp_action
 {
 
-struct ServerBaseData
-{
-  using GoalRequestData = std::tuple<
-    rcl_ret_t,
-    const rcl_action_goal_info_t,
-    rmw_request_id_t,
-    std::shared_ptr<void>
-  >;
+// struct ServerBaseData
+// {
+//   using GoalRequestData = std::tuple<
+//     rcl_ret_t,
+//     const rcl_action_goal_info_t,
+//     rmw_request_id_t,
+//     std::shared_ptr<void>
+//   >;
 
-  using CancelRequestData = std::tuple<
-    rcl_ret_t,
-    std::shared_ptr<action_msgs::srv::CancelGoal::Request>,
-    rmw_request_id_t
-  >;
+//   using CancelRequestData = std::tuple<
+//     rcl_ret_t,
+//     std::shared_ptr<action_msgs::srv::CancelGoal::Request>,
+//     rmw_request_id_t
+//   >;
 
-  using ResultRequestData = std::tuple<rcl_ret_t, std::shared_ptr<void>, rmw_request_id_t>;
+//   using ResultRequestData = std::tuple<rcl_ret_t, std::shared_ptr<void>, rmw_request_id_t>;
 
-  using GoalExpiredData = struct Empty {};
+//   using GoalExpiredData = struct Empty {};
 
-  std::variant<GoalRequestData, CancelRequestData, ResultRequestData, GoalExpiredData> data;
+//   std::variant<GoalRequestData, CancelRequestData, ResultRequestData, GoalExpiredData> data;
 
-  explicit ServerBaseData(GoalRequestData && data_in)
-  : data(std::move(data_in)) {}
-  explicit ServerBaseData(CancelRequestData && data_in)
-  : data(std::move(data_in)) {}
-  explicit ServerBaseData(ResultRequestData && data_in)
-  : data(std::move(data_in)) {}
-  explicit ServerBaseData(GoalExpiredData && data_in)
-  : data(std::move(data_in)) {}
-};
+//   explicit ServerBaseData(GoalRequestData && data_in)
+//   : data(std::move(data_in)) {}
+//   explicit ServerBaseData(CancelRequestData && data_in)
+//   : data(std::move(data_in)) {}
+//   explicit ServerBaseData(ResultRequestData && data_in)
+//   : data(std::move(data_in)) {}
+//   explicit ServerBaseData(GoalExpiredData && data_in)
+//   : data(std::move(data_in)) {}
+// };
 
 enum class ActionEventType : std::size_t
 {
@@ -391,6 +391,7 @@ ServerBase::execute(std::shared_ptr<void> & data_in)
 void
 ServerBase::execute_goal_request_received(std::shared_ptr<void> & data)
 {
+
   std::shared_ptr<ServerBaseData> data_ptr = std::static_pointer_cast<ServerBaseData>(data);
   const ServerBaseData::GoalRequestData & gData(
     std::get<ServerBaseData::GoalRequestData>(data_ptr->data));
@@ -413,7 +414,15 @@ ServerBase::execute_goal_request_received(std::shared_ptr<void> & data)
   convert(uuid, &goal_info);
 
   // Call user's callback, getting the user's response and a ros message to send back
+  printf("call call_handle_goal_callback\n");
   auto response_pair = call_handle_goal_callback(uuid, message);
+
+  const char* response_str = "UNKNOWN";
+  if (response_pair.first == GoalResponse::REJECT) response_str = "REJECT";
+  else if (response_pair.first == GoalResponse::ACCEPT_AND_EXECUTE) response_str = "ACCEPT_AND_EXECUTE";
+  else if (response_pair.first == GoalResponse::ACCEPT_AND_DEFER) response_str = "ACCEPT_AND_DEFER";
+
+  printf("[handle_goal response] %s\n", response_str);
 
   {
     std::lock_guard<std::recursive_mutex> lock(pimpl_->action_server_reentrant_mutex_);
@@ -483,6 +492,7 @@ ServerBase::execute_goal_request_received(std::shared_ptr<void> & data)
     publish_status();
 
     // Tell user to start executing action
+    printf("call call_goal_accepted_callback\n");
     call_goal_accepted_callback(handle, uuid, message);
   }
   data.reset();
@@ -548,6 +558,7 @@ ServerBase::execute_cancel_request_received(std::shared_ptr<void> & data)
     GoalUUID uuid;
     convert(goal_info, &uuid);
     auto response_code = call_handle_cancel_callback(uuid);
+    
     if (CancelResponse::ACCEPT == response_code) {
       action_msgs::msg::GoalInfo cpp_info;
       cpp_info.goal_id.uuid = uuid;

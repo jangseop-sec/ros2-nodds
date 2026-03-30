@@ -93,6 +93,15 @@ public:
   }
 
   // std::map<std::string, rclcpp::ParameterValue> param_list;
+  std::shared_ptr<rclcpp_action::ServerBase>
+  get_action_server(int idx)
+  {
+    if (act_srv_idx == -1) {
+      throw std::runtime_error("Action Server index out of range");
+    }
+
+    return act_srv_list[idx];
+  }
 
 
 private:

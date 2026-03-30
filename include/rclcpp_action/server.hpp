@@ -35,8 +35,41 @@
 #include "rclcpp_action/server_goal_handle.hpp"
 #include "rclcpp_action/types.hpp"
 
+#include "action_msgs/srv/cancel_goal.hpp"
+
 namespace rclcpp_action
 {
+
+struct ServerBaseData
+{
+  using GoalRequestData = std::tuple<
+    rcl_ret_t,
+    const rcl_action_goal_info_t,
+    rmw_request_id_t,
+    std::shared_ptr<void>
+  >;
+
+  using CancelRequestData = std::tuple<
+    rcl_ret_t,
+    std::shared_ptr<action_msgs::srv::CancelGoal::Request>,
+    rmw_request_id_t
+  >;
+
+  using ResultRequestData = std::tuple<rcl_ret_t, std::shared_ptr<void>, rmw_request_id_t>;
+
+  using GoalExpiredData = struct Empty {};
+
+  std::variant<GoalRequestData, CancelRequestData, ResultRequestData, GoalExpiredData> data;
+
+  explicit ServerBaseData(GoalRequestData && data_in)
+  : data(std::move(data_in)) {}
+  explicit ServerBaseData(CancelRequestData && data_in)
+  : data(std::move(data_in)) {}
+  explicit ServerBaseData(ResultRequestData && data_in)
+  : data(std::move(data_in)) {}
+  explicit ServerBaseData(GoalExpiredData && data_in)
+  : data(std::move(data_in)) {}
+};
 // Forward declaration
 class ServerBaseImpl;
 
