@@ -1,6 +1,8 @@
 #ifndef SYMROS__SYMROS_HPP_
 #define SYMROS__SYMROS_HPP_
 
+#define SYMROS_PUBLIC __attribute__((visibility("default")))
+
 #include <memory>
 #include <vector>
 #include <map>
@@ -21,7 +23,7 @@
 namespace symros
 {
 
-class SymROSManager
+class SYMROS_PUBLIC SymROSManager
 {
 public:
   static SymROSManager & get_instance()

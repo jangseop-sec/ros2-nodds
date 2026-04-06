@@ -1,4 +1,7 @@
 #pragma once
+
+#define SYMROS_PUBLIC __attribute__((visibility("default")))
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -39,38 +42,38 @@ typedef struct symros_node_graph {
 } symros_node_graph;
 
 // singleton
-symros_node_graph * symros_get_node_graph(void);
+SYMROS_PUBLIC symros_node_graph * symros_get_node_graph(void);
 
 // add/remove
-void symros_add_node(rcl_node_t * node);
-void symros_add_publisher(rcl_node_t * node, rcl_publisher_t * pub, const char * type_);
-void symros_add_subscription(rcl_node_t * node, rcl_subscription_t * sub, const char * type_);
-void symros_add_service(rcl_node_t * node, rcl_service_t * srv, const char * type_);
-void symros_add_client(rcl_node_t * node, rcl_client_t * client, const char * type_);
+SYMROS_PUBLIC void symros_add_node(rcl_node_t * node);
+SYMROS_PUBLIC void symros_add_publisher(rcl_node_t * node, rcl_publisher_t * pub, const char * type_);
+SYMROS_PUBLIC void symros_add_subscription(rcl_node_t * node, rcl_subscription_t * sub, const char * type_);
+SYMROS_PUBLIC void symros_add_service(rcl_node_t * node, rcl_service_t * srv, const char * type_);
+SYMROS_PUBLIC void symros_add_client(rcl_node_t * node, rcl_client_t * client, const char * type_);
 
-void symros_remove_node(rcl_node_t * node);
-void symros_remove_publisher(rcl_publisher_t * pub);
-void symros_remove_subscription(rcl_subscription_t * sub);
-void symros_remove_service(rcl_service_t * srv);
-void symros_remove_client(rcl_client_t * client);
+SYMROS_PUBLIC void symros_remove_node(rcl_node_t * node);
+SYMROS_PUBLIC void symros_remove_publisher(rcl_publisher_t * pub);
+SYMROS_PUBLIC void symros_remove_subscription(rcl_subscription_t * sub);
+SYMROS_PUBLIC void symros_remove_service(rcl_service_t * srv);
+SYMROS_PUBLIC void symros_remove_client(rcl_client_t * client);
 
 // queries (symros_graph 내부 상태만 사용)
-rcl_ret_t symros_get_publisher_names_and_types_by_node(char * node_name, char * valid_namespace, rcl_names_and_types_t * topic_names_and_types);
-rcl_ret_t symros_get_subscriber_names_and_types_by_node(char * node_name, char * valid_namespace, rcl_names_and_types_t * topic_names_and_types);
-rcl_ret_t symros_get_service_names_and_types_by_node  (char * node_name, char * valid_namespace, rcl_names_and_types_t * topic_names_and_types);
-rcl_ret_t symros_get_client_names_and_types_by_node   (char * node_name, char * valid_namespace, rcl_names_and_types_t * topic_names_and_types);
-rcl_ret_t symros_get_topic_names_and_types_           (rcl_names_and_types_t * topic_names_and_types);
-rcl_ret_t symros_get_service_names_and_types          (rcl_names_and_types_t * service_names_and_types);
-rcl_ret_t symros_get_node_names                       (rcutils_string_array_t * node_names, rcutils_string_array_t * node_namespaces);
+SYMROS_PUBLIC rcl_ret_t symros_get_publisher_names_and_types_by_node(char * node_name, char * valid_namespace, rcl_names_and_types_t * topic_names_and_types);
+SYMROS_PUBLIC rcl_ret_t symros_get_subscriber_names_and_types_by_node(char * node_name, char * valid_namespace, rcl_names_and_types_t * topic_names_and_types);
+SYMROS_PUBLIC rcl_ret_t symros_get_service_names_and_types_by_node  (char * node_name, char * valid_namespace, rcl_names_and_types_t * topic_names_and_types);
+SYMROS_PUBLIC rcl_ret_t symros_get_client_names_and_types_by_node   (char * node_name, char * valid_namespace, rcl_names_and_types_t * topic_names_and_types);
+SYMROS_PUBLIC rcl_ret_t symros_get_topic_names_and_types_           (rcl_names_and_types_t * topic_names_and_types);
+SYMROS_PUBLIC rcl_ret_t symros_get_service_names_and_types          (rcl_names_and_types_t * service_names_and_types);
+SYMROS_PUBLIC rcl_ret_t symros_get_node_names                       (rcutils_string_array_t * node_names, rcutils_string_array_t * node_namespaces);
 
 // counters / availability
-rcl_ret_t symros_count_publishers  (const char * topic_name, size_t count /*unused*/);
-rcl_ret_t symros_count_subscribers (const char * topic_name, size_t count /*unused*/);
-rcl_ret_t symros_service_server_is_available(const rcl_client_t * client, bool * is_available);
+SYMROS_PUBLIC rcl_ret_t symros_count_publishers  (const char * topic_name, size_t count /*unused*/);
+SYMROS_PUBLIC rcl_ret_t symros_count_subscribers (const char * topic_name, size_t count /*unused*/);
+SYMROS_PUBLIC rcl_ret_t symros_service_server_is_available(const rcl_client_t * client, bool * is_available);
 
 // for logging
-void symros_print_node_info(const symros_node_info * info);
-void symros_print_node_graph(const symros_node_graph * graph);
+SYMROS_PUBLIC void symros_print_node_info(const symros_node_info * info);
+SYMROS_PUBLIC void symros_print_node_graph(const symros_node_graph * graph);
 
 #ifdef __cplusplus
 }

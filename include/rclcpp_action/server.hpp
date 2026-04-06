@@ -544,6 +544,7 @@ protected:
       goal_handles_[uuid] = goal_handle;
     }
     handle_accepted_(goal_handle);
+    fprintf(stderr, "call handle_accepted - finished\n");
   }
 
   /// \internal
