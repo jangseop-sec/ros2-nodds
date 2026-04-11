@@ -433,7 +433,6 @@ declare_parameter_helper(
     parameter_descriptor.type = static_cast<uint8_t>(type);
     
     // REWRITE
-
     static const std::unordered_map<rclcpp::ParameterType, std::string> param_type_to_string = {
       {rclcpp::PARAMETER_NOT_SET, "void"},
       {rclcpp::PARAMETER_BOOL, "bool"},
@@ -444,9 +443,9 @@ declare_parameter_helper(
       {rclcpp::PARAMETER_BOOL_ARRAY, "std::vector<bool>"},
       {rclcpp::PARAMETER_INTEGER_ARRAY, "std::vector<int64_t>"},
       {rclcpp::PARAMETER_DOUBLE_ARRAY, "std::vector<double>"},
-      {rclcpp::PARAMETER_STRING_ARRAY, "std::vector<double>"},
+      {rclcpp::PARAMETER_STRING_ARRAY, "std::vector<std::string>"},
     };
-    symros::SymROSManager::get_instance().add_param(name, param_type_to_string.at(type), default_value);
+    symros::SymROSManager::get_instance().add_param(name, param_type_to_string.at(type), rclcpp::Parameter(name, default_value).value_to_string());
 
   }
 
